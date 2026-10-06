@@ -1,0 +1,188 @@
+{
+  "instance_id": "sympy__sympy-13372",
+  "latency_s": 177.586,
+  "metadata": {
+    "commands": [
+      {
+        "command": "cd /testbed && python -c \"from sympy import *; x, y = symbols('x y'); print('Test 1:', Mul(x, Max(0, y), evaluate=False).evalf()); print('Test 2:', Mul(Max(0, y), x, evaluate=False).evalf())\"",
+        "duration_s": 1.782,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 9,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy import *\nx, y = symbols('x y')\n\n# Test various evalf scenarios\nprint('Test 1:', Mul(x, Max(0, y), evaluate=False).evalf())\nprint('Test 2:', Mul(Max(0, y), x, evaluate=False).evalf())\nprint('Test 3:', Mul(2, 3).evalf())\nprint('Test 4:', Mul(S(2), S(3)).evalf())\nprint('Test 5:', Mul(S(2), S(3), evaluate=False).evalf())\nprint('Test 6:', Mul(S(2), S(3), evaluate=False).evalf())\nprint('Test 7:', Mul(S(2), S(3), evaluate=False).evalf())\n\"",
+        "duration_s": 1.101,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 10,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -m pytest sympy/core/tests/test_evalf.py -v -x 2>&1 | head -100",
+        "duration_s": 0.733,
+        "exit_code": 0,
+        "is_test": true,
+        "step": 11,
+        "summary": {
+          "tail": "exit_code: 0\n/opt/miniconda3/envs/testbed/bin/python: No module named pytest"
+        },
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -m sympy.core.tests.test_evalf 2>&1 | head -100",
+        "duration_s": 1.058,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 12,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nimport sympy.core.tests.test_evalf as test_evalf\nimport doctest\nresults = doctest.testmod(test_evalf, verbose=False)\nprint(f'Failures: {results.failed}, Tests: {results.attempted}')\n\"",
+        "duration_s": 0.938,
+        "exit_code": 1,
+        "is_test": false,
+        "step": 13,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy.core.tests import test_evalf\ntest_evalf.test_evalf()\nprint('test_evalf passed')\n\"",
+        "duration_s": 0.936,
+        "exit_code": 1,
+        "is_test": false,
+        "step": 14,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy.core.tests import test_evalf\nimport inspect\nprint([m for m in dir(test_evalf) if m.startswith('test_')])\n\"",
+        "duration_s": 0.928,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 16,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy.core.tests import test_evalf\ntest_evalf.test_evalf_mul()\nprint('test_evalf_mul passed')\n\"",
+        "duration_s": 2.187,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 17,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy.core.tests import test_evalf\ntest_evalf.test_evalf_basic()\nprint('test_evalf_basic passed')\n\"",
+        "duration_s": 1.011,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 18,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy.core.tests import test_evalf\ntest_evalf.test_evalf_bugs()\nprint('test_evalf_bugs passed')\n\"",
+        "duration_s": 0.998,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 19,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy.core.tests import test_evalf\ntest_evalf.test_evalf_complex()\nprint('test_evalf_complex passed')\n\"",
+        "duration_s": 0.972,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 20,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy import *\nx, y, z = symbols('x y z')\n\n# Test various edge cases\nprint('Test 1 - Max with symbols:', Mul(Max(0, y), x, evaluate=False).evalf())\nprint('Test 2 - Min with symbols:', Mul(Min(0, y), x, evaluate=False).evalf())\nprint('Test 3 - Abs with symbols:', Mul(Abs(y), x, evaluate=False).evalf())\nprint('Test 4 - Piecewise with symbols:', Mul(Piecewise((y, y>0), (0, True)), x, evaluate=False).evalf())\nprint('Test 5 - Float times symbol:', Mul(Float(2.5), x, evaluate=False).evalf())\nprint('Test 6 - Integer times symbol:', Mul(5, x, evaluate=False).evalf())\nprint('Test 7 - Symbol times symbol:', Mul(x, y, evaluate=False).evalf())\nprint('Test 8 - Complex number:', Mul(1+2*I, 3+4*I, evaluate=False).evalf())\nprint('Test 9 - Real number:', Mul(1+0*I, 3+0*I, evaluate=False).evalf())\n\"",
+        "duration_s": 0.963,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 21,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy.core.tests import test_evalf\ntest_evalf.test_evalf_powers()\nprint('test_evalf_powers passed')\n\"",
+        "duration_s": 0.967,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 23,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy.core.tests import test_evalf\ntest_evalf.test_evalf_trig()\nprint('test_evalf_trig passed')\n\"",
+        "duration_s": 0.921,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 24,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy import *\nx, y = symbols('x y')\n\n# Original issue from the bug report\nprint('Test 1:', Mul(x, Max(0, y), evaluate=False).evalf())\nprint('Test 2:', Mul(Max(0, y), x, evaluate=False).evalf())\n\n# Both should return the same result without raising UnboundLocalError\nassert str(Mul(x, Max(0, y), evaluate=False).evalf()) == str(Mul(Max(0, y), x, evaluate=False).evalf())\nprint('Both tests passed!')\n\"",
+        "duration_s": 1.221,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 25,
+        "timed_out": false
+      }
+    ],
+    "final_answer": "The fix is complete and verified. The changes are minimal and follow the existing pattern in the codebase. The issue is resolved by ensuring that `reprec` and `imprec` are always defined before being used in the return statement.",
+    "modified_files": [
+      "sympy/core/evalf.py"
+    ],
+    "stats": {
+      "calls_by_tool": {
+        "edit_file": 1,
+        "git_diff": 1,
+        "list_files": 1,
+        "read_file": 7,
+        "run_command": 15,
+        "search_code": 1
+      },
+      "edit_errors": 0,
+      "empty_steps": 0,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 26
+      },
+      "first_edit_step": 8,
+      "invalid_arguments": 0,
+      "length_nudges": 0,
+      "repeated_identical_calls": 0,
+      "steps": 27,
+      "stop_reason": "final_answer",
+      "successful_edits": 1,
+      "tested_after_last_edit": true,
+      "tests_run": 1,
+      "tool_calls": 26,
+      "tool_errors": 2
+    },
+    "stop_reason": "final_answer",
+    "tests": [
+      {
+        "command": "cd /testbed && python -m pytest sympy/core/tests/test_evalf.py -v -x 2>&1 | head -100",
+        "duration_s": 0.733,
+        "exit_code": 0,
+        "is_test": true,
+        "step": 11,
+        "summary": {
+          "tail": "exit_code: 0\n/opt/miniconda3/envs/testbed/bin/python: No module named pytest"
+        },
+        "timed_out": false
+      }
+    ],
+    "trace_path": "agent/sympy__sympy-13372/trace.json"
+  },
+  "patch_bytes": 770,
+  "setup_s": 61.299,
+  "started_at": "2026-10-06T10:10:58+00:00",
+  "status": "ok",
+  "usage": {
+    "completion_tokens": 4167,
+    "cost_usd": 0.02492495,
+    "llm_calls": 27,
+    "prompt_tokens": 242999,
+    "tool_calls": 26
+  }
+}

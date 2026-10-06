@@ -133,12 +133,14 @@ class Scripted(LLMClient):
 
     def chat(self, messages, tools=None, **o):
         self.calls.append(json.loads(json.dumps(messages)))
-        content, tcs = self.turns.pop(0)
+        turn = self.turns.pop(0)
+        content, tcs = turn[0], turn[1]
+        forced_finish = turn[2] if len(turn) > 2 else None      # optional explicit finish_reason
         if isinstance(content, Exception):
             raise content
         calls = [{"id": f"id{len(self.calls)}_{i}", "name": n,
                   "arguments": a if isinstance(a, str) else json.dumps(a)} for i, (n, a) in enumerate(tcs)]
-        return ChatResult(content, calls, "tool_calls" if calls else "stop", "m", LLMUsage(10, 5, 15, None, 0.001),
+        return ChatResult(content, calls, forced_finish or ("tool_calls" if calls else "stop"), "m", LLMUsage(10, 5, 15, None, 0.001),
                           0.1, 0.1, 1, raw={"x": 1}, request={"model": "m", "temperature": 0, "messages": [], "tools": []})
 
 

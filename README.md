@@ -1,4 +1,4 @@
-# miracle
+# MiracleHarness
 
 **Research question:** can smaller open-source LLMs, given better reasoning architecture, tool use, verification and adaptive
 inference compute, match much larger models at lower total cost? The long-term goal is an *adaptive cognitive runtime* that picks
@@ -14,7 +14,8 @@ benchmark infrastructure (`AgentRuntime` interface), so architectures can be swa
 | infrastructure | frozen dataset + subsets, workspaces, official-harness evaluation, run records, comparison | done, tested |
 | LLM client | DeepInfra (OpenAI-compatible) client with usage / latency / cost capture, tool-use probe | done, probed live |
 | **S0 baseline** | **Qwen3.5-9B + tools, no reasoning architecture, 10-task dev set** | **done (below)** |
-| next | reasoning interventions designed from S0's failure modes; larger-model reference | not started |
+| S1 | S0 + continue (not stop) when a reply is cut off by the output-token cap | run on dev10: 7/10 vs S0's 6/10, **but the fix never triggered, so the difference is noise** (below) |
+| next | further interventions designed from S0's failure modes; larger-model reference | not started |
 
 ## Experiment S0 — Qwen3.5-9B + tools, no reasoning architecture
 
@@ -116,7 +117,7 @@ These are observations only; nothing in the agent was changed in response. "Firs
 
 ### Known issues in the recorded data
 
-- `astropy__astropy-8707` was generated before a fix to `DockerEnvironment`: a git stderr warning ("paths are ignored by one of your .gitignore files:
+- `astropy__astropy-8707` (S0) was generated before fixes to `DockerEnvironment` (see the S1 section for the root cause): a git stderr warning ("paths are ignored by one of your .gitignore files:
   .pytest_cache") leaked into its `patch.diff` (4 leading junk lines) and its `modified_files` list (the real change is 2 files). The official grade is unaffected
   (`git apply` skips leading text; it resolved). Fixed and verified afterwards; the record was left as generated rather than hand-edited.
 - Evidence in `experiments/s0-dev10/` was exported with local absolute paths replaced by `<project>`; `instances.jsonl` is omitted (re-derivable from the pinned dataset revision).
@@ -133,12 +134,48 @@ cp .env.example .env                    # set DEEPINFRA_API_KEY (never committed
 .venv/bin/miracle export s0-dev10 experiments/s0-dev10
 ```
 
+## Experiment S1 — S0 + continue on `finish_reason == "length"`
+
+**Change (only this):** a reply cut off by the output-token cap is no longer treated as "done"; it stays in the conversation and the model is told
+"Your previous response was truncated by the output token limit. Continue the investigation from where you stopped. Use the available tools when appropriate."
+Continuations count against the same 50-step budget. Everything else is identical to S0 (details: `docs/infrastructure.md`). Evidence: `experiments/s1-dev10/`.
+
+| | S0 | S1 |
+|---|---|---|
+| resolved | 6/10 (60%) | **7/10 (70%)** (95% CI 40–89%) |
+| steps ending in `finish_reason=length` | 2 (sphinx-11510, matplotlib-22865) | **0** |
+| nudges sent | 0 (not implemented) | **0** |
+| cost / per resolved | $0.995 / $0.166 | $0.945 / $0.135 |
+| agent wall time | 4,109 s | 4,317 s (matplotlib alone 1,944 s: slow provider steps, not the nudge) |
+
+| instance | S0 | S1 |
+|---|---|---|
+| sympy-24066 | unresolved (29/30 P2P) | **resolved** |
+| sphinx-11510 | empty patch (ended by `length`) | unresolved (0/2; a real patch, 50 steps) |
+| matplotlib-22865 | unresolved 0/3 (ended by `length`) | unresolved 1/3, 1 regression |
+| the other 7 | same outcome (6 resolved, sympy-16597 unresolved) | same outcome |
+
+**What this does and does not show.**
+- **The S1 code path never ran.** No S1 step ended in `length`, so S1 behaved exactly like S0. The +1 (sympy-24066) and the changed outcomes on sphinx and matplotlib are
+  run-to-run variation, not an effect of the fix. In particular, both instances that S0 truncated simply took a different path in S1 and were never truncated.
+- **Truncation is rare:** 2 of ~440 S0 steps (0.5%) and 0 of ~440 in S1. A 10-task run cannot evaluate a fix for a rare event.
+- **Useful by-product: a noise floor.** S1 is effectively a replicate of S0 (temperature 0, same model, same prompt). Across 10 tasks, 1 changed resolved-status, 2 more changed outcome class
+  or test counts, and several trajectories changed length (e.g. django-13821 ran to the step cap in S0 but ended with a final answer in S1). Differences of one task between runs on this set should be read as noise.
+- **The fix itself works when triggered:** unit-tested, and live against DeepInfra with forced truncations (the API accepts the truncated reply followed by the nudge and the model continues).
+  A truncated *tool call* could not be provoked live. A causal test needs the intervention applied from an actual truncation state (see next steps).
+
+**Bug found and fixed during this run.** Patch extraction skipped its binary-file filter whenever a gitignored `.pytest_cache` existed (`git add` exits 1 in that case and the filter was chained with `&&`),
+so binary files an agent produced (matplotlib PNGs) leaked into patches as unappliable "Binary files differ" stubs. It was the root cause of the earlier astropy-8707 blemish too (S0: the
+warning text, with the same trigger). Fixed in `DockerEnvironment` with a regression test (`tests/test_docker_env_staging.py`, fails on the old code). Impact: all S0 patches other than astropy-8707 were clean, so the S0 numbers stand.
+S1's matplotlib patch had 11 leaked PNG stubs; I removed exactly those entries from the recorded patch (original kept as `patch.original.diff`, the original grade under `eval/superseded/`, a note in `result.json`) and re-graded:
+identical test outcomes (unresolved, F2P 1/3, 1 regression), so the grade was unaffected.
+
 ## Repository layout
 
 | path | contents |
 |---|---|
 | `src/miracle/` | package: dataset, selection, workspace, runtime interface, evaluator wrapper, runner, stats, export, LLM client (`llm/`), S0 agent (`agents/`) |
 | `subsets/` | fixed, versioned instance subsets (`dev10` is the development set) |
-| `experiments/s0-dev10/` | committed evidence of the S0 run: manifest, results, patches, full traces, official harness reports/logs |
+| `experiments/s0-dev10/`, `experiments/s1-dev10/` | committed evidence of the S0 / S1 runs: manifest, results, patches, full traces, official harness reports/logs |
 | `tests/` | offline unit tests (`pytest`); real-harness integration tests (`pytest -m docker`) |
 | `docs/infrastructure.md` | design and usage of the infrastructure, LLM client, tool-use probe and the S0 agent |

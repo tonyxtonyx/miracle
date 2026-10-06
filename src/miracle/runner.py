@@ -53,10 +53,19 @@ def _read_json(p: Path):
     return json.loads(p.read_text())
 
 
+def _git_state() -> dict:
+    """Code version that produced a run. `dirty` means uncommitted changes: the commit alone is then not enough to reproduce."""
+    def g(*a):
+        r = subprocess.run(["git", *a], cwd=paths.root(), capture_output=True, text=True)
+        return r.stdout.strip() if r.returncode == 0 else None
+    return {"git_commit": g("rev-parse", "HEAD"), "git_branch": g("branch", "--show-current"),
+            "git_dirty": bool(g("status", "--porcelain"))}
+
+
 def _env_info() -> dict:
     d = subprocess.run(["docker", "version", "--format", "{{.Server.Version}}"],
                        capture_output=True, text=True)
-    return {"miracle": __version__, "swebench": version("swebench"),
+    return {**_git_state(), "miracle": __version__, "swebench": version("swebench"),
             "python": sys.version.split()[0], "platform": platform.platform(),
             "machine": platform.machine(),
             "docker_server": d.stdout.strip() or None}

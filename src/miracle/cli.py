@@ -108,7 +108,7 @@ def main(argv=None):
     s.set_defaults(fn=cmd_subset_show)
 
     r = sub.add_parser("run", help="generate patches with a runtime, then evaluate them")
-    r.add_argument("--runtime", required=True, help="gold|empty|broken|noop|s0|toolloop|module:Class")
+    r.add_argument("--runtime", required=True, help="gold|empty|broken|noop|s0|s1|toolloop|module:Class")
     r.add_argument("--runtime-config", default="{}", help="JSON kwargs for module:Class")
     g = r.add_mutually_exclusive_group(required=True)
     g.add_argument("--subset")

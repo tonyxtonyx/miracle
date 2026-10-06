@@ -1,0 +1,109 @@
+{
+  "instance_id": "django__django-17029",
+  "latency_s": 168.02,
+  "metadata": {
+    "commands": [
+      {
+        "command": "cd /testbed && python -m pytest tests/app_loading/tests.py -v",
+        "duration_s": 0.762,
+        "exit_code": 1,
+        "is_test": true,
+        "step": 14,
+        "summary": {
+          "tail": "exit_code: 1\n/opt/miniconda3/envs/testbed/bin/python: No module named pytest"
+        },
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -m django test tests.app_loading.tests --settings=django.conf.global_settings",
+        "duration_s": 1.425,
+        "exit_code": 1,
+        "is_test": false,
+        "step": 15,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python test_cache_clear.py",
+        "duration_s": 1.298,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 17,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nimport os\nimport django\nos.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django.conf.global_settings')\n\nfrom django.conf import settings\nif not settings.configured:\n    settings.configure(\n        DEBUG=True,\n        DATABASES={'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': ':memory:'}},\n        INSTALLED_APPS=['django.contrib.contenttypes', 'django.contrib.auth'],\n        USE_TZ=True,\n    )\n\ndjango.setup()\n\n# Test that the cache can be properly isolated\nfrom django.apps import apps\nfrom django.test.utils import isolate_lru_cache\n\n# Test 1: Verify cache isolation works\nprint('Test 1: Cache isolation')\nwith isolate_lru_cache(apps.get_swappable_settings_name):\n    result1 = apps.get_swappable_settings_name('auth.user')\n    print(f'  Inside isolate: {result1}')\n    print(f'  Cache info inside: {apps.get_swappable_settings_name.cache_info()}')\n\nprint(f'  Cache info after isolate: {apps.get_swappable_settings_name.cache_info()}')\nprint('  \u2713 Cache isolation works correctly')\n\n# Test 2: Verify clear_cache clears the cache\nprint()\nprint('Test 2: clear_cache clears the cache')\nresult = apps.get_swappable_settings_name('auth.user')\nprint(f'  Before clear_cache: {apps.get_swappable_settings_name.cache_info()}')\napps.clear_cache()\nprint(f'  After clear_cache: {apps.get_swappable_settings_name.cache_info()}')\nassert apps.get_swappable_settings_name.cache_info().currsize == 0\nprint('  \u2713 clear_cache clears the cache correctly')\n\nprint()\nprint('All tests passed!')\n\"",
+        "duration_s": 1.267,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 18,
+        "timed_out": false
+      },
+      {
+        "command": "rm /testbed/test_cache_clear.py",
+        "duration_s": 0.699,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 23,
+        "timed_out": false
+      }
+    ],
+    "final_answer": "Perfect! The fix is complete. Let me create a summary of what was done:\n\n## Summary\n\nThe issue was that `apps.clear_cache()` in Django's `Apps` class was not clearing the cache for the `get_swappable_settings_name` method, which is decorated with `@functools.cache`.\n\n### Problem\n- The `clear_cache()` method was only clearing the cache for `get_models()` \n- The `get_swappable_settings_name()` method (decorated with `@functools.cache` at line 283) was not being cleared\n- This meant that when `apps.clear_cache()` was called (e.g., in tests or during migrations), the `get_swappable_settings_name` cache would retain stale data\n\n### Solution\nAdded a single line to the `clear_cache()` method in `django/apps/registry.py`:\n```python\nself.get_swappable_settings_name.cache_clear()\n```\n\nThis ensures that all internal caches that can be affected by changes to the app registry are properly cleared when `clear_cache()` is called.\n\n### Verification\nThe fix was verified with a test script that confirmed:\n1. The `get_models` cache is still cleared (existing behavior)\n2. The `get_swappable_settings_name` cache is now also cleared (new behavior)\n3. The cache isolation mechanism (`isolate_lru_cache`) still works correctly\n\nThe fix is minimal, focused, and aligns with the documented purpose of `clear_cache()`: \"Clear all internal caches, for methods that alter the app registry.\"",
+    "modified_files": [
+      "django/apps/registry.py"
+    ],
+    "stats": {
+      "calls_by_tool": {
+        "edit_file": 1,
+        "git_diff": 2,
+        "list_files": 1,
+        "read_file": 9,
+        "run_command": 5,
+        "search_code": 5,
+        "write_file": 1
+      },
+      "edit_errors": 0,
+      "empty_steps": 0,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 24
+      },
+      "first_edit_step": 5,
+      "invalid_arguments": 0,
+      "length_nudges": 0,
+      "repeated_identical_calls": 0,
+      "steps": 25,
+      "stop_reason": "final_answer",
+      "successful_edits": 2,
+      "tested_after_last_edit": false,
+      "tests_run": 1,
+      "tool_calls": 24,
+      "tool_errors": 2
+    },
+    "stop_reason": "final_answer",
+    "tests": [
+      {
+        "command": "cd /testbed && python -m pytest tests/app_loading/tests.py -v",
+        "duration_s": 0.762,
+        "exit_code": 1,
+        "is_test": true,
+        "step": 14,
+        "summary": {
+          "tail": "exit_code: 1\n/opt/miniconda3/envs/testbed/bin/python: No module named pytest"
+        },
+        "timed_out": false
+      }
+    ],
+    "trace_path": "agent/django__django-17029/trace.json"
+  },
+  "patch_bytes": 591,
+  "setup_s": 100.133,
+  "started_at": "2026-10-06T09:13:40+00:00",
+  "status": "ok",
+  "usage": {
+    "completion_tokens": 3537,
+    "cost_usd": 0.03007215,
+    "llm_calls": 25,
+    "prompt_tokens": 295416,
+    "tool_calls": 24
+  }
+}

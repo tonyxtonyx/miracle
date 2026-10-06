@@ -21,6 +21,7 @@ SYSTEM_PROMPT = ("You are a software engineering agent. Solve the given issue us
 
 class S0Runtime(AgentRuntime):
     environment = "container"
+    length_nudge: str | None = None    # S0 does nothing special on finish_reason == "length"; S1 overrides
 
     def __init__(self, client: LLMClient | None = None, max_steps: int = 50, system_prompt: str = SYSTEM_PROMPT,
                  **llm_settings):
@@ -43,7 +44,7 @@ class S0Runtime(AgentRuntime):
                     {"role": "user", "content": task.problem_statement}]
         trace, usage = run_tool_loop(self.client, messages, EnvToolBox(env), self.max_steps,
                                      {"instance_id": task.instance_id, "runtime": self.describe(),
-                                      "task": task.problem_statement})
+                                      "task": task.problem_statement}, length_nudge=self.length_nudge)
         patch = env.diff()           # always extracted, whatever the stop reason: partial work is data too
         files = env.changed_files()
         commands = command_log(trace)
@@ -109,6 +110,7 @@ def trajectory_stats(trace: dict) -> dict:
         "tested_after_last_edit": bool(edits and any(i >= edits[-1][0] for i, _ in tests)),
         "repeated_identical_calls": sum(1 for a, b in zip(sig, sig[1:]) if a == b),
         "finish_reasons": finishes,
+        "length_nudges": sum(1 for s in trace["steps"] if s.get("length_nudge")),
         "empty_steps": sum(1 for s in trace["steps"] if not s["response"]["tool_calls"] and not (s["response"]["content"] or "").strip()),
         "stop_reason": trace["stop_reason"],
     }

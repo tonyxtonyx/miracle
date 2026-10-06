@@ -1,0 +1,413 @@
+diff --git a/lib/matplotlib/colorbar.py b/lib/matplotlib/colorbar.py
+index c59b0ac815..b5b51dcb4a 100644
+--- a/lib/matplotlib/colorbar.py
++++ b/lib/matplotlib/colorbar.py
+@@ -652,7 +652,7 @@ class Colorbar:
+                 if len(self._y) >= self.n_rasterize:
+                     self.solids.set_rasterized(True)
+         self.dividers.set_segments(
+-            np.dstack([X, Y])[1:-1] if self.drawedges else [])
++            np.dstack([X, Y])[1:] if self.drawedges else [])
+ 
+     def _add_solids_patches(self, X, Y, C, mappable):
+         hatches = mappable.hatches * len(C)  # Have enough hatches.
+diff --git a/test_colorbar_bug.png b/test_colorbar_bug.png
+new file mode 100644
+index 0000000000..3b0d7a8e64
+Binary files /dev/null and b/test_colorbar_bug.png differ
+diff --git a/test_colorbar_bug.py b/test_colorbar_bug.py
+new file mode 100644
+index 0000000000..d01b523004
+--- /dev/null
++++ b/test_colorbar_bug.py
+@@ -0,0 +1,25 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_colorbar_bug.png')
++print("Saved test_colorbar_bug.png")
++
++# Also test without extend to see the difference
++plt.figure(figsize=(5, 1))
++ax2 = plt.subplot(111)
++cbar2 = mpl.colorbar.ColorbarBase(ax2, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True, extend='neither')
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_colorbar_neither.png')
++print("Saved test_colorbar_neither.png")
+diff --git a/test_colorbar_neither.png b/test_colorbar_neither.png
+new file mode 100644
+index 0000000000..627290bb24
+Binary files /dev/null and b/test_colorbar_neither.png differ
+diff --git a/test_debug.png b/test_debug.png
+new file mode 100644
+index 0000000000..a02005494a
+Binary files /dev/null and b/test_debug.png differ
+diff --git a/test_debug.py b/test_debug.py
+new file mode 100644
+index 0000000000..85273cd440
+--- /dev/null
++++ b/test_debug.py
+@@ -0,0 +1,33 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++# Monkey-patch to debug
++original_add_solids = mpl.colorbar.Colorbar._add_solids
++
++def debug_add_solids(self, X, Y, C):
++    print("X shape:", X.shape)
++    print("Y shape:", Y.shape)
++    print("X:\n", X)
++    print("Y:\n", Y)
++    print("Number of colors:", len(C))
++    print("Number of segments in dividers:", len(np.dstack([X, Y])[1:-1]))
++    print("Number of segments if we use [:-1]:", len(np.dstack([X, Y])[:-1]))
++    print("Number of segments if we use [1:]:", len(np.dstack([X, Y])[1:]))
++    return original_add_solids(self, X, Y, C)
++
++mpl.colorbar.Colorbar._add_solids = debug_add_solids
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_debug.png')
++print("Saved test_debug.png")
+diff --git a/test_debug2.py b/test_debug2.py
+new file mode 100644
+index 0000000000..ad6acb848d
+--- /dev/null
++++ b/test_debug2.py
+@@ -0,0 +1,35 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++# Monkey-patch to debug
++original_add_solids = mpl.colorbar.Colorbar._add_solids
++
++def debug_add_solids(self, X, Y, C):
++    print("=== extend='neither' ===")
++    print("X shape:", X.shape)
++    print("Y shape:", Y.shape)
++    print("X:\n", X)
++    print("Y:\n", Y)
++    print("Number of colors:", len(C))
++    print("Number of segments in dividers (current [1:-1]):", len(np.dstack([X, Y])[1:-1]))
++    print("Number of segments if we use [:-1]:", len(np.dstack([X, Y])[:-1]))
++    print("Number of segments if we use [1:]:", len(np.dstack([X, Y])[1:]))
++    print()
++    return original_add_solids(self, X, Y, C)
++
++mpl.colorbar.Colorbar._add_solids = debug_add_solids
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) - 1  # For extend='neither', we need n_levels - 1 colors
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='neither')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_debug_neither.png')
++print("Saved test_debug_neither.png")
+diff --git a/test_debug3.py b/test_debug3.py
+new file mode 100644
+index 0000000000..6de91a2f38
+--- /dev/null
++++ b/test_debug3.py
+@@ -0,0 +1,37 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++# Monkey-patch to debug
++original_add_solids = mpl.colorbar.Colorbar._add_solids
++
++def debug_add_solids(self, X, Y, C):
++    print("=== extend='both' ===")
++    print("X shape:", X.shape)
++    print("Y shape:", Y.shape)
++    print("X:\n", X)
++    print("Y:\n", Y)
++    print("Number of colors:", len(C))
++    print("Number of boundaries:", len(self._boundaries))
++    print("Boundaries:", self._boundaries)
++    print("Number of segments in dividers (current [1:-1]):", len(np.dstack([X, Y])[1:-1]))
++    print("Number of segments if we use [:-1]:", len(np.dstack([X, Y])[:-1]))
++    print("Number of segments if we use [1:]:", len(np.dstack([X, Y])[1:]))
++    print()
++    return original_add_solids(self, X, Y, C)
++
++mpl.colorbar.Colorbar._add_solids = debug_add_solids
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_debug_both.png')
++print("Saved test_debug_both.png")
+diff --git a/test_debug_both.png b/test_debug_both.png
+new file mode 100644
+index 0000000000..3b0d7a8e64
+Binary files /dev/null and b/test_debug_both.png differ
+diff --git a/test_debug_neither.png b/test_debug_neither.png
+new file mode 100644
+index 0000000000..1e879caa87
+Binary files /dev/null and b/test_debug_neither.png differ
+diff --git a/test_debug_segments.png b/test_debug_segments.png
+new file mode 100644
+index 0000000000..2e7ae1df00
+Binary files /dev/null and b/test_debug_segments.png differ
+diff --git a/test_debug_segments.py b/test_debug_segments.py
+new file mode 100644
+index 0000000000..ec9cc59b70
+--- /dev/null
++++ b/test_debug_segments.py
+@@ -0,0 +1,25 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++fig, ax = plt.subplots(figsize=(5, 1))
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, 
++                                  orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++
++print("Number of boundaries:", len(cbar._boundaries))
++print("Boundaries:", cbar._boundaries)
++print("Number of values:", len(cbar._values))
++print("Values:", cbar._values)
++print("Number of segments in dividers:", len(cbar.dividers.get_segments()))
++print("Segments:", cbar.dividers.get_segments())
++
++plt.savefig('test_debug_segments.png')
++plt.close()
+diff --git a/test_drawedges_extend.py b/test_drawedges_extend.py
+new file mode 100644
+index 0000000000..01fea35449
+--- /dev/null
++++ b/test_drawedges_extend.py
+@@ -0,0 +1,118 @@
++"""
++Test for the bug: Colorbar with drawedges=True and extend='both' does not draw edges at extremities
++"""
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++import matplotlib.testing.compare as compare
++
++def test_colorbar_drawedges_extend_both():
++    """Test that drawedges works correctly with extend='both'"""
++    my_cmap = mpl.cm.viridis
++    bounds = np.arange(10)
++    nb_colors = len(bounds) + 1
++    colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++    my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++    fig, ax = plt.subplots(figsize=(5, 1))
++    cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, 
++                                      orientation='horizontal', drawedges=True)
++    plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++    plt.savefig('test_drawedges_extend_both.png')
++    plt.close()
++    
++    # Check that the dividers have the correct number of segments
++    # With extend='both', we should have edges at all boundaries
++    # The dividers should have len(self._values) segments
++    assert len(cbar.dividers.get_segments()) == len(cbar._values), \
++        f"Expected {len(cbar._values)} segments, got {len(cbar.dividers.get_segments())}"
++    print("Test passed: drawedges works correctly with extend='both'")
++
++def test_colorbar_drawedges_extend_neither():
++    """Test that drawedges works correctly with extend='neither'"""
++    my_cmap = mpl.cm.viridis
++    bounds = np.arange(10)
++    nb_colors = len(bounds) - 1  # For extend='neither', we need n_levels - 1 colors
++    colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++    my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='neither')
++
++    fig, ax = plt.subplots(figsize=(5, 1))
++    cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, 
++                                      orientation='horizontal', drawedges=True)
++    plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++    plt.savefig('test_drawedges_extend_neither.png')
++    plt.close()
++    
++    # Check that the dividers have the correct number of segments
++    assert len(cbar.dividers.get_segments()) == len(cbar._values), \
++        f"Expected {len(cbar._values)} segments, got {len(cbar.dividers.get_segments())}"
++    print("Test passed: drawedges works correctly with extend='neither'")
++
++def test_colorbar_drawedges_extend_min():
++    """Test that drawedges works correctly with extend='min'"""
++    my_cmap = mpl.cm.viridis
++    bounds = np.arange(10)
++    nb_colors = len(bounds) + 1
++    colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++    my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='min')
++
++    fig, ax = plt.subplots(figsize=(5, 1))
++    cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, 
++                                      orientation='horizontal', drawedges=True)
++    plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++    plt.savefig('test_drawedges_extend_min.png')
++    plt.close()
++    
++    # Check that the dividers have the correct number of segments
++    assert len(cbar.dividers.get_segments()) == len(cbar._values), \
++        f"Expected {len(cbar._values)} segments, got {len(cbar.dividers.get_segments())}"
++    print("Test passed: drawedges works correctly with extend='min'")
++
++def test_colorbar_drawedges_extend_max():
++    """Test that drawedges works correctly with extend='max'"""
++    my_cmap = mpl.cm.viridis
++    bounds = np.arange(10)
++    nb_colors = len(bounds) + 1
++    colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++    my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='max')
++
++    fig, ax = plt.subplots(figsize=(5, 1))
++    cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, 
++                                      orientation='horizontal', drawedges=True)
++    plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++    plt.savefig('test_drawedges_extend_max.png')
++    plt.close()
++    
++    # Check that the dividers have the correct number of segments
++    assert len(cbar.dividers.get_segments()) == len(cbar._values), \
++        f"Expected {len(cbar._values)} segments, got {len(cbar.dividers.get_segments())}"
++    print("Test passed: drawedges works correctly with extend='max'")
++
++def test_colorbar_drawedges_false():
++    """Test that drawedges=False still works"""
++    my_cmap = mpl.cm.viridis
++    bounds = np.arange(10)
++    nb_colors = len(bounds) + 1
++    colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++    my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++    fig, ax = plt.subplots(figsize=(5, 1))
++    cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, 
++                                      orientation='horizontal', drawedges=False)
++    plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++    plt.savefig('test_drawedges_false.png')
++    plt.close()
++    
++    # Check that the dividers have no segments
++    assert len(cbar.dividers.get_segments()) == 0, \
++        f"Expected 0 segments, got {len(cbar.dividers.get_segments())}"
++    print("Test passed: drawedges=False works correctly")
++
++if __name__ == '__main__':
++    test_colorbar_drawedges_extend_both()
++    test_colorbar_drawedges_extend_neither()
++    test_colorbar_drawedges_extend_min()
++    test_colorbar_drawedges_extend_max()
++    test_colorbar_drawedges_false()
++    print("All tests passed!")
+diff --git a/test_drawedges_extend_both.png b/test_drawedges_extend_both.png
+new file mode 100644
+index 0000000000..3b0d7a8e64
+Binary files /dev/null and b/test_drawedges_extend_both.png differ
+diff --git a/test_fix.py b/test_fix.py
+new file mode 100644
+index 0000000000..f24ca70ea4
+--- /dev/null
++++ b/test_fix.py
+@@ -0,0 +1,41 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_fix_both.png')
++print("Saved test_fix_both.png")
++
++# Also test without extend to make sure we didn't break anything
++plt.figure(figsize=(5, 1))
++ax2 = plt.subplot(111)
++cbar2 = mpl.colorbar.ColorbarBase(ax2, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True, extend='neither')
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_fix_neither.png')
++print("Saved test_fix_neither.png")
++
++# Test with extend='min'
++plt.figure(figsize=(5, 1))
++ax3 = plt.subplot(111)
++cbar3 = mpl.colorbar.ColorbarBase(ax3, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True, extend='min')
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_fix_min.png')
++print("Saved test_fix_min.png")
++
++# Test with extend='max'
++plt.figure(figsize=(5, 1))
++ax4 = plt.subplot(111)
++cbar4 = mpl.colorbar.ColorbarBase(ax4, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True, extend='max')
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_fix_max.png')
++print("Saved test_fix_max.png")
+diff --git a/test_fix_both.png b/test_fix_both.png
+new file mode 100644
+index 0000000000..3b0d7a8e64
+Binary files /dev/null and b/test_fix_both.png differ
+diff --git a/test_fix_max.png b/test_fix_max.png
+new file mode 100644
+index 0000000000..ee8f7c480a
+Binary files /dev/null and b/test_fix_max.png differ
+diff --git a/test_fix_min.png b/test_fix_min.png
+new file mode 100644
+index 0000000000..468a3507d1
+Binary files /dev/null and b/test_fix_min.png differ
+diff --git a/test_fix_neither.png b/test_fix_neither.png
+new file mode 100644
+index 0000000000..627290bb24
+Binary files /dev/null and b/test_fix_neither.png differ
