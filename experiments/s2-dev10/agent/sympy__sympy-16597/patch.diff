@@ -1,0 +1,41 @@
+diff --git a/sympy/core/assumptions.py b/sympy/core/assumptions.py
+index ce4dd30f2..0444eb039 100644
+--- a/sympy/core/assumptions.py
++++ b/sympy/core/assumptions.py
+@@ -163,6 +163,7 @@
+ _assume_rules = FactRules([
+ 
+     'integer        ->  rational',
++    'integer        ->  finite',
+     'rational       ->  real',
+     'rational       ->  algebraic',
+     'algebraic      ->  complex',
+diff --git a/sympy/core/tests/test_assumptions.py b/sympy/core/tests/test_assumptions.py
+index 4db1c1c24..127fd5ccb 100644
+--- a/sympy/core/tests/test_assumptions.py
++++ b/sympy/core/tests/test_assumptions.py
+@@ -98,13 +98,13 @@ def test_infinity():
+     oo = S.Infinity
+ 
+     assert oo.is_commutative is True
+-    assert oo.is_integer is None
++    assert oo.is_integer is False
+     assert oo.is_rational is None
+     assert oo.is_algebraic is None
+     assert oo.is_transcendental is None
+     assert oo.is_real is True
+     assert oo.is_complex is True
+-    assert oo.is_noninteger is None
++    assert oo.is_noninteger is True
+     assert oo.is_irrational is None
+     assert oo.is_imaginary is False
+     assert oo.is_positive is True
+@@ -125,7 +125,7 @@ def test_neg_infinity():
+     mm = S.NegativeInfinity
+ 
+     assert mm.is_commutative is True
+-    assert mm.is_integer is None
++    assert mm.is_integer is False
+     assert mm.is_rational is None
+     assert mm.is_algebraic is None
+     assert mm.is_transcendental is None

@@ -131,3 +131,99 @@ def markdown_report(name: str) -> str:
       f"(sha256 `{man['dataset']['sha256'][:12]}`); runtime `{man['runtime']['name']}`; swebench {man['env']['swebench']}; "
       f"{man['env']['machine']} host, Docker {man['env']['docker_server']}._")
     return "\n".join(out)
+
+
+# ---- efficiency comparison, candidate (counterfactual) analysis, controller activity ----------------------------------
+def _agent_rows(name: str) -> list[dict]:
+    run = Run(name)
+    rows = read_jsonl(run.results_path)
+    for r in rows:
+        r["_trace"] = _trace(run, r["instance_id"])
+        a = r["agent"] or {}
+        r["_usage"] = a.get("usage") or {}
+        r["_steps"] = len(r["_trace"]["steps"]) if r["_trace"] else None
+    return rows
+
+
+def efficiency_markdown(names: list[str]) -> str:
+    """Resolution next to steps / tokens / cost / time, overall and per instance, for runs on the same instances."""
+    data = {n: _agent_rows(n) for n in names}
+    ids = [r["instance_id"] for r in data[names[0]]]
+    out = ["| run | resolved | steps (total / mean) | prompt tok | completion tok | cost | $/resolved | agent time | check calls | check cost |",
+           "|---|---|---|---|---|---|---|---|---|---|"]
+    for n, rows in data.items():
+        k = sum(r["eval"]["resolved"] for r in rows)
+        steps = [r["_steps"] for r in rows if r["_steps"] is not None]
+        cost = sum(r["_usage"].get("cost_usd") or 0 for r in rows)
+        ctl = [((r["_trace"] or {}).get("controller") or {}) for r in rows]
+        out.append(f"| {n} | {k}/{len(rows)} | {sum(steps)} / {sum(steps) / len(steps):.1f} | "
+                   f"{sum(r['_usage'].get('prompt_tokens') or 0 for r in rows):,} | "
+                   f"{sum(r['_usage'].get('completion_tokens') or 0 for r in rows):,} | ${cost:.3f} | "
+                   f"{'$%.3f' % (cost / k) if k else '-'} | {sum((r['agent'] or {}).get('latency_s', 0) for r in rows):,.0f}s | "
+                   f"{sum(c.get('checks', 0) for c in ctl)} | ${sum((c.get('usage') or {}).get('cost_usd') or 0 for c in ctl):.4f} |")
+    out += ["", "| instance | " + " | ".join(f"{n}: outcome · steps · cost · stop" for n in names) + " |",
+            "|---|" + "---|" * len(names)]
+    for iid in ids:
+        cells = []
+        for n in names:
+            r = next(x for x in data[n] if x["instance_id"] == iid)
+            st = (r["_trace"] or {}).get("stop_reason", "-")
+            cells.append(f"{r['eval']['status']} · {r['_steps']} · ${r['_usage'].get('cost_usd') or 0:.3f} · {st}")
+        out.append(f"| {iid} | " + " | ".join(cells) + " |")
+    return "\n".join(out)
+
+
+def candidates_markdown(names: list[str]) -> str:
+    """Counterfactual from recorded traces: when did candidate evidence first appear, and what was spent after it?"""
+    from .agents.termination import candidate_analysis
+    out = ["| run | instance | outcome | steps | first candidate step | steps after | prompt tok after | cost after | share of cost |",
+           "|---|---|---|---|---|---|---|---|---|"]
+    for n in names:
+        agg = {"with": 0, "steps": 0, "after": 0, "cost": 0.0, "cost_after": 0.0, "resolved_with": 0}
+        for r in _agent_rows(n):
+            if not r["_trace"]:
+                continue
+            a = candidate_analysis(r["_trace"])
+            agg["cost"] += a["cost_total"]
+            agg["steps"] += a["total_steps"]
+            if a["first_candidate_step"] is not None:
+                agg["with"] += 1
+                agg["after"] += a["steps_after_first_candidate"]
+                agg["cost_after"] += a["cost_after"]
+                agg["resolved_with"] += r["eval"]["resolved"]
+            share = f"{a['cost_after'] / a['cost_total']:.0%}" if a["cost_after"] is not None and a["cost_total"] else "-"
+            out.append(f"| {n} | {r['instance_id']} | {r['eval']['status']} | {a['total_steps']} | {a['first_candidate_step'] or '-'} | "
+                       f"{a['steps_after_first_candidate'] if a['steps_after_first_candidate'] is not None else '-'} | "
+                       f"{a['prompt_tokens_after'] if a['prompt_tokens_after'] is not None else '-':} | "
+                       f"{('$%.3f' % a['cost_after']) if a['cost_after'] is not None else '-'} | {share} |")
+        out.append(f"| **{n}** | **{agg['with']} runs with a candidate** ({agg['resolved_with']} resolved) | | {agg['steps']} | | "
+                   f"**{agg['after']}** ({agg['after'] / max(agg['steps'], 1):.0%}) | | **${agg['cost_after']:.3f}** | "
+                   f"**{agg['cost_after'] / max(agg['cost'], 1e-9):.0%}** |")
+    return "\n".join(out)
+
+
+def controller_markdown(name: str) -> str:
+    rows = _agent_rows(name)
+    out = ["| instance | outcome | agent steps | stop | checks | check steps | decisions | check tok (in/out) | check cost | tests that triggered |",
+           "|---|---|---|---|---|---|---|---|---|---|"]
+    tot = {"checks": 0, "pt": 0, "ct": 0, "cost": 0.0, "term": 0}
+    for r in rows:
+        t = r["_trace"] or {}
+        c = t.get("controller") or {}
+        recs = c.get("records", [])
+        tot["checks"] += c.get("checks", 0)
+        tot["pt"] += (c.get("usage") or {}).get("prompt_tokens", 0)
+        tot["ct"] += (c.get("usage") or {}).get("completion_tokens", 0)
+        tot["cost"] += (c.get("usage") or {}).get("cost_usd") or 0
+        tot["term"] += bool(c.get("terminated_by_controller"))
+        trig = "; ".join(f"s{x['step']}: `{x['trigger']['test_command'][:50]}`" for x in recs) or "-"
+        dec = ", ".join(f"{x['decision']}" for x in recs) or "-"
+        out.append(f"| {r['instance_id']} | {r['eval']['status']} | {r['_steps']} | {t.get('stop_reason', '-')} | {c.get('checks', 0)} | "
+                   f"{c.get('check_steps', [])} | {dec} | {(c.get('usage') or {}).get('prompt_tokens', 0)}/{(c.get('usage') or {}).get('completion_tokens', 0)} | "
+                   f"${(c.get('usage') or {}).get('cost_usd') or 0:.4f} | {trig} |")
+    out.append(f"| **total** | | | **{tot['term']} terminated by controller** | **{tot['checks']}** | | | **{tot['pt']:,}/{tot['ct']:,}** | **${tot['cost']:.4f}** | |")
+    reasons = [(r["instance_id"], x["step"], x["reason"]) for r in rows
+               for x in ((r["_trace"] or {}).get("controller") or {}).get("records", []) if x["decision"] == "INCOMPLETE"]
+    if reasons:
+        out += ["", "INCOMPLETE reasons recorded by the controller:"] + [f"- {i} @ step {s}: {why}" for i, s, why in reasons]
+    return "\n".join(out)

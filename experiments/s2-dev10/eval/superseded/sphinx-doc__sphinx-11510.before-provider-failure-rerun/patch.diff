@@ -1,0 +1,60 @@
+diff --git a/sphinx/directives/other.py b/sphinx/directives/other.py
+index 19f7c0a8d..b8ec03d80 100644
+--- a/sphinx/directives/other.py
++++ b/sphinx/directives/other.py
+@@ -376,6 +376,28 @@ class Include(BaseInclude, SphinxDirective):
+         rel_filename, filename = self.env.relfn2path(self.arguments[0])
+         self.arguments[0] = filename
+         self.env.note_included(filename)
++        
++        # Check if the file has been modified by the source-read event
++        if filename in self.env._modified_source:
++            # Use the modified content
++            content = self.env._modified_source[filename]
++            # Create a FileInput with the modified content
++            from docutils.io import FileInput
++            include_file = FileInput(source_path=filename,
++                                     encoding=self.state.document.settings.input_encoding,
++                                     error_handler=self.state.document.settings.input_encoding_error_handler)
++            # Override the read method to return the modified content
++            original_read = include_file.read
++            def read():
++                return content
++            include_file.read = read
++            # Also override readlines to return the modified content as lines
++            def readlines():
++                return content.splitlines(keepends=True)
++            include_file.readlines = readlines
++        else:
++            include_file = None
++        
+         return super().run()
+ 
+ 
+diff --git a/sphinx/environment/__init__.py b/sphinx/environment/__init__.py
+index cf698ea6d..356351066 100644
+--- a/sphinx/environment/__init__.py
++++ b/sphinx/environment/__init__.py
+@@ -189,6 +189,9 @@ class BuildEnvironment:
+         # docname -> doctree
+         self._write_doc_doctree_cache: dict[str, nodes.document] = {}
+ 
++        # docname -> modified source content (after source-read event)
++        self._modified_source: dict[str, str] = {}
++
+         # File metadata
+         # docname -> dict of metadata items
+         self.metadata: dict[str, dict[str, Any]] = defaultdict(dict)
+diff --git a/sphinx/io.py b/sphinx/io.py
+index 4874fdf39..6d8ada5a4 100644
+--- a/sphinx/io.py
++++ b/sphinx/io.py
+@@ -112,6 +112,8 @@ class SphinxStandaloneReader(SphinxBaseReader):
+         # emit "source-read" event
+         arg = [content]
+         env.events.emit('source-read', env.docname, arg)
++        # cache the modified content
++        env._modified_source[env.docname] = arg[0]
+         return arg[0]
+ 
+ 

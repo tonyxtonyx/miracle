@@ -1,0 +1,155 @@
+{
+  "instance_id": "astropy__astropy-8707",
+  "latency_s": 467.016,
+  "metadata": {
+    "commands": [
+      {
+        "command": "cd /testbed && python -c \"\nfrom astropy.io.fits import Header, Card\n\n# Test with str (should work)\nhstr = 'SIMPLE  = T / file does conform to FITS standard'\nh = Header.fromstring(hstr)\nprint('str works:', h['SIMPLE'])\n\n# Test with bytes (should fail currently)\nhbytes = b'SIMPLE  = T / file does conform to FITS standard'\ntry:\n    h = Header.fromstring(hbytes)\n    print('bytes works:', h['SIMPLE'])\nexcept Exception as e:\n    print('bytes fails:', type(e).__name__, str(e))\n\"",
+        "duration_s": 1.375,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 17,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom astropy.io.fits import Card\n\n# Test with str (should work)\nc = Card.fromstring('SIMPLE  = T / file does conform to FITS standard')\nprint('str works:', c.keyword, c.value)\n\n# Test with bytes (should fail currently)\ncbytes = Card.fromstring(b'SIMPLE  = T / file does conform to FITS standard')\nprint('bytes works:', cbytes.keyword, cbytes.value)\n\"",
+        "duration_s": 1.085,
+        "exit_code": 1,
+        "is_test": false,
+        "step": 18,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom astropy.io.fits import Header, Card\n\n# Test with str (should work)\nhstr = 'SIMPLE  = T / file does conform to FITS standard'\nh = Header.fromstring(hstr)\nprint('str works:', h['SIMPLE'])\n\n# Test with bytes (should work now)\nhbytes = b'SIMPLE  = T / file does conform to FITS standard'\ntry:\n    h = Header.fromstring(hbytes)\n    print('bytes works:', h['SIMPLE'])\nexcept Exception as e:\n    print('bytes fails:', type(e).__name__, str(e))\n\"",
+        "duration_s": 1.31,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 31,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom astropy.io.fits import Card\n\n# Test with str (should work)\nc = Card.fromstring('SIMPLE  = T / file does conform to FITS standard')\nprint('str works:', c.keyword, c.value)\n\n# Test with bytes (should work now)\ncbytes = Card.fromstring(b'SIMPLE  = T / file does conform to FITS standard')\nprint('bytes works:', cbytes.keyword, cbytes.value)\n\"",
+        "duration_s": 1.399,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 32,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom astropy.io.fits import Header, Card\nimport warnings\n\n# Test with non-ASCII characters in bytes\nhbytes = b'SIMPLE  = T / file does conform to FITS standard'\nhbytes_nonascii = b'SIMPLE  = T / file with \\xc3\\xa9 character'\n\nprint('Testing with non-ASCII bytes...')\nwith warnings.catch_warnings(record=True) as w:\n    warnings.simplefilter('always')\n    h = Header.fromstring(hbytes_nonascii)\n    if w:\n        print('Warning raised:', w[0].message)\n    else:\n        print('No warning raised')\n    print('Header value:', h['SIMPLE'])\n\"",
+        "duration_s": 1.298,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 33,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -m pytest astropy/io/fits/tests/test_header.py -xvs 2>&1 | head -100",
+        "duration_s": 3.732,
+        "exit_code": 0,
+        "is_test": true,
+        "step": 34,
+        "summary": {
+          "tail": "astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_iter PASSED\nastropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_slice PASSED\nastropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_slice_assignment PASSED"
+        },
+        "timed_out": false
+      }
+    ],
+    "controller": {
+      "agent_usage_excluding_checks": {
+        "completion_tokens": 5115,
+        "cost_usd": 0.07106795,
+        "llm_calls": 34,
+        "prompt_tokens": 703007
+      },
+      "check_steps": [
+        34
+      ],
+      "checks": 1,
+      "complete": 1,
+      "errors": 0,
+      "incomplete": 0,
+      "invalid": 0,
+      "max_checks": 5,
+      "max_tokens": 300,
+      "name": "completion_check",
+      "terminated_by_controller": true,
+      "termination_step": 34,
+      "usage": {
+        "completion_tokens": 2,
+        "cost_usd": 0.0001457,
+        "latency_s": 0.8601,
+        "prompt_tokens": 1454
+      }
+    },
+    "final_answer": null,
+    "modified_files": [
+      "astropy/io/fits/card.py",
+      "astropy/io/fits/header.py"
+    ],
+    "stats": {
+      "calls_by_tool": {
+        "edit_file": 6,
+        "list_files": 3,
+        "read_file": 13,
+        "run_command": 6,
+        "search_code": 6
+      },
+      "candidate": {
+        "candidate_steps": [
+          34
+        ],
+        "completion_tokens_after": 0,
+        "cost_after": 0,
+        "cost_total": 0.071068,
+        "first_candidate_step": 34,
+        "prompt_tokens_after": 0,
+        "steps_after_first_candidate": 0,
+        "total_steps": 34
+      },
+      "completion_checks": 1,
+      "edit_errors": 0,
+      "empty_steps": 0,
+      "finish_reasons": {
+        "tool_calls": 34
+      },
+      "first_edit_step": 20,
+      "invalid_arguments": 0,
+      "length_nudges": 0,
+      "repeated_identical_calls": 1,
+      "steps": 34,
+      "stop_reason": "completion_check",
+      "successful_edits": 6,
+      "tested_after_last_edit": true,
+      "tests_run": 1,
+      "tool_calls": 34,
+      "tool_errors": 1
+    },
+    "stop_reason": "completion_check",
+    "tests": [
+      {
+        "command": "cd /testbed && python -m pytest astropy/io/fits/tests/test_header.py -xvs 2>&1 | head -100",
+        "duration_s": 3.732,
+        "exit_code": 0,
+        "is_test": true,
+        "step": 34,
+        "summary": {
+          "tail": "astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_iter PASSED\nastropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_slice PASSED\nastropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_slice_assignment PASSED"
+        },
+        "timed_out": false
+      }
+    ],
+    "trace_path": "agent/astropy__astropy-8707/trace.json"
+  },
+  "patch_bytes": 1891,
+  "setup_s": 95.373,
+  "started_at": "2026-10-06T11:31:30+00:00",
+  "status": "ok",
+  "usage": {
+    "completion_tokens": 5117,
+    "cost_usd": 0.07121365,
+    "llm_calls": 35,
+    "prompt_tokens": 704461,
+    "tool_calls": 34
+  }
+}

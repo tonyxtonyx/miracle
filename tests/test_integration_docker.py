@@ -48,3 +48,30 @@ def test_scripted_s0_applying_gold_patch_through_agent_tools_resolves():
     assert res["metadata"]["tests"] and (run.agent_dir(IID) / "trace.json").exists()
     run.evaluate(workers=1, only=[IID])
     assert run.collect()["status_counts"] == {"resolved": 1}
+
+
+def test_scripted_s2_terminates_early_on_complete_and_the_patch_still_resolves():
+    """Real container + real test runner + official harness; the model is scripted (agent and checker)."""
+    from miracle.agents.s2 import S2Runtime
+    from test_llm import Scripted
+    ref, all_ = load_snapshot()
+    inst = [i for i in all_ if i["instance_id"] == IID]
+    P = "django/contrib/auth/validators.py"
+    fix = lambda cls: (None, [("edit_file", {"path": P,
+        "old_str": f"class {cls}(validators.RegexValidator):\n    regex = r'^[\\w.@+-]+$'",
+        "new_str": f"class {cls}(validators.RegexValidator):\n    regex = r'\\A[\\w.@+-]+\\Z'"})])
+    turns = [(None, [("list_files", {"path": "."})]), fix("ASCIIUsernameValidator"), fix("UnicodeUsernameValidator"),
+             (None, [("run_command", {"command": "python tests/runtests.py auth_tests.test_validators -v 0"})]),
+             ("COMPLETE", []),
+             ("never reached", [])]
+    rt = S2Runtime(client=Scripted(turns))
+    run = Run("t-s2")
+    run.create(ref, inst, rt, None)
+    run.generate(rt)
+    res = json.loads((run.agent_dir(IID) / "result.json").read_text())
+    c = res["metadata"]["controller"]
+    assert res["status"] == "ok" and res["metadata"]["stats"]["stop_reason"] == "completion_check"
+    assert c["checks"] == 1 and c["complete"] == 1 and c["termination_step"] == 4 and res["metadata"]["stats"]["steps"] == 4
+    assert res["metadata"]["modified_files"] == [P]
+    run.evaluate(workers=1, only=[IID])
+    assert run.collect()["status_counts"] == {"resolved": 1}

@@ -1,0 +1,106 @@
+diff --git a/django/apps/registry.py b/django/apps/registry.py
+index 0683f3ad3c..481dd1fc86 100644
+--- a/django/apps/registry.py
++++ b/django/apps/registry.py
+@@ -376,6 +376,7 @@ class Apps:
+         # Call expire cache on each model. This will purge
+         # the relation tree and the fields cache.
+         self.get_models.cache_clear()
++        self.get_swappable_settings_name.cache_clear()
+         if self.ready:
+             # Circumvent self.get_models() to prevent that the cache is refilled.
+             # This particularly prevents that an empty value is cached while cloning.
+diff --git a/test_cache_clear.py b/test_cache_clear.py
+new file mode 100644
+index 0000000000..aa013fc4ae
+--- /dev/null
++++ b/test_cache_clear.py
+@@ -0,0 +1,88 @@
++"""
++Test script to verify that apps.clear_cache() clears the get_swappable_settings_name cache.
++"""
++import os
++import sys
++import django
++
++# Setup Django settings
++os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django.conf.global_settings')
++
++# Configure minimal settings
++from django.conf import settings
++if not settings.configured:
++    settings.configure(
++        DEBUG=True,
++        DATABASES={
++            'default': {
++                'ENGINE': 'django.db.backends.sqlite3',
++                'NAME': ':memory:',
++            }
++        },
++        INSTALLED_APPS=[
++            'django.contrib.contenttypes',
++            'django.contrib.auth',
++        ],
++        USE_TZ=True,
++    )
++
++django.setup()
++
++from django.apps import apps
++from django.test.utils import isolate_lru_cache
++
++def test_clear_cache_clears_get_swappable_settings_name():
++    """Test that apps.clear_cache() clears the get_swappable_settings_name cache."""
++    
++    # First, let's populate the cache by calling get_swappable_settings_name
++    # We need to set up a swappable model first
++    from django.contrib.auth import get_user_model
++    from django.contrib.auth.models import User
++    
++    # Get the swappable settings name for User
++    user_swappable_name = apps.get_swappable_settings_name("auth.User")
++    print(f"User swappable name: {user_swappable_name}")
++    
++    # Check if the cache is populated
++    print(f"Cache info before: {apps.get_swappable_settings_name.cache_info()}")
++    
++    # Now clear the cache
++    apps.clear_cache()
++    
++    # Check if the cache was cleared
++    print(f"Cache info after clear_cache: {apps.get_swappable_settings_name.cache_info()}")
++    
++    # The cache should be cleared (misses should be 0 or at least the info should show it was cleared)
++    cache_info = apps.get_swappable_settings_name.cache_info()
++    print(f"Cache misses: {cache_info.misses}")
++    print(f"Cache hits: {cache_info.hits}")
++    print(f"Cache size: {cache_info.currsize}")
++    
++    # After clear_cache, the cache should be empty
++    assert cache_info.currsize == 0, f"Expected cache size 0 after clear_cache, got {cache_info.currsize}"
++    print("✓ Test passed: get_swappable_settings_name cache was cleared by apps.clear_cache()")
++
++def test_get_swappable_settings_name_is_cached():
++    """Test that get_swappable_settings_name is actually cached."""
++    
++    # Call the function twice with the same argument
++    result1 = apps.get_swappable_settings_name("auth.User")
++    result2 = apps.get_swappable_settings_name("auth.User")
++    
++    print(f"Result 1: {result1}")
++    print(f"Result 2: {result2}")
++    print(f"Cache info: {apps.get_swappable_settings_name.cache_info()}")
++    
++    # The second call should be a cache hit
++    cache_info = apps.get_swappable_settings_name.cache_info()
++    assert cache_info.hits > 0, "Expected at least one cache hit"
++    print("✓ Test passed: get_swappable_settings_name is cached")
++
++if __name__ == '__main__':
++    print("Testing get_swappable_settings_name caching...")
++    test_get_swappable_settings_name_is_cached()
++    print()
++    print("Testing clear_cache clears the cache...")
++    test_clear_cache_clears_get_swappable_settings_name()
++    print()
++    print("All tests passed!")

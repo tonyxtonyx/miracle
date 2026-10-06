@@ -1,0 +1,61 @@
+{
+  "agent_errors": 0,
+  "agent_latency_mean_s": 422.44,
+  "agent_latency_total_s": 4224.37,
+  "completion_tokens": 56397,
+  "cost_per_resolved_usd": 0.1315,
+  "cost_usd": 0.78917045,
+  "dataset": {
+    "name": "SWE-bench/SWE-bench_Verified",
+    "revision": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+    "sha256": "87a3d67eb9108386b0a3406ebd1ada9543cb160cd96cfdb792f82de40cd8bcb8"
+  },
+  "eval_test_runtime_total_s": 114.19,
+  "infra_failures": 0,
+  "llm_calls": 423,
+  "prompt_tokens": 7807109,
+  "resolve_rate": 0.6,
+  "resolved": 6,
+  "run": "s2-dev10",
+  "runtime": {
+    "class": "S2Runtime",
+    "controller": {
+      "check_max_tokens": 300,
+      "check_prompt": "You are reviewing a proposed code change for a GitHub issue. Decide whether the change already resolves the issue.\n\n## Issue\n{issue}\n\n## Modified files\n{files}\n\n## Current diff\n{diff}\n\n## Test results (run after the last source modification)\n{tests}\n\nAre there any concrete requirements stated in the issue that this diff does not yet satisfy? Judge only against what the issue explicitly asks for. Do not suggest extra tests, documentation or hypothetical edge cases that the issue does not ask for.\n\nReply with exactly one line, either:\nCOMPLETE\nor\nINCOMPLETE: <the specific unresolved requirement>",
+      "max_checks": 5,
+      "on_incomplete": "record only; agent context unchanged",
+      "trigger": "source edit (edit_file, non-test path) then successful test command"
+    },
+    "length_nudge": "Your previous response was truncated by the output token limit. Continue the investigation from where you stopped. Use the available tools when appropriate.",
+    "llm": {
+      "api_key_env": "DEEPINFRA_API_KEY",
+      "api_key_set": true,
+      "base_url": "https://api.deepinfra.com/v1/openai",
+      "max_retries": 3,
+      "max_tokens": 4096,
+      "model": "Qwen/Qwen3.5-9B",
+      "reasoning_effort": "none",
+      "temperature": 0.0,
+      "timeout_s": 120.0
+    },
+    "max_steps": 50,
+    "name": "s2-qwen3.5-9b",
+    "strategy": "S2: S1 + external termination controller (COMPLETION_CHECK)",
+    "system_prompt": "You are a software engineering agent. Solve the given issue using the available repository tools. Inspect the repository, make the necessary changes, and verify your solution with tests when possible.",
+    "tools": [
+      "list_files",
+      "read_file",
+      "search_code",
+      "edit_file",
+      "write_file",
+      "run_command",
+      "git_diff"
+    ]
+  },
+  "status_counts": {
+    "resolved": 6,
+    "unresolved": 4
+  },
+  "tool_calls": 419,
+  "total": 10
+}

@@ -31,11 +31,16 @@ class ToolSet(Protocol):
 
 
 def run_tool_loop(client: LLMClient, messages: list[dict], toolset: ToolSet, max_steps: int,
-                  header: dict | None = None, length_nudge: str | None = None) -> tuple[dict, Usage]:
+                  header: dict | None = None, length_nudge: str | None = None,
+                  on_step_end=None) -> tuple[dict, Usage]:
     """`length_nudge`: if set, a response with finish_reason == "length" (cut off by the output-token cap) is
     never treated as the end of the work. The truncated response stays in the conversation and this text is
     appended as a user message so the model continues. Each such continuation is a normal step and counts
-    against `max_steps`. If None (S0 behaviour), a truncated reply without tool calls ends the run as "length"."""
+    against `max_steps`. If None (S0 behaviour), a truncated reply without tool calls ends the run as "length".
+
+    `on_step_end(step_index, step, max_steps)`: optional external controller, called after a step's tool calls have
+    been executed and before the next model call. It may return a stop-reason string to end the run; it never
+    alters the conversation. None (S0/S1) means no external control."""
     trace = {"schema": TRACE_SCHEMA, **(header or {}),
              "started_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
              "steps": [], "final_answer": None, "stop_reason": None, "error": None}
@@ -106,6 +111,11 @@ def run_tool_loop(client: LLMClient, messages: list[dict], toolset: ToolSet, max
             messages.append({"role": "user", "content": length_nudge})
             step["length_nudge"] = True
             nudges += 1
+        if on_step_end is not None:
+            stop = on_step_end(i, step, max_steps)
+            if stop:
+                trace["stop_reason"] = stop
+                break
     else:
         trace["stop_reason"] = "max_steps"
 

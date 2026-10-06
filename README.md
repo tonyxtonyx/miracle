@@ -15,7 +15,8 @@ benchmark infrastructure (`AgentRuntime` interface), so architectures can be swa
 | LLM client | DeepInfra (OpenAI-compatible) client with usage / latency / cost capture, tool-use probe | done, probed live |
 | **S0 baseline** | **Qwen3.5-9B + tools, no reasoning architecture, 10-task dev set** | **done (below)** |
 | S1 | S0 + continue (not stop) when a reply is cut off by the output-token cap | run on dev10: 7/10 vs S0's 6/10, **but the fix never triggered, so the difference is noise** (below) |
-| next | further interventions designed from S0's failure modes; larger-model reference | not started |
+| S2 | S1 + external termination controller (`COMPLETION_CHECK`) | run on dev10: **−21% / −17% cost vs S0 / S1 at equal resolution (6/10)**; fired in 3/10 runs, 3/3 correct (below) |
+| next | measure the checker's false-COMPLETE rate on labelled patches; widen trigger coverage; replicate runs | not started |
 
 ## Experiment S0 — Qwen3.5-9B + tools, no reasoning architecture
 
@@ -170,12 +171,96 @@ warning text, with the same trigger). Fixed in `DockerEnvironment` with a regres
 S1's matplotlib patch had 11 leaked PNG stubs; I removed exactly those entries from the recorded patch (original kept as `patch.original.diff`, the original grade under `eval/superseded/`, a note in `result.json`) and re-graded:
 identical test outcomes (unresolved, F2P 1/3, 1 regression), so the grade was unaffected.
 
+## Experiment S2 — S1 + External Termination Controller
+
+**Question:** can external executive control cut wasted agent steps and cost without hurting resolution? **Change (the only one vs S1):** a `COMPLETION_CHECK`
+state. When there is evidence the agent may be done, the loop pauses and one small LLM call (same model, no tools, `max_tokens=300`, reasoning off) sees only the
+issue, the current git diff, the modified files and the relevant test output, and answers `COMPLETE` or `INCOMPLETE: <unresolved requirement>`.
+`COMPLETE` terminates the run; `INCOMPLETE` is recorded and the normal loop continues **unchanged** (nothing from the check is shown to the agent: no feedback, plan or
+reflection). Unparseable/truncated replies and API errors mean "continue": the controller never terminates on uncertainty.
+Model, system prompt, tools, step budget, dataset (`dev10`) are the same as S0/S1; check calls are not agent steps (not counted against the 50), but their cost is in the totals.
+
+**Trigger (one predicate, shared by the live controller and the offline analysis, `agents/termination.py`):** a successful `edit_file` on a non-test path, followed by a test
+command (pytest, runtests.py, ...) that succeeded (exit 0, tests actually ran, no failures). Rails: skipped if the diff doesn't modify an existing non-test file, if the diff is
+unchanged since the last check, after 5 checks, and on the last step. Evidence: `experiments/s2-dev10/`.
+
+### Result
+
+| run | resolved | steps (total / mean) | prompt tok | completion tok | cost | $/resolved | agent time | check calls | check cost |
+|---|---|---|---|---|---|---|---|---|---|
+| s0-dev10 | 6/10 | 444 / 44.4 | 9,835,231 | 74,984 | $0.995 | $0.166 | 4,109s | 0 | $0.0000 |
+| s1-dev10 | 7/10 | 442 / 44.2 | 9,343,709 | 69,231 | $0.945 | $0.135 | 4,317s | 0 | $0.0000 |
+| s2-dev10 | 6/10 | 420 / 42.0 | 7,807,109 | 56,397 | $0.789 | $0.132 | 4,224s | 3 | $0.0004 |
+
+| vs S0 / vs S1 | steps | prompt tokens | completion tokens | cost |
+|---|---|---|---|---|
+| S2 | 420 | 7.81M | 56.4K | $0.789 |
+| change | −5.4% / −5.0% | −20.6% / −16.4% | −24.8% / −18.5% | **−20.7% / −16.5%** |
+
+**Resolution is preserved.** S2 resolved 6/10, the same six tasks as S0; S1's extra task (sympy-24066) is one the controller never touched, i.e. baseline noise (S0 and S1 are
+replicates and already differ by one). **Where the controller fired it was right every time: 3 checks, 3 `COMPLETE`, 3 terminated runs, all 3 resolved.**
+
+**The saving is attributable to those three runs.** Using the 7 runs where no check fired as the control:
+
+| | S0 | S1 | S2 |
+|---|---|---|---|
+| cost, 3 controller-terminated runs | $0.334 | $0.297 | **$0.135** (−60% / −54%) |
+| steps, same 3 runs | 137 | 125 | **82** (−40% / −34%) |
+| cost, 7 runs with no check (control) | $0.660 | $0.648 | $0.654 (±1%) |
+
+The check itself is nearly free: 3 calls, 3,657 prompt + 6 completion tokens, **$0.0004** (0.05% of S2's cost). The offline analysis of the recorded S0/S1 traces predicted that 29–32% of cost
+lies after the first candidate (`miracle candidates`); S2 captured ~17–21% overall, consistent with that bound.
+
+Per instance (outcome · steps · cost · stop reason):
+
+| instance | s0-dev10: outcome · steps · cost · stop | s1-dev10: outcome · steps · cost · stop | s2-dev10: outcome · steps · cost · stop |
+|---|---|---|---|
+| astropy__astropy-8707 | resolved · 50 · $0.137 · max_steps | resolved · 50 · $0.142 · max_steps | resolved · 34 · $0.071 · completion_check |
+| django__django-13821 | resolved · 50 · $0.119 · max_steps | resolved · 40 · $0.068 · final_answer | resolved · 50 · $0.083 · max_steps |
+| django__django-15561 | resolved · 50 · $0.117 · max_steps | resolved · 50 · $0.135 · max_steps | resolved · 50 · $0.117 · max_steps |
+| django__django-16082 | resolved · 50 · $0.125 · max_steps | resolved · 50 · $0.125 · max_steps | resolved · 23 · $0.033 · completion_check |
+| django__django-17029 | resolved · 37 · $0.072 · final_answer | resolved · 25 · $0.030 · final_answer | resolved · 25 · $0.031 · completion_check |
+| matplotlib__matplotlib-22865 | unresolved · 43 · $0.099 · length | unresolved · 50 · $0.128 · max_steps | unresolved · 50 · $0.108 · max_steps |
+| sphinx-doc__sphinx-11510 | empty_patch · 41 · $0.071 · length | unresolved · 50 · $0.096 · max_steps | unresolved · 50 · $0.098 · max_steps |
+| sympy__sympy-13372 | resolved · 23 · $0.021 · final_answer | resolved · 27 · $0.025 · final_answer | resolved · 38 · $0.050 · final_answer |
+| sympy__sympy-16597 | unresolved · 50 · $0.129 · max_steps | unresolved · 50 · $0.098 · max_steps | unresolved · 50 · $0.109 · max_steps |
+| sympy__sympy-24066 | unresolved · 50 · $0.105 · max_steps | resolved · 50 · $0.098 · max_steps | unresolved · 50 · $0.088 · max_steps |
+
+Controller activity:
+
+| instance | outcome | agent steps | stop | checks | check steps | decisions | check tok (in/out) | check cost | tests that triggered |
+|---|---|---|---|---|---|---|---|---|---|
+| astropy__astropy-8707 | resolved | 34 | completion_check | 1 | [34] | COMPLETE | 1454/2 | $0.0001 | s34: `cd /testbed && python -m pytest astropy/io/fits/te` |
+| django__django-13821 | resolved | 50 | max_steps | 0 | [] | - | 0/0 | $0.0000 | - |
+| django__django-15561 | resolved | 50 | max_steps | 0 | [] | - | 0/0 | $0.0000 | - |
+| django__django-16082 | resolved | 23 | completion_check | 1 | [23] | COMPLETE | 614/2 | $0.0001 | s23: `cd /testbed/tests && python runtests.py expression` |
+| django__django-17029 | resolved | 25 | completion_check | 1 | [25] | COMPLETE | 1589/2 | $0.0002 | s25: `cd /testbed/tests && python runtests.py model_meta` |
+| matplotlib__matplotlib-22865 | unresolved | 50 | max_steps | 0 | [] | - | 0/0 | $0.0000 | - |
+| sphinx-doc__sphinx-11510 | unresolved | 50 | max_steps | 0 | [] | - | 0/0 | $0.0000 | - |
+| sympy__sympy-13372 | resolved | 38 | final_answer | 0 | [] | - | 0/0 | $0.0000 | - |
+| sympy__sympy-16597 | unresolved | 50 | max_steps | 0 | [] | - | 0/0 | $0.0000 | - |
+| sympy__sympy-24066 | unresolved | 50 | max_steps | 0 | [] | - | 0/0 | $0.0000 | - |
+| **total** | | | **3 terminated by controller** | **3** | | | **3,657/6** | **$0.0004** | |
+
+### What this does and does not show
+
+- **Coverage is the limit, not accuracy.** The controller fired in only 3/10 runs. In the other 7 the trigger never held: tests failed to run (`No module named pytest`, wrong runner path),
+  the agent validated with ad-hoc scripts rather than a test runner, or it never edited a source file. Those runs behave exactly like S1. Savings are bounded by trigger coverage.
+- **The `INCOMPLETE` path never ran in the experiment.** All 3 checks said `COMPLETE` on correct patches, so I cannot tell a discriminating checker from a rubber stamp, and there is no
+  evidence yet on false-`COMPLETE` rate (stopping on an unfinished fix). That path is unit-tested only. This is the main open risk.
+- **Wall time did not improve in this measurement, and it is not comparable across runs:** agent time was 4,224 s (S2) vs 4,109 / 4,317 s, but DeepInfra throughput during the S2 run was
+  14.5 tok/s vs 23.6 / 21.3 (mean 9.3 s per call vs 7.2 / 7.4). A latency claim needs a rerun under similar provider speed.
+- n = 10, a single S2 run; the baselines' spread (6 vs 7 resolved) is the noise floor for resolution comparisons.
+- **Provider failure handled by rule.** The first S2 sphinx-11510 attempt ended with a network `ReadTimeout` at step 37 (all retries failed) and graded unresolved on a partial patch. That is an
+  infrastructure failure, not an agent outcome (same principle as the full-disk incident), so provider failures now abort the instance and archive their evidence instead of being scored. The failed attempt
+  and its grade are kept in `infra_failures/` and `eval/superseded/`; the instance was re-run (unresolved, 50 steps, no check, as in S0/S1). Only this one instance in any run was affected.
+
 ## Repository layout
 
 | path | contents |
 |---|---|
 | `src/miracle/` | package: dataset, selection, workspace, runtime interface, evaluator wrapper, runner, stats, export, LLM client (`llm/`), S0 agent (`agents/`) |
 | `subsets/` | fixed, versioned instance subsets (`dev10` is the development set) |
-| `experiments/s0-dev10/`, `experiments/s1-dev10/` | committed evidence of the S0 / S1 runs: manifest, results, patches, full traces, official harness reports/logs |
+| `experiments/s0-dev10/`, `experiments/s1-dev10/`, `experiments/s2-dev10/` | committed evidence of the S0 / S1 / S2 runs: manifest, results, patches, full traces, official harness reports/logs |
 | `tests/` | offline unit tests (`pytest`); real-harness integration tests (`pytest -m docker`) |
 | `docs/infrastructure.md` | design and usage of the infrastructure, LLM client, tool-use probe and the S0 agent |

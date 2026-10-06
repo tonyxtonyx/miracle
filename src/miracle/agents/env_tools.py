@@ -22,6 +22,22 @@ TEST_CMD_RE = re.compile(
     r"\b(pytest|py\.test|runtests\.py|tox|nosetests|manage\.py\s+test|unittest|bin/test|setup\.py\s+test)\b")
 
 
+def parse_test_summary(output: str) -> dict:
+    """Best-effort pass/fail extraction from common runners; always keeps the raw tail."""
+    tail = [l for l in output.strip().splitlines() if l.strip()][-3:]
+    d: dict = {"tail": "\n".join(tail)[-400:]}
+    m = re.findall(r"(\d+) (passed|failed|errors?|skipped|xfailed|xpassed)", output)
+    if m:
+        d["counts"] = {}
+        for n, k in m:
+            d["counts"][k.rstrip("s") if k.startswith("error") else k] = d["counts"].get(k, 0) + int(n)
+    m = re.search(r"Ran (\d+) tests? in", output)
+    if m:
+        d["ran"] = int(m.group(1))
+        d["ok"] = bool(re.search(r"^OK\b", output, re.M))
+    return d
+
+
 def _fn(name, desc, props, required):
     return {"type": "function", "function": {"name": name, "description": desc, "parameters": {
         "type": "object", "properties": props, "required": required}}}

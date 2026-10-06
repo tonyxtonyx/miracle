@@ -183,6 +183,13 @@ class Run:
             _write_json(out / "result.json", rec)
             if not keep_workspaces:
                 shutil.rmtree(ws_path, ignore_errors=True)
+            if (rec.get("metadata") or {}).get("stop_reason") == "llm_error":
+                # the model provider failed after retries (e.g. read timeout): not an agent outcome, never scored.
+                # Keep the evidence, leave no result so --resume re-runs this instance.
+                dst = self.dir / "infra_failures" / f"{iid}.{datetime.now():%Y%m%d-%H%M%S}"
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(out), str(dst))
+                raise InfraError(f"model provider failed during {iid} (evidence archived in {dst.name}); rerun with --resume")
             log(f"[{n}/{len(instances)}] {iid}: {rec['status']}, patch {rec['patch_bytes']}B, {rec['latency_s']}s")
         if not keep_workspaces:
             shutil.rmtree(self.dir / "workspaces", ignore_errors=True)

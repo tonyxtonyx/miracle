@@ -9,7 +9,7 @@ from .dataset import DATASET_ID, load_snapshot
 from .registry import build_runtime
 from .runner import Run, compare, trajectory_table
 from .export import export_run
-from .stats import markdown_report
+from .stats import candidates_markdown, controller_markdown, efficiency_markdown, markdown_report
 from .selection import Subset, SubsetSpec, select
 
 
@@ -79,6 +79,18 @@ def cmd_export(a):
     print(f"exported {n} files from run {a.run} to {a.dest} (local paths scrubbed)")
 
 
+def cmd_efficiency(a):
+    print(efficiency_markdown(a.runs))
+
+
+def cmd_candidates(a):
+    print(candidates_markdown(a.runs))
+
+
+def cmd_controller(a):
+    print(controller_markdown(a.run))
+
+
 def cmd_compare(a):
     print(compare(a.runs))
 
@@ -108,7 +120,7 @@ def main(argv=None):
     s.set_defaults(fn=cmd_subset_show)
 
     r = sub.add_parser("run", help="generate patches with a runtime, then evaluate them")
-    r.add_argument("--runtime", required=True, help="gold|empty|broken|noop|s0|s1|toolloop|module:Class")
+    r.add_argument("--runtime", required=True, help="gold|empty|broken|noop|s0|s1|s2|toolloop|module:Class")
     r.add_argument("--runtime-config", default="{}", help="JSON kwargs for module:Class")
     g = r.add_mutually_exclusive_group(required=True)
     g.add_argument("--subset")
@@ -146,6 +158,16 @@ def main(argv=None):
     ex.add_argument("run")
     ex.add_argument("dest")
     ex.set_defaults(fn=cmd_export)
+
+    ef = sub.add_parser("efficiency", help="resolution next to steps/tokens/cost/time for runs on the same instances")
+    ef.add_argument("runs", nargs="+")
+    ef.set_defaults(fn=cmd_efficiency)
+    cd = sub.add_parser("candidates", help="counterfactual: when candidate-completion evidence first appeared and what followed")
+    cd.add_argument("runs", nargs="+")
+    cd.set_defaults(fn=cmd_candidates)
+    ct = sub.add_parser("controller", help="per-instance completion-check activity of a run")
+    ct.add_argument("run")
+    ct.set_defaults(fn=cmd_controller)
 
     cp = sub.add_parser("compare", help="compare runs on their common instances")
     cp.add_argument("runs", nargs="+")

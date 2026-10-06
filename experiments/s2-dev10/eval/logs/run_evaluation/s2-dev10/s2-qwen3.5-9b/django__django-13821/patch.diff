@@ -1,0 +1,136 @@
+diff --git a/django/db/backends/sqlite3/base.py b/django/db/backends/sqlite3/base.py
+index ab4ea70492..dcff5534e0 100644
+--- a/django/db/backends/sqlite3/base.py
++++ b/django/db/backends/sqlite3/base.py
+@@ -64,8 +64,8 @@ def list_aggregate(function):
+ 
+ 
+ def check_sqlite_version():
+-    if Database.sqlite_version_info < (3, 8, 3):
+-        raise ImproperlyConfigured('SQLite 3.8.3 or later is required (found %s).' % Database.sqlite_version)
++    if Database.sqlite_version_info < (3, 9, 0):
++        raise ImproperlyConfigured('SQLite 3.9.0 or later is required (found %s).' % Database.sqlite_version)
+ 
+ 
+ check_sqlite_version()
+diff --git a/docs/ref/contrib/gis/install/index.txt b/docs/ref/contrib/gis/install/index.txt
+index 687fe5d59d..c8343913cf 100644
+--- a/docs/ref/contrib/gis/install/index.txt
++++ b/docs/ref/contrib/gis/install/index.txt
+@@ -61,7 +61,7 @@ Database            Library Requirements            Supported Versions  Notes
+ PostgreSQL          GEOS, GDAL, PROJ, PostGIS       9.6+                Requires PostGIS.
+ MySQL               GEOS, GDAL                      5.7+                :ref:`Limited functionality <mysql-spatial-limitations>`.
+ Oracle              GEOS, GDAL                      12.2+               XE not supported.
+-SQLite              GEOS, GDAL, PROJ, SpatiaLite    3.8.3+              Requires SpatiaLite 4.3+
++SQLite              GEOS, GDAL, PROJ, SpatiaLite    3.9.0+              Requires SpatiaLite 4.3+
+ ==================  ==============================  ==================  =========================================
+ 
+ See also `this comparison matrix`__ on the OSGeo Wiki for
+diff --git a/docs/ref/databases.txt b/docs/ref/databases.txt
+index 809ee68db6..8fc9e89662 100644
+--- a/docs/ref/databases.txt
++++ b/docs/ref/databases.txt
+@@ -679,7 +679,7 @@ appropriate typecasting.
+ SQLite notes
+ ============
+ 
+-Django supports SQLite 3.8.3 and later.
++Django supports SQLite 3.9.0 and later.
+ 
+ SQLite_ provides an excellent development alternative for applications that
+ are predominantly read-only or require a smaller installation footprint. As
+diff --git a/testbed/verify_changes.py b/testbed/verify_changes.py
+new file mode 100644
+index 0000000000..5f9d79aacd
+--- /dev/null
++++ b/testbed/verify_changes.py
+@@ -0,0 +1,76 @@
++#!/usr/bin/env python
++"""Verify that the SQLite version requirement changes are correct."""
++import sys
++sys.path.insert(0, '/testbed')
++
++from django.db.backends.sqlite3.base import check_sqlite_version
++from sqlite3 import dbapi2
++import unittest.mock as mock
++
++print("=" * 70)
++print("Verifying SQLite version requirement changes")
++print("=" * 70)
++
++# Test 1: Version 3.8.2 should be rejected
++print("\nTest 1: SQLite 3.8.2 should be rejected")
++try:
++    with mock.patch.object(dbapi2, 'sqlite_version_info', (3, 8, 2)), \
++            mock.patch.object(dbapi2, 'sqlite_version', '3.8.2'):
++        check_sqlite_version()
++    print("FAIL: Should have raised ImproperlyConfigured")
++    sys.exit(1)
++except Exception as e:
++    expected_msg = 'SQLite 3.9.0 or later is required (found 3.8.2).'
++    if str(e) == expected_msg:
++        print("PASS: Correctly rejected SQLite 3.8.2")
++        print(f"      Error message: {str(e)}")
++    else:
++        print(f"FAIL: Wrong error message. Expected: {expected_msg}, Got: {str(e)}")
++        sys.exit(1)
++
++# Test 2: Version 3.8.9 should be rejected
++print("\nTest 2: SQLite 3.8.9 should be rejected")
++try:
++    with mock.patch.object(dbapi2, 'sqlite_version_info', (3, 8, 9)), \
++            mock.patch.object(dbapi2, 'sqlite_version', '3.8.9'):
++        check_sqlite_version()
++    print("FAIL: Should have raised ImproperlyConfigured")
++    sys.exit(1)
++except Exception as e:
++    expected_msg = 'SQLite 3.9.0 or later is required (found 3.8.9).'
++    if str(e) == expected_msg:
++        print("PASS: Correctly rejected SQLite 3.8.9")
++        print(f"      Error message: {str(e)}")
++    else:
++        print(f"FAIL: Wrong error message. Expected: {expected_msg}, Got: {str(e)}")
++        sys.exit(1)
++
++# Test 3: Version 3.9.0 should be accepted (no error raised)
++print("\nTest 3: SQLite 3.9.0 should be accepted")
++# The check_sqlite_version() is called at module import time, so we can't easily test this
++# by mocking. Instead, we verify the version check logic directly.
++if (3, 9, 0) >= (3, 9, 0):
++    print("PASS: Version 3.9.0 passes the check (3.9.0 >= 3.9.0)")
++else:
++    print("FAIL: Version 3.9.0 should pass the check")
++    sys.exit(1)
++
++# Test 4: Version 3.9.1 should be accepted
++print("\nTest 4: SQLite 3.9.1 should be accepted")
++if (3, 9, 1) >= (3, 9, 0):
++    print("PASS: Version 3.9.1 passes the check (3.9.1 >= 3.9.0)")
++else:
++    print("FAIL: Version 3.9.1 should pass the check")
++    sys.exit(1)
++
++# Test 5: Version 3.10.0 should be accepted
++print("\nTest 5: SQLite 3.10.0 should be accepted")
++if (3, 10, 0) >= (3, 9, 0):
++    print("PASS: Version 3.10.0 passes the check (3.10.0 >= 3.9.0)")
++else:
++    print("FAIL: Version 3.10.0 should pass the check")
++    sys.exit(1)
++
++print("\n" + "=" * 70)
++print("All verification tests passed!")
++print("=" * 70)
+diff --git a/tests/backends/sqlite/tests.py b/tests/backends/sqlite/tests.py
+index 17a58f32ae..bab83d6a48 100644
+--- a/tests/backends/sqlite/tests.py
++++ b/tests/backends/sqlite/tests.py
+@@ -30,7 +30,7 @@ class Tests(TestCase):
+     longMessage = True
+ 
+     def test_check_sqlite_version(self):
+-        msg = 'SQLite 3.8.3 or later is required (found 3.8.2).'
++        msg = 'SQLite 3.9.0 or later is required (found 3.8.2).'
+         with mock.patch.object(dbapi2, 'sqlite_version_info', (3, 8, 2)), \
+                 mock.patch.object(dbapi2, 'sqlite_version', '3.8.2'), \
+                 self.assertRaisesMessage(ImproperlyConfigured, msg):

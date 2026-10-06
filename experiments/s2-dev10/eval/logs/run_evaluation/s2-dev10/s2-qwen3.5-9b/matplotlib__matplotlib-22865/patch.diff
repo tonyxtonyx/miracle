@@ -1,0 +1,496 @@
+diff --git a/lib/matplotlib/colorbar.py b/lib/matplotlib/colorbar.py
+index c59b0ac815..de0493be87 100644
+--- a/lib/matplotlib/colorbar.py
++++ b/lib/matplotlib/colorbar.py
+@@ -651,8 +651,26 @@ class Colorbar:
+             if not self.drawedges:
+                 if len(self._y) >= self.n_rasterize:
+                     self.solids.set_rasterized(True)
+-        self.dividers.set_segments(
+-            np.dstack([X, Y])[1:-1] if self.drawedges else [])
++        if self.drawedges:
++            # Create dividers from the boundaries to ensure edges are drawn
++            # at all boundaries, including the extend boundaries.
++            if self.orientation == 'horizontal':
++                # For horizontal colorbar, dividers are vertical lines at each boundary
++                dividers = []
++                for i in range(len(self._boundaries) - 1):
++                    x = self._boundaries[i]
++                    y = [0, 1]
++                    dividers.append([[x, y[0]], [x, y[1]]])
++            else:
++                # For vertical colorbar, dividers are horizontal lines at each boundary
++                dividers = []
++                for i in range(len(self._boundaries) - 1):
++                    y = self._boundaries[i]
++                    x = [0, 1]
++                    dividers.append([[x[0], y], [x[1], y]])
++            self.dividers.set_segments(dividers)
++        else:
++            self.dividers.set_segments([])
+ 
+     def _add_solids_patches(self, X, Y, C, mappable):
+         hatches = mappable.hatches * len(C)  # Have enough hatches.
+diff --git a/test_colorbar_bug.py b/test_colorbar_bug.py
+new file mode 100644
+index 0000000000..2d00f0eca8
+--- /dev/null
++++ b/test_colorbar_bug.py
+@@ -0,0 +1,24 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_colorbar_bug.png')
++print("Saved test_colorbar_bug.png")
++
++# Let's also check what the dividers look like
++print(f"Number of segments in dividers: {len(cbar.dividers.get_segments())}")
++print(f"Number of boundaries: {len(cbar._boundaries)}")
++print(f"Number of values: {len(cbar._values)}")
++print(f"Extend lower: {cbar._extend_lower()}")
++print(f"Extend upper: {cbar._extend_upper()}")
+diff --git a/test_colorbar_debug.py b/test_colorbar_debug.py
+new file mode 100644
+index 0000000000..ff11d77c81
+--- /dev/null
++++ b/test_colorbar_debug.py
+@@ -0,0 +1,35 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++
++# Let's check the mesh
++X, Y = cbar._mesh()
++print(f"X shape: {X.shape}")
++print(f"Y shape: {Y.shape}")
++print(f"X:\n{X}")
++print(f"Y:\n{Y}")
++
++# What the current code does
++segments = np.dstack([X, Y])[1:-1]
++print(f"\nNumber of segments: {len(segments)}")
++print(f"Segments:\n{segments}")
++
++# What we need - all boundaries including extends
++print(f"\nBoundaries: {cbar._boundaries}")
++print(f"Values: {cbar._values}")
++
++# The dividers should have segments between all boundaries
++# For horizontal colorbar, X is the long axis
++# We need segments from boundary[0] to boundary[1], boundary[1] to boundary[2], etc.
++# But currently we're excluding the first and last
+diff --git a/test_colorbar_extend_debug.py b/test_colorbar_extend_debug.py
+new file mode 100644
+index 0000000000..901a7d4de2
+--- /dev/null
++++ b/test_colorbar_extend_debug.py
+@@ -0,0 +1,44 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++
++# Let's check the mesh
++X, Y = cbar._mesh()
++print(f"X shape: {X.shape}")
++print(f"Y shape: {Y.shape}")
++print(f"X:\n{X}")
++print(f"Y:\n{Y}")
++
++# What the current code does
++segments = np.dstack([X, Y])[1:-1]
++print(f"\nNumber of segments: {len(segments)}")
++print(f"Segments:\n{segments}")
++
++print(f"\nBoundaries: {cbar._boundaries}")
++print(f"Values: {cbar._values}")
++print(f"Extend lower: {cbar._extend_lower()}")
++print(f"Extend upper: {cbar._extend_upper()}")
++
++# The mesh has 10 rows, which means 10 color patches
++# The boundaries have 12 values (including extends)
++# So we should have 11 dividers (including the edges at the extend boundaries)
++# But we're only getting 8 dividers
++
++# Let's see what the dividers should be
++# For horizontal colorbar, X is the long axis
++# We need segments from boundary[0] to boundary[1], boundary[1] to boundary[2], etc.
++# But currently we're excluding the first and last
++
++# The issue is that the mesh doesn't include the extend boundaries
++# So we need to create dividers that include the extend boundaries
+diff --git a/test_colorbar_mesh_debug.py b/test_colorbar_mesh_debug.py
+new file mode 100644
+index 0000000000..5a06b9c6a6
+--- /dev/null
++++ b/test_colorbar_mesh_debug.py
+@@ -0,0 +1,52 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++
++# Let's check the mesh
++X, Y = cbar._mesh()
++print(f"X shape: {X.shape}")
++print(f"Y shape: {Y.shape}")
++print(f"X:\n{X}")
++print(f"Y:\n{Y}")
++
++# The mesh is created from _proportional_y
++y, extendlen = cbar._proportional_y()
++print(f"\ny (normalized boundaries): {y}")
++print(f"extendlen: {extendlen}")
++
++# The mesh is created from np.meshgrid([0., 1.], y)
++# So X has shape (len(y), 2) and Y has shape (len(y), 2)
++# X represents the position along the long axis (0 to 1)
++# Y represents the position along the short axis (the boundaries)
++
++# The dividers are created from np.dstack([X, Y])[1:-1]
++# This creates segments between adjacent rows in the mesh
++# So we get segments from row[1] to row[2], row[2] to row[3], etc.
++# But we're missing the segments from row[0] to row[1] and from row[-1] to row[-2]
++
++# The issue is that the mesh doesn't include the extend boundaries
++# So we need to create dividers that include the extend boundaries
++
++# Let's see what the dividers should be
++# For horizontal colorbar, X is the long axis
++# We need segments from boundary[0] to boundary[1], boundary[1] to boundary[2], etc.
++# But currently we're excluding the first and last
++
++# The mesh has 10 rows, which means 10 color patches
++# The boundaries have 12 values (including extends)
++# So we should have 11 dividers (including the edges at the extend boundaries)
++# But we're only getting 8 dividers
++
++# The fix should be to include the extend boundaries in the dividers
++# We need to create segments from boundary[0] to boundary[1], boundary[1] to boundary[2], ..., boundary[10] to boundary[11]
+diff --git a/test_colorbar_no_extend.py b/test_colorbar_no_extend.py
+new file mode 100644
+index 0000000000..ff8095d344
+--- /dev/null
++++ b/test_colorbar_no_extend.py
+@@ -0,0 +1,31 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) - 1  # 9 colors for 10 boundaries with extend='neither'
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='neither')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++
++# Let's check the mesh
++X, Y = cbar._mesh()
++print(f"X shape: {X.shape}")
++print(f"Y shape: {Y.shape}")
++print(f"X:\n{X}")
++print(f"Y:\n{Y}")
++
++# What the current code does
++segments = np.dstack([X, Y])[1:-1]
++print(f"\nNumber of segments: {len(segments)}")
++print(f"Segments:\n{segments}")
++
++print(f"\nBoundaries: {cbar._boundaries}")
++print(f"Values: {cbar._values}")
++print(f"Extend lower: {cbar._extend_lower()}")
++print(f"Extend upper: {cbar._extend_upper()}")
+diff --git a/test_colorbar_no_extend2.py b/test_colorbar_no_extend2.py
+new file mode 100644
+index 0000000000..e5ff581d8b
+--- /dev/null
++++ b/test_colorbar_no_extend2.py
+@@ -0,0 +1,22 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) - 1  # 9 colors for 10 boundaries with extend='neither'
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='neither')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++
++print(f"Number of segments in dividers: {len(cbar.dividers.get_segments())}")
++print(f"Number of boundaries: {len(cbar._boundaries)}")
++print(f"Number of values: {len(cbar._values)}")
++print(f"Extend lower: {cbar._extend_lower()}")
++print(f"Extend upper: {cbar._extend_upper()}")
++
++# The dividers should have 9 segments (from boundary[0] to boundary[1], boundary[1] to boundary[2], ..., boundary[8] to boundary[9])
+diff --git a/test_dividers_fix.py b/test_dividers_fix.py
+new file mode 100644
+index 0000000000..520cd58299
+--- /dev/null
++++ b/test_dividers_fix.py
+@@ -0,0 +1,68 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++
++# Let's check the mesh
++X, Y = cbar._mesh()
++print(f"X shape: {X.shape}")
++print(f"Y shape: {Y.shape}")
++print(f"X:\n{X}")
++print(f"Y:\n{Y}")
++
++# The mesh has 10 rows, which means 10 color patches
++# The boundaries have 12 values (including extends)
++# So we should have 11 dividers (including the edges at the extend boundaries)
++
++# The current code uses np.dstack([X, Y])[1:-1]
++# This creates segments between adjacent rows in the mesh
++# But it excludes the first and last segments
++
++# To fix the issue, we need to:
++# 1. Include all segments (not just [1:-1])
++# 2. Include the extend boundaries
++
++# One approach is to create the dividers from the _boundaries array directly
++# For a horizontal colorbar, the dividers are vertical lines at each boundary
++# The X coordinate of each divider is the boundary value, and the Y coordinate is the height of the colorbar (from 0 to 1)
++
++# Let's see what the dividers should be
++# For horizontal colorbar, X is the long axis
++# We need segments from boundary[0] to boundary[1], boundary[1] to boundary[2], etc.
++# But currently we're excluding the first and last
++
++# The mesh has 10 rows, which means 10 color patches
++# The boundaries have 12 values (including extends)
++# So we should have 11 dividers (including the edges at the extend boundaries)
++
++# Let's create the dividers from the _boundaries array
++# For a horizontal colorbar, the dividers are vertical lines at each boundary
++# The X coordinate of each divider is the boundary value, and the Y coordinate is the height of the colorbar (from 0 to 1)
++
++boundaries = cbar._boundaries
++print(f"\nBoundaries: {boundaries}")
++
++# Create dividers from the boundaries
++# For a horizontal colorbar, the dividers are vertical lines at each boundary
++# The X coordinate of each divider is the boundary value, and the Y coordinate is the height of the colorbar (from 0 to 1)
++dividers = []
++for i in range(len(boundaries) - 1):
++    # Create a vertical line at the boundary
++    x = boundaries[i]
++    y = [0, 1]
++    dividers.append([[x, y[0]], [x, y[1]]])
++
++print(f"\nNumber of dividers: {len(dividers)}")
++print(f"Dividers:\n{dividers}")
++
++# This should give us 11 dividers (from boundary[0] to boundary[1], boundary[1] to boundary[2], ..., boundary[10] to boundary[11])
+diff --git a/test_dstack.py b/test_dstack.py
+new file mode 100644
+index 0000000000..1db0c838bd
+--- /dev/null
++++ b/test_dstack.py
+@@ -0,0 +1,21 @@
++import numpy as np
++
++# Simulate the mesh
++X = np.array([[0., 0.], [1., 1.], [2., 2.], [3., 3.], [4., 4.], [5., 5.], [6., 6.], [7., 7.], [8., 8.], [9., 9.]])
++Y = np.array([[0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.]])
++
++print(f"X shape: {X.shape}")
++print(f"Y shape: {Y.shape}")
++
++# What the current code does
++segments = np.dstack([X, Y])[1:-1]
++print(f"\nNumber of segments: {len(segments)}")
++print(f"Segments:\n{segments}")
++
++# What we should get
++segments_all = np.dstack([X, Y])[:-1]
++print(f"\nNumber of segments (all): {len(segments_all)}")
++print(f"Segments (all):\n{segments_all}")
++
++# The issue is that we're excluding the first and last segments
++# We should include all segments
+diff --git a/test_dstack2.py b/test_dstack2.py
+new file mode 100644
+index 0000000000..7cf31f3742
+--- /dev/null
++++ b/test_dstack2.py
+@@ -0,0 +1,43 @@
++import numpy as np
++
++# Simulate the mesh for a horizontal colorbar
++# X is the long axis (from 0 to 1)
++# Y is the short axis (the boundaries)
++X = np.array([[0., 0.], [1., 1.], [2., 2.], [3., 3.], [4., 4.], [5., 5.], [6., 6.], [7., 7.], [8., 8.], [9., 9.]])
++Y = np.array([[0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.], [0., 1.]])
++
++print(f"X shape: {X.shape}")
++print(f"Y shape: {Y.shape}")
++print(f"X:\n{X}")
++print(f"Y:\n{Y}")
++
++# What the current code does
++segments = np.dstack([X, Y])[1:-1]
++print(f"\nNumber of segments: {len(segments)}")
++print(f"Segments:\n{segments}")
++
++# The segments are created from the mesh
++# Each segment is a line between two adjacent rows in the mesh
++# For a horizontal colorbar, the mesh rows are along the X axis
++# So the segments are vertical lines at each X value
++
++# The issue is that we're excluding the first and last segments
++# We should include all segments
++
++# Let's see what the segments represent
++# Each segment is a line from (X[i], Y[i, 0]) to (X[i], Y[i, 1])
++# For a horizontal colorbar, this is a vertical line at X[i] from Y=0 to Y=1
++
++# So the dividers are vertical lines at each boundary
++# The current code excludes the first and last boundaries
++
++# To fix the issue, we need to include all segments
++# But we also need to include the extend boundaries
++
++# The mesh has 10 rows, which means 10 color patches
++# The boundaries have 12 values (including extends)
++# So we should have 11 dividers (including the edges at the extend boundaries)
++
++# The fix should be to create dividers from the _boundaries array directly
++# For a horizontal colorbar, the dividers are vertical lines at each boundary
++# The X coordinate of each divider is the boundary value, and the Y coordinate is the height of the colorbar (from 0 to 1)
+diff --git a/test_vertical_colorbar.py b/test_vertical_colorbar.py
+new file mode 100644
+index 0000000000..9fa4304b1b
+--- /dev/null
++++ b/test_vertical_colorbar.py
+@@ -0,0 +1,31 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(1, 5))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='vertical', drawedges=True)
++
++# Let's check the mesh
++X, Y = cbar._mesh()
++print(f"X shape: {X.shape}")
++print(f"Y shape: {Y.shape}")
++print(f"X:\n{X}")
++print(f"Y:\n{Y}")
++
++# What the current code does
++segments = np.dstack([X, Y])[1:-1]
++print(f"\nNumber of segments: {len(segments)}")
++print(f"Segments:\n{segments}")
++
++print(f"\nBoundaries: {cbar._boundaries}")
++print(f"Values: {cbar._values}")
++print(f"Extend lower: {cbar._extend_lower()}")
++print(f"Extend upper: {cbar._extend_upper()}")
+diff --git a/test_vertical_colorbar2.py b/test_vertical_colorbar2.py
+new file mode 100644
+index 0000000000..49baa0e411
+--- /dev/null
++++ b/test_vertical_colorbar2.py
+@@ -0,0 +1,26 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(1, 5))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='vertical', drawedges=True)
++
++print(f"Number of segments in dividers: {len(cbar.dividers.get_segments())}")
++print(f"Number of boundaries: {len(cbar._boundaries)}")
++print(f"Number of values: {len(cbar._values)}")
++print(f"Extend lower: {cbar._extend_lower()}")
++print(f"Extend upper: {cbar._extend_upper()}")
++
++# Let's check the dividers
++segments = cbar.dividers.get_segments()
++print(f"\nSegments:\n{segments}")
++
++# The dividers should have 11 segments (from boundary[0] to boundary[1], boundary[1] to boundary[2], ..., boundary[10] to boundary[11])

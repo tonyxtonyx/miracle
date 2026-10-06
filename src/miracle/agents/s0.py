@@ -13,7 +13,8 @@ from ..llm.client import LLMClient, OpenAICompatClient
 from ..llm.config import LLMConfig
 from ..llm.loop import run_tool_loop
 from ..runtime import AgentResult, AgentRuntime, Task
-from .env_tools import TOOL_NAMES, EnvToolBox
+from .env_tools import TOOL_NAMES, EnvToolBox, parse_test_summary  # noqa: F401  (re-exported)
+from .termination import candidate_analysis
 
 SYSTEM_PROMPT = ("You are a software engineering agent. Solve the given issue using the available repository tools. "
                  "Inspect the repository, make the necessary changes, and verify your solution with tests when possible.")
@@ -22,6 +23,10 @@ SYSTEM_PROMPT = ("You are a software engineering agent. Solve the given issue us
 class S0Runtime(AgentRuntime):
     environment = "container"
     length_nudge: str | None = None    # S0 does nothing special on finish_reason == "length"; S1 overrides
+
+    def make_controller(self, task):
+        """External controller for this task (or None). S0/S1 have none; S2 returns a CompletionController."""
+        return None
 
     def __init__(self, client: LLMClient | None = None, max_steps: int = 50, system_prompt: str = SYSTEM_PROMPT,
                  **llm_settings):
@@ -42,9 +47,12 @@ class S0Runtime(AgentRuntime):
         env = task.env
         messages = [{"role": "system", "content": self.system_prompt},
                     {"role": "user", "content": task.problem_statement}]
+        ctl = self.make_controller(task)
         trace, usage = run_tool_loop(self.client, messages, EnvToolBox(env), self.max_steps,
                                      {"instance_id": task.instance_id, "runtime": self.describe(),
-                                      "task": task.problem_statement}, length_nudge=self.length_nudge)
+                                      "task": task.problem_statement}, length_nudge=self.length_nudge,
+                                     on_step_end=ctl.after_step if ctl else None)
+        controller = ctl.finalize(trace, usage) if ctl else None
         patch = env.diff()           # always extracted, whatever the stop reason: partial work is data too
         files = env.changed_files()
         commands = command_log(trace)
@@ -52,26 +60,12 @@ class S0Runtime(AgentRuntime):
         meta = {"final_answer": trace["final_answer"], "stop_reason": trace["stop_reason"],
                 "modified_files": files, "commands": commands, "tests": [c for c in commands if c["is_test"]],
                 "stats": trajectory_stats(trace), "trace": trace}
+        if controller:
+            meta["controller"] = controller
         return AgentResult(patch, usage, meta)
 
 
 # ---- post-hoc extraction (pure functions of the trace; unit-tested) -------------------------------
-
-def parse_test_summary(output: str) -> dict:
-    """Best-effort pass/fail extraction from common runners; always keeps the raw tail."""
-    tail = [l for l in output.strip().splitlines() if l.strip()][-3:]
-    d: dict = {"tail": "\n".join(tail)[-400:]}
-    m = re.findall(r"(\d+) (passed|failed|errors?|skipped|xfailed|xpassed)", output)
-    if m:
-        d["counts"] = {}
-        for n, k in m:
-            d["counts"][k.rstrip("s") if k.startswith("error") else k] = d["counts"].get(k, 0) + int(n)
-    m = re.search(r"Ran (\d+) tests? in", output)
-    if m:
-        d["ran"] = int(m.group(1))
-        d["ok"] = bool(re.search(r"^OK\b", output, re.M))
-    return d
-
 
 def command_log(trace: dict) -> list[dict]:
     out = []
@@ -113,4 +107,7 @@ def trajectory_stats(trace: dict) -> dict:
         "length_nudges": sum(1 for s in trace["steps"] if s.get("length_nudge")),
         "empty_steps": sum(1 for s in trace["steps"] if not s["response"]["tool_calls"] and not (s["response"]["content"] or "").strip()),
         "stop_reason": trace["stop_reason"],
+        "completion_checks": (trace.get("controller") or {}).get("checks", 0),
+        # derived: when did candidate evidence (source edit + successful test) first appear, and what followed?
+        "candidate": candidate_analysis(trace),
     }

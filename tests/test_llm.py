@@ -129,10 +129,12 @@ class Scripted(LLMClient):
     """Replays a list of (content, [(tool, args)]) turns."""
     def __init__(self, turns, **kw):
         self.config = LLMConfig(api_key="sk-secret-123", model="Qwen/Qwen3.5-9B")
-        self.turns, self.calls = list(turns), []
+        self.turns, self.calls, self.tools_seen, self.opts_seen = list(turns), [], [], []
 
     def chat(self, messages, tools=None, **o):
         self.calls.append(json.loads(json.dumps(messages)))
+        self.tools_seen.append(tools)
+        self.opts_seen.append(o)
         turn = self.turns.pop(0)
         content, tcs = turn[0], turn[1]
         forced_finish = turn[2] if len(turn) > 2 else None      # optional explicit finish_reason

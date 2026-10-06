@@ -192,3 +192,24 @@ Verified: unit tests (loop edge cases, S0-unchanged regression, an S0-fails/S1-r
 **Patch-extraction pitfall (fixed):** `git add` exits 1, while still staging everything, when a gitignored path such as `.pytest_cache` exists. `DockerEnvironment._stage` therefore never gates
 the binary-unstaging step on `git add`'s exit status (`|| true`, then `;`). Regression test: `tests/test_docker_env_staging.py`.
 
+## S2: External Termination Controller (`src/miracle/agents/s2.py`, `termination.py`)
+
+`S2Runtime(S1Runtime)`; the only difference from S1 is `make_controller()` returning a `CompletionController`, wired into `run_tool_loop(..., on_step_end=...)`. The hook runs after a step's
+tool calls and before the next model call, can only return a stop reason, and never touches the conversation (S0/S1 pass no hook).
+
+- **Trigger:** `CandidateTracker` (pure; fed with trace tool results): successful `edit_file` on a non-test path (`is_test_path`), then a test command (`TEST_CMD_RE`) with `run_succeeded` (exit 0, not timed out, tests ran,
+  no failures). A candidate fires only in the step the test ran, and a later source edit invalidates earlier test evidence. The same predicate backs `candidate_analysis(trace)`, applied offline to any recorded run
+  (first candidate step, steps / tokens / cost after it); `miracle candidates RUN...` prints it.
+- **Check call:** one user message built by `build_check_prompt` (issue, modified files, diff capped at 12k chars, up to 3 test outputs capped at 2k chars each); no tools, no system prompt, `max_tokens=300`,
+  temperature 0, reasoning off. `parse_decision`: only an unambiguous leading `COMPLETE` terminates; `INCOMPLETE: ...` is recorded; anything else (`INVALID`, truncated, API `ERROR`) continues.
+- **Rails:** diff must modify an existing non-test file; same diff hash as the last check is not re-checked; `max_checks=5`; no check on the last step. Checks do not consume the 50-step budget.
+- **Recorded:** `trace["controller"]` (per check: step, trigger evidence incl. test command/exit/summary, diff hash/size/files, prompt, raw reply, decision, reason, tokens, cost, latency) and `result.json` `metadata.controller`
+  (counts, check steps, termination step, check usage, agent usage excluding checks); run `usage` totals include the checks; `stats.candidate` holds the derived first-candidate metrics.
+- **Reports:** `miracle efficiency RUN...` (resolution next to steps/tokens/cost/time, per instance), `miracle controller RUN` (per-check activity), `miracle candidates RUN...` (counterfactual).
+- **Provider failures:** a run whose loop ended with `stop_reason == "llm_error"` (retries exhausted) raises `InfraError`: no result is kept, the evidence is archived under `infra_failures/`, and `--resume` re-runs the instance.
+
+```bash
+.venv/bin/miracle run --runtime s2 --subset dev10 --name s2-dev10 --pipeline --rm-images -j 1
+.venv/bin/miracle efficiency s0-dev10 s1-dev10 s2-dev10
+```
+
