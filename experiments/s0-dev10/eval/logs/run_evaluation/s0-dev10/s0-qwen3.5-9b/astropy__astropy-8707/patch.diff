@@ -1,0 +1,68 @@
+The following paths are ignored by one of your .gitignore files:
+.pytest_cache
+hint: Use -f if you really want to add them.
+hint: Turn this message off by running
+hint: "git config advice.addIgnoredFile false"
+diff --git a/astropy/io/fits/card.py b/astropy/io/fits/card.py
+index 8c1ac5d73..9865224e4 100644
+--- a/astropy/io/fits/card.py
++++ b/astropy/io/fits/card.py
+@@ -5,7 +5,7 @@ import warnings
+ 
+ import numpy as np
+ 
+-from .util import _str_to_num, _is_int, translate, _words_group
++from .util import _str_to_num, _is_int, translate, _words_group, decode_ascii
+ from .verify import _Verify, _ErrList, VerifyError, VerifyWarning
+ 
+ from . import conf
+@@ -553,6 +553,10 @@ class Card(_Verify):
+         card(s).
+         """
+ 
++        # Decode bytes to str if necessary
++        if isinstance(image, bytes):
++            image = decode_ascii(image)
++
+         card = cls()
+         card._image = _pad(image)
+         card._verified = False
+@@ -1277,9 +1281,9 @@ def _pad(input):
+         if strlen == 0:
+             return input
+         else:
+-            return input + ' ' * (Card.length - strlen)
++            return input + b' ' * (Card.length - strlen) if isinstance(input, bytes) else input + ' ' * (Card.length - strlen)
+ 
+     # minimum length is 80
+     else:
+         strlen = _len % Card.length
+-        return input + ' ' * (Card.length - strlen)
++        return input + b' ' * (Card.length - strlen) if isinstance(input, bytes) else input + ' ' * (Card.length - strlen)
+diff --git a/astropy/io/fits/header.py b/astropy/io/fits/header.py
+index ad07e6d52..9245f5925 100644
+--- a/astropy/io/fits/header.py
++++ b/astropy/io/fits/header.py
+@@ -334,7 +334,7 @@ class Header:
+ 
+         Parameters
+         ----------
+-        data : str
++        data : str or bytes
+            String containing the entire header.
+ 
+         sep : str, optional
+@@ -348,6 +348,13 @@ class Header:
+             A new `Header` instance.
+         """
+ 
++        # Decode bytes to str if necessary
++        if isinstance(data, bytes):
++            data = decode_ascii(data)
++        elif isinstance(data, np.ndarray):
++            # Convert numpy string array to regular string
++            data = ''.join(data)
++
+         cards = []
+ 
+         # If the card separator contains characters that may validly appear in

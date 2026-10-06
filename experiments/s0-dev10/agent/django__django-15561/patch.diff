@@ -1,0 +1,40 @@
+diff --git a/django/db/backends/base/schema.py b/django/db/backends/base/schema.py
+index 9d6952df21..b9e0edb2e1 100644
+--- a/django/db/backends/base/schema.py
++++ b/django/db/backends/base/schema.py
+@@ -1389,6 +1389,7 @@ class BaseDatabaseSchemaEditor:
+             "related_query_name",
+             "validators",
+             "verbose_name",
++            "choices",
+         ]
+         for attr in non_database_attrs:
+             old_kwargs.pop(attr, None)
+diff --git a/tests/schema/tests.py b/tests/schema/tests.py
+index d9e59d32dc..f0d9429b2a 100644
+--- a/tests/schema/tests.py
++++ b/tests/schema/tests.py
+@@ -3961,6 +3961,23 @@ class SchemaTests(TransactionTestCase):
+         with connection.schema_editor() as editor, self.assertNumQueries(0):
+             editor.alter_field(Book, new_field, old_field, strict=True)
+ 
++    def test_alter_field_choices_noop(self):
++        """
++        No queries are performed when changing only the choices attribute.
++        """
++        with connection.schema_editor() as editor:
++            editor.create_model(Author)
++        old_field = Author._meta.get_field("name")
++        new_field = CharField(
++            max_length=255,
++            choices=[("a", "A"), ("b", "B")],
++        )
++        new_field.set_attributes_from_name("name")
++        with connection.schema_editor() as editor, self.assertNumQueries(0):
++            editor.alter_field(Author, old_field, new_field, strict=True)
++        with connection.schema_editor() as editor, self.assertNumQueries(0):
++            editor.alter_field(Author, new_field, old_field, strict=True)
++
+     def test_add_textfield_unhashable_default(self):
+         # Create the table
+         with connection.schema_editor() as editor:

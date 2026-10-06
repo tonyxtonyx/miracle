@@ -1,0 +1,54 @@
+{
+  "agent_errors": 0,
+  "agent_latency_mean_s": 410.94,
+  "agent_latency_total_s": 4109.39,
+  "completion_tokens": 74984,
+  "cost_per_resolved_usd": 0.1658,
+  "cost_usd": 0.9947707,
+  "dataset": {
+    "name": "SWE-bench/SWE-bench_Verified",
+    "revision": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+    "sha256": "87a3d67eb9108386b0a3406ebd1ada9543cb160cd96cfdb792f82de40cd8bcb8"
+  },
+  "eval_test_runtime_total_s": 119.55,
+  "infra_failures": 0,
+  "llm_calls": 444,
+  "prompt_tokens": 9835231,
+  "resolve_rate": 0.6,
+  "resolved": 6,
+  "run": "s0-dev10",
+  "runtime": {
+    "class": "S0Runtime",
+    "llm": {
+      "api_key_env": "DEEPINFRA_API_KEY",
+      "api_key_set": true,
+      "base_url": "https://api.deepinfra.com/v1/openai",
+      "max_retries": 3,
+      "max_tokens": 4096,
+      "model": "Qwen/Qwen3.5-9B",
+      "reasoning_effort": "none",
+      "temperature": 0.0,
+      "timeout_s": 120.0
+    },
+    "max_steps": 50,
+    "name": "s0-qwen3.5-9b",
+    "strategy": "S0: single ReAct-style tool loop, no architecture",
+    "system_prompt": "You are a software engineering agent. Solve the given issue using the available repository tools. Inspect the repository, make the necessary changes, and verify your solution with tests when possible.",
+    "tools": [
+      "list_files",
+      "read_file",
+      "search_code",
+      "edit_file",
+      "write_file",
+      "run_command",
+      "git_diff"
+    ]
+  },
+  "status_counts": {
+    "empty_patch": 1,
+    "resolved": 6,
+    "unresolved": 3
+  },
+  "tool_calls": 440,
+  "total": 10
+}

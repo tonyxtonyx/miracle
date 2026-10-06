@@ -1,0 +1,2246 @@
++ source /opt/miniconda3/bin/activate
+++ _CONDA_ROOT=/opt/miniconda3
+++ . /opt/miniconda3/etc/profile.d/conda.sh
++++ export CONDA_EXE=/opt/miniconda3/bin/conda
++++ CONDA_EXE=/opt/miniconda3/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ '[' -z '' ']'
++++ export CONDA_SHLVL=0
++++ CONDA_SHLVL=0
++++ '[' -n '' ']'
++++++ dirname /opt/miniconda3/bin/conda
+++++ dirname /opt/miniconda3/bin
++++ PATH=/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++++ export PATH
++++ '[' -z '' ']'
++++ PS1=
+++ conda activate
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1=
++++ __conda_exe shell.posix activate
++++ /opt/miniconda3/bin/conda shell.posix activate
+++ ask_conda='PS1='\''(base) '\''
+export PATH='\''/opt/miniconda3/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
+++ eval 'PS1='\''(base) '\''
+export PATH='\''/opt/miniconda3/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
++++ PS1='(base) '
++++ export PATH=/opt/miniconda3/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++++ PATH=/opt/miniconda3/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++++ export CONDA_PREFIX=/opt/miniconda3
++++ CONDA_PREFIX=/opt/miniconda3
++++ export CONDA_SHLVL=1
++++ CONDA_SHLVL=1
++++ export CONDA_DEFAULT_ENV=base
++++ CONDA_DEFAULT_ENV=base
++++ export 'CONDA_PROMPT_MODIFIER=(base) '
++++ CONDA_PROMPT_MODIFIER='(base) '
++++ export CONDA_EXE=/opt/miniconda3/bin/conda
++++ CONDA_EXE=/opt/miniconda3/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
++ conda activate testbed
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate testbed
++ '[' -n '' ']'
++ local ask_conda
+++ PS1='(base) '
+++ __conda_exe shell.posix activate testbed
+++ /opt/miniconda3/bin/conda shell.posix activate testbed
++ ask_conda='PS1='\''(testbed) '\''
+export PATH='\''/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''testbed'\''
+export CONDA_PROMPT_MODIFIER='\''(testbed) '\''
+export CONDA_PREFIX_1='\''/opt/miniconda3'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
++ eval 'PS1='\''(testbed) '\''
+export PATH='\''/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''testbed'\''
+export CONDA_PROMPT_MODIFIER='\''(testbed) '\''
+export CONDA_PREFIX_1='\''/opt/miniconda3'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
+++ PS1='(testbed) '
+++ export PATH=/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ PATH=/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ export CONDA_PREFIX=/opt/miniconda3/envs/testbed
+++ CONDA_PREFIX=/opt/miniconda3/envs/testbed
+++ export CONDA_SHLVL=2
+++ CONDA_SHLVL=2
+++ export CONDA_DEFAULT_ENV=testbed
+++ CONDA_DEFAULT_ENV=testbed
+++ export 'CONDA_PROMPT_MODIFIER=(testbed) '
+++ CONDA_PROMPT_MODIFIER='(testbed) '
+++ export CONDA_PREFIX_1=/opt/miniconda3
+++ CONDA_PREFIX_1=/opt/miniconda3
+++ export CONDA_EXE=/opt/miniconda3/bin/conda
+++ CONDA_EXE=/opt/miniconda3/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
+++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r
++ cd /testbed
++ git config --global --add safe.directory /testbed
++ cd /testbed
++ git status
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   astropy/io/fits/card.py
+	modified:   astropy/io/fits/header.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
++ git show
+commit 7b678175afc80be7e98db40c6e44360fc5b437fe
+Author: SWE-bench <setup@swebench.com>
+Date:   Thu Aug 13 00:56:51 2026 +0000
+
+    SWE-bench
++ git -c core.fileMode=false diff a85a0747c54bac75e9c3b2fe436b105ea029d6cf
+diff --git a/astropy/io/fits/card.py b/astropy/io/fits/card.py
+index 8c1ac5d73..9865224e4 100644
+--- a/astropy/io/fits/card.py
++++ b/astropy/io/fits/card.py
+@@ -5,7 +5,7 @@ import warnings
+ 
+ import numpy as np
+ 
+-from .util import _str_to_num, _is_int, translate, _words_group
++from .util import _str_to_num, _is_int, translate, _words_group, decode_ascii
+ from .verify import _Verify, _ErrList, VerifyError, VerifyWarning
+ 
+ from . import conf
+@@ -553,6 +553,10 @@ class Card(_Verify):
+         card(s).
+         """
+ 
++        # Decode bytes to str if necessary
++        if isinstance(image, bytes):
++            image = decode_ascii(image)
++
+         card = cls()
+         card._image = _pad(image)
+         card._verified = False
+@@ -1277,9 +1281,9 @@ def _pad(input):
+         if strlen == 0:
+             return input
+         else:
+-            return input + ' ' * (Card.length - strlen)
++            return input + b' ' * (Card.length - strlen) if isinstance(input, bytes) else input + ' ' * (Card.length - strlen)
+ 
+     # minimum length is 80
+     else:
+         strlen = _len % Card.length
+-        return input + ' ' * (Card.length - strlen)
++        return input + b' ' * (Card.length - strlen) if isinstance(input, bytes) else input + ' ' * (Card.length - strlen)
+diff --git a/astropy/io/fits/header.py b/astropy/io/fits/header.py
+index ad07e6d52..9245f5925 100644
+--- a/astropy/io/fits/header.py
++++ b/astropy/io/fits/header.py
+@@ -334,7 +334,7 @@ class Header:
+ 
+         Parameters
+         ----------
+-        data : str
++        data : str or bytes
+            String containing the entire header.
+ 
+         sep : str, optional
+@@ -348,6 +348,13 @@ class Header:
+             A new `Header` instance.
+         """
+ 
++        # Decode bytes to str if necessary
++        if isinstance(data, bytes):
++            data = decode_ascii(data)
++        elif isinstance(data, np.ndarray):
++            # Convert numpy string array to regular string
++            data = ''.join(data)
++
+         cards = []
+ 
+         # If the card separator contains characters that may validly appear in
++ source /opt/miniconda3/bin/activate
+++ _CONDA_ROOT=/opt/miniconda3
+++ . /opt/miniconda3/etc/profile.d/conda.sh
++++ export CONDA_EXE=/opt/miniconda3/bin/conda
++++ CONDA_EXE=/opt/miniconda3/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ '[' -z x ']'
+++ conda activate
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1='(testbed) '
++++ __conda_exe shell.posix activate
++++ /opt/miniconda3/bin/conda shell.posix activate
+++ ask_conda='PS1='\''(base) '\''
+export PATH='\''/opt/miniconda3/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3'\''
+export CONDA_SHLVL='\''3'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_PREFIX_2='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
+++ eval 'PS1='\''(base) '\''
+export PATH='\''/opt/miniconda3/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3'\''
+export CONDA_SHLVL='\''3'\''
+export CONDA_DEFAULT_ENV='\''base'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+export CONDA_PREFIX_2='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
++++ PS1='(base) '
++++ export PATH=/opt/miniconda3/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++++ PATH=/opt/miniconda3/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++++ export CONDA_PREFIX=/opt/miniconda3
++++ CONDA_PREFIX=/opt/miniconda3
++++ export CONDA_SHLVL=3
++++ CONDA_SHLVL=3
++++ export CONDA_DEFAULT_ENV=base
++++ CONDA_DEFAULT_ENV=base
++++ export 'CONDA_PROMPT_MODIFIER=(base) '
++++ CONDA_PROMPT_MODIFIER='(base) '
++++ export CONDA_PREFIX_2=/opt/miniconda3/envs/testbed
++++ CONDA_PREFIX_2=/opt/miniconda3/envs/testbed
++++ export CONDA_EXE=/opt/miniconda3/bin/conda
++++ CONDA_EXE=/opt/miniconda3/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
++ conda activate testbed
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate testbed
++ '[' -n '' ']'
++ local ask_conda
+++ PS1='(base) '
+++ __conda_exe shell.posix activate testbed
+++ /opt/miniconda3/bin/conda shell.posix activate testbed
++ ask_conda='PS1='\''(testbed) '\''
+export PATH='\''/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_SHLVL='\''4'\''
+export CONDA_DEFAULT_ENV='\''testbed'\''
+export CONDA_PROMPT_MODIFIER='\''(testbed) '\''
+export CONDA_PREFIX_3='\''/opt/miniconda3'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
++ eval 'PS1='\''(testbed) '\''
+export PATH='\''/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'\''
+export CONDA_PREFIX='\''/opt/miniconda3/envs/testbed'\''
+export CONDA_SHLVL='\''4'\''
+export CONDA_DEFAULT_ENV='\''testbed'\''
+export CONDA_PROMPT_MODIFIER='\''(testbed) '\''
+export CONDA_PREFIX_3='\''/opt/miniconda3'\''
+export CONDA_EXE='\''/opt/miniconda3/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/miniconda3/bin/python'\'''
+++ PS1='(testbed) '
+++ export PATH=/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ PATH=/opt/miniconda3/envs/testbed/bin:/opt/miniconda3/condabin:/opt/miniconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ export CONDA_PREFIX=/opt/miniconda3/envs/testbed
+++ CONDA_PREFIX=/opt/miniconda3/envs/testbed
+++ export CONDA_SHLVL=4
+++ CONDA_SHLVL=4
+++ export CONDA_DEFAULT_ENV=testbed
+++ CONDA_DEFAULT_ENV=testbed
+++ export 'CONDA_PROMPT_MODIFIER=(testbed) '
+++ CONDA_PROMPT_MODIFIER='(testbed) '
+++ export CONDA_PREFIX_3=/opt/miniconda3
+++ CONDA_PREFIX_3=/opt/miniconda3
+++ export CONDA_EXE=/opt/miniconda3/bin/conda
+++ CONDA_EXE=/opt/miniconda3/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
+++ CONDA_PYTHON_EXE=/opt/miniconda3/bin/python
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r
++ python -m pip install -e '.[test]' --verbose
+Using pip 24.2 from /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pip (python 3.9)
+Obtaining file:///testbed
+  Preparing metadata (setup.py): started
+  Running command python setup.py egg_info
+  running egg_info
+  creating /tmp/pip-pip-egg-info-9i9xpns6/astropy.egg-info
+  writing /tmp/pip-pip-egg-info-9i9xpns6/astropy.egg-info/PKG-INFO
+  writing dependency_links to /tmp/pip-pip-egg-info-9i9xpns6/astropy.egg-info/dependency_links.txt
+  writing entry points to /tmp/pip-pip-egg-info-9i9xpns6/astropy.egg-info/entry_points.txt
+  writing requirements to /tmp/pip-pip-egg-info-9i9xpns6/astropy.egg-info/requires.txt
+  writing top-level names to /tmp/pip-pip-egg-info-9i9xpns6/astropy.egg-info/top_level.txt
+  writing manifest file '/tmp/pip-pip-egg-info-9i9xpns6/astropy.egg-info/SOURCES.txt'
+  reading manifest file '/tmp/pip-pip-egg-info-9i9xpns6/astropy.egg-info/SOURCES.txt'
+  reading manifest template 'MANIFEST.in'
+  warning: no files found matching '*' under directory 'scripts'
+  no previously-included directories found matching 'docs/_build'
+  no previously-included directories found matching 'build'
+  warning: no files found matching '*.pyx' under directory 'astropy_helpers/astropy_helpers'
+  warning: no files found matching '*.h' under directory 'astropy_helpers/astropy_helpers'
+  warning: no files found matching '*.rst' under directory 'astropy_helpers/astropy_helpers'
+  no previously-included directories found matching 'astropy_helpers/build'
+  warning: no previously-included files matching '*.pyc' found anywhere in distribution
+  warning: no previously-included files matching '*.o' found anywhere in distribution
+  adding license file 'LICENSE.rst'
+  writing manifest file '/tmp/pip-pip-egg-info-9i9xpns6/astropy.egg-info/SOURCES.txt'
+  Preparing metadata (setup.py): finished with status 'done'
+Requirement already satisfied: numpy>=1.13 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from astropy==4.0.dev24591) (1.25.2)
+Requirement already satisfied: pytest-astropy in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from astropy==4.0.dev24591) (0.10.0)
+Requirement already satisfied: pytest-xdist in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from astropy==4.0.dev24591) (3.3.1)
+Requirement already satisfied: pytest-mpl in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from astropy==4.0.dev24591) (0.17.0)
+Requirement already satisfied: objgraph in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from astropy==4.0.dev24591) (3.6.2)
+Requirement already satisfied: ipython in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from astropy==4.0.dev24591) (8.18.1)
+Requirement already satisfied: coverage in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from astropy==4.0.dev24591) (7.6.2)
+Requirement already satisfied: skyfield in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from astropy==4.0.dev24591) (1.49)
+Requirement already satisfied: decorator in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from ipython->astropy==4.0.dev24591) (5.1.1)
+Requirement already satisfied: jedi>=0.16 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from ipython->astropy==4.0.dev24591) (0.19.1)
+Requirement already satisfied: matplotlib-inline in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from ipython->astropy==4.0.dev24591) (0.1.7)
+Requirement already satisfied: prompt-toolkit<3.1.0,>=3.0.41 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from ipython->astropy==4.0.dev24591) (3.0.48)
+Requirement already satisfied: pygments>=2.4.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from ipython->astropy==4.0.dev24591) (2.18.0)
+Requirement already satisfied: stack-data in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from ipython->astropy==4.0.dev24591) (0.6.3)
+Requirement already satisfied: traitlets>=5 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from ipython->astropy==4.0.dev24591) (5.14.3)
+Requirement already satisfied: typing-extensions in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from ipython->astropy==4.0.dev24591) (4.12.2)
+Requirement already satisfied: exceptiongroup in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from ipython->astropy==4.0.dev24591) (1.1.3)
+Requirement already satisfied: pexpect>4.3 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from ipython->astropy==4.0.dev24591) (4.9.0)
+Requirement already satisfied: pytest>=4.6 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (7.1.2)
+Requirement already satisfied: pytest-doctestplus>=0.11.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (1.0.0)
+Requirement already satisfied: pytest-remotedata>=0.3.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (0.4.0)
+Requirement already satisfied: pytest-openfiles>=0.3.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (0.5.0)
+Requirement already satisfied: pytest-astropy-header>=0.1.2 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (0.2.2)
+Requirement already satisfied: pytest-arraydiff>=0.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (0.5.0)
+Requirement already satisfied: pytest-filter-subpackage>=0.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (0.1.2)
+Requirement already satisfied: pytest-cov>=2.3.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (4.1.0)
+Requirement already satisfied: pytest-mock>=2.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (3.11.1)
+Requirement already satisfied: attrs>=19.2.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (23.1.0)
+Requirement already satisfied: hypothesis>=5.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-astropy->astropy==4.0.dev24591) (6.82.6)
+Requirement already satisfied: matplotlib in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-mpl->astropy==4.0.dev24591) (3.9.2)
+Requirement already satisfied: packaging in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-mpl->astropy==4.0.dev24591) (23.1)
+Requirement already satisfied: Jinja2 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-mpl->astropy==4.0.dev24591) (3.1.4)
+Requirement already satisfied: Pillow in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-mpl->astropy==4.0.dev24591) (11.0.0)
+Requirement already satisfied: execnet>=1.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-xdist->astropy==4.0.dev24591) (2.0.2)
+Requirement already satisfied: certifi>=2017.4.17 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from skyfield->astropy==4.0.dev24591) (2024.8.30)
+Requirement already satisfied: jplephem>=2.13 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from skyfield->astropy==4.0.dev24591) (2.22)
+Requirement already satisfied: sgp4>=2.2 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from skyfield->astropy==4.0.dev24591) (2.23)
+Requirement already satisfied: sortedcontainers<3.0.0,>=2.1.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from hypothesis>=5.1->pytest-astropy->astropy==4.0.dev24591) (2.4.0)
+Requirement already satisfied: parso<0.9.0,>=0.8.3 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from jedi>=0.16->ipython->astropy==4.0.dev24591) (0.8.4)
+Requirement already satisfied: ptyprocess>=0.5 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pexpect>4.3->ipython->astropy==4.0.dev24591) (0.7.0)
+Requirement already satisfied: wcwidth in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from prompt-toolkit<3.1.0,>=3.0.41->ipython->astropy==4.0.dev24591) (0.2.13)
+Requirement already satisfied: iniconfig in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest>=4.6->pytest-astropy->astropy==4.0.dev24591) (2.0.0)
+Requirement already satisfied: pluggy<2.0,>=0.12 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest>=4.6->pytest-astropy->astropy==4.0.dev24591) (1.3.0)
+Requirement already satisfied: py>=1.8.2 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest>=4.6->pytest-astropy->astropy==4.0.dev24591) (1.11.0)
+Requirement already satisfied: tomli>=1.0.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest>=4.6->pytest-astropy->astropy==4.0.dev24591) (2.0.1)
+Requirement already satisfied: setuptools>=30.3.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-doctestplus>=0.11.0->pytest-astropy->astropy==4.0.dev24591) (58.0.0)
+Requirement already satisfied: psutil in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from pytest-openfiles>=0.3.1->pytest-astropy->astropy==4.0.dev24591) (5.9.5)
+Requirement already satisfied: MarkupSafe>=2.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from Jinja2->pytest-mpl->astropy==4.0.dev24591) (3.0.2)
+Requirement already satisfied: contourpy>=1.0.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from matplotlib->pytest-mpl->astropy==4.0.dev24591) (1.3.0)
+Requirement already satisfied: cycler>=0.10 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from matplotlib->pytest-mpl->astropy==4.0.dev24591) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from matplotlib->pytest-mpl->astropy==4.0.dev24591) (4.54.1)
+Requirement already satisfied: kiwisolver>=1.3.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from matplotlib->pytest-mpl->astropy==4.0.dev24591) (1.4.7)
+Requirement already satisfied: pyparsing>=2.3.1 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from matplotlib->pytest-mpl->astropy==4.0.dev24591) (3.2.0)
+Requirement already satisfied: python-dateutil>=2.7 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from matplotlib->pytest-mpl->astropy==4.0.dev24591) (2.9.0.post0)
+Requirement already satisfied: importlib-resources>=3.2.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from matplotlib->pytest-mpl->astropy==4.0.dev24591) (6.4.5)
+Requirement already satisfied: executing>=1.2.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from stack-data->ipython->astropy==4.0.dev24591) (2.1.0)
+Requirement already satisfied: asttokens>=2.1.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from stack-data->ipython->astropy==4.0.dev24591) (2.4.1)
+Requirement already satisfied: pure-eval in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from stack-data->ipython->astropy==4.0.dev24591) (0.2.3)
+Requirement already satisfied: six>=1.12.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from asttokens>=2.1.0->stack-data->ipython->astropy==4.0.dev24591) (1.16.0)
+Requirement already satisfied: zipp>=3.1.0 in /opt/miniconda3/envs/testbed/lib/python3.9/site-packages (from importlib-resources>=3.2.0->matplotlib->pytest-mpl->astropy==4.0.dev24591) (3.20.2)
+Installing collected packages: astropy
+  Attempting uninstall: astropy
+    Found existing installation: astropy 4.0.dev24590
+    Uninstalling astropy-4.0.dev24590:
+      Removing file or directory /opt/miniconda3/envs/testbed/bin/fits2bitmap
+      Removing file or directory /opt/miniconda3/envs/testbed/bin/fitscheck
+      Removing file or directory /opt/miniconda3/envs/testbed/bin/fitsdiff
+      Removing file or directory /opt/miniconda3/envs/testbed/bin/fitsheader
+      Removing file or directory /opt/miniconda3/envs/testbed/bin/fitsinfo
+      Removing file or directory /opt/miniconda3/envs/testbed/bin/samp_hub
+      Removing file or directory /opt/miniconda3/envs/testbed/bin/showtable
+      Removing file or directory /opt/miniconda3/envs/testbed/bin/volint
+      Removing file or directory /opt/miniconda3/envs/testbed/bin/wcslint
+      Removing file or directory /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astropy.egg-link
+      Removing pth entries from /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/easy-install.pth:
+      Removing entry: /testbed
+      Successfully uninstalled astropy-4.0.dev24590
+  DEPRECATION: Legacy editable install of astropy[test]==4.0.dev24591 from file:///testbed (setup.py develop) is deprecated. pip 25.0 will enforce this behaviour change. A possible replacement is to add a pyproject.toml or enable --use-pep517, and use setuptools >= 64. If the resulting installation is not behaving as expected, try using --config-settings editable_mode=compat. Please consult the setuptools documentation for more information. Discussion can be found at https://github.com/pypa/pip/issues/11457
+  Running setup.py develop for astropy
+    Running command python setup.py develop
+    running develop
+    running egg_info
+    writing astropy.egg-info/PKG-INFO
+    writing dependency_links to astropy.egg-info/dependency_links.txt
+    writing entry points to astropy.egg-info/entry_points.txt
+    writing requirements to astropy.egg-info/requires.txt
+    writing top-level names to astropy.egg-info/top_level.txt
+    reading manifest file 'astropy.egg-info/SOURCES.txt'
+    reading manifest template 'MANIFEST.in'
+    warning: no files found matching '*' under directory 'scripts'
+    no previously-included directories found matching 'docs/_build'
+    no previously-included directories found matching 'build'
+    warning: no files found matching '*.pyx' under directory 'astropy_helpers/astropy_helpers'
+    warning: no files found matching '*.h' under directory 'astropy_helpers/astropy_helpers'
+    warning: no files found matching '*.rst' under directory 'astropy_helpers/astropy_helpers'
+    no previously-included directories found matching 'astropy_helpers/build'
+    warning: no previously-included files matching '*.pyc' found anywhere in distribution
+    warning: no previously-included files matching '*.o' found anywhere in distribution
+    adding license file 'LICENSE.rst'
+    writing manifest file 'astropy.egg-info/SOURCES.txt'
+    running build_ext
+    running pre_hook from astropy.modeling.setup_package for build_ext command
+    running pre_hook from astropy._erfa.setup_package for build_ext command
+    /opt/miniconda3/envs/testbed/lib/python3.9/importlib/__init__.py:169: UserWarning: The NumPy module was reloaded (imported a second time). This can in some cases result in small but subtle issues and is discouraged.
+      _bootstrap._exec(spec, module)
+    building 'astropy.compiler_version' extension
+    gcc -pthread -B /opt/miniconda3/envs/testbed/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -O2 -Wall -fPIC -O2 -isystem /opt/miniconda3/envs/testbed/include -I/opt/miniconda3/envs/testbed/include -fPIC -O2 -isystem /opt/miniconda3/envs/testbed/include -fPIC -I/opt/miniconda3/envs/testbed/include/python3.9 -c astropy/_compiler.c -o build/temp.linux-x86_64-3.9/astropy/_compiler.o
+    gcc -pthread -B /opt/miniconda3/envs/testbed/compiler_compat -shared -Wl,-rpath,/opt/miniconda3/envs/testbed/lib -Wl,-rpath-link,/opt/miniconda3/envs/testbed/lib -L/opt/miniconda3/envs/testbed/lib -L/opt/miniconda3/envs/testbed/lib -Wl,-rpath,/opt/miniconda3/envs/testbed/lib -Wl,-rpath-link,/opt/miniconda3/envs/testbed/lib -L/opt/miniconda3/envs/testbed/lib build/temp.linux-x86_64-3.9/astropy/_compiler.o -o build/lib.linux-x86_64-3.9/astropy/compiler_version.cpython-39-x86_64-linux-gnu.so
+    copying build/lib.linux-x86_64-3.9/astropy/compiler_version.cpython-39-x86_64-linux-gnu.so -> astropy
+    copying build/lib.linux-x86_64-3.9/astropy/compiler_version.cpython-39-x86_64-linux-gnu.so -> astropy
+    copying build/lib.linux-x86_64-3.9/astropy/table/_np_utils.cpython-39-x86_64-linux-gnu.so -> astropy/table
+    copying build/lib.linux-x86_64-3.9/astropy/table/_column_mixins.cpython-39-x86_64-linux-gnu.so -> astropy/table
+    copying build/lib.linux-x86_64-3.9/astropy/modeling/_projections.cpython-39-x86_64-linux-gnu.so -> astropy/modeling
+    copying build/lib.linux-x86_64-3.9/astropy/_erfa/ufunc.cpython-39-x86_64-linux-gnu.so -> astropy/_erfa
+    copying build/lib.linux-x86_64-3.9/astropy/convolution/_convolve.cpython-39-x86_64-linux-gnu.so -> astropy/convolution
+    copying build/lib.linux-x86_64-3.9/astropy/wcs/_wcs.cpython-39-x86_64-linux-gnu.so -> astropy/wcs
+    copying build/lib.linux-x86_64-3.9/astropy/utils/_compiler.cpython-39-x86_64-linux-gnu.so -> astropy/utils
+    copying build/lib.linux-x86_64-3.9/astropy/utils/xml/_iterparser.cpython-39-x86_64-linux-gnu.so -> astropy/utils/xml
+    copying build/lib.linux-x86_64-3.9/astropy/timeseries/periodograms/bls/_impl.cpython-39-x86_64-linux-gnu.so -> astropy/timeseries/periodograms/bls
+    copying build/lib.linux-x86_64-3.9/astropy/io/ascii/cparser.cpython-39-x86_64-linux-gnu.so -> astropy/io/ascii
+    copying build/lib.linux-x86_64-3.9/astropy/io/fits/compression.cpython-39-x86_64-linux-gnu.so -> astropy/io/fits
+    copying build/lib.linux-x86_64-3.9/astropy/io/votable/tablewriter.cpython-39-x86_64-linux-gnu.so -> astropy/io/votable
+    copying build/lib.linux-x86_64-3.9/astropy/stats/_stats.cpython-39-x86_64-linux-gnu.so -> astropy/stats
+    copying build/lib.linux-x86_64-3.9/astropy/cosmology/scalar_inv_efuncs.cpython-39-x86_64-linux-gnu.so -> astropy/cosmology
+    copying build/lib.linux-x86_64-3.9/astropy/timeseries/periodograms/lombscargle/implementations/cython_impl.cpython-39-x86_64-linux-gnu.so -> astropy/timeseries/periodograms/lombscargle/implementations
+    copying build/lib.linux-x86_64-3.9/astropy/io/fits/_utils.cpython-39-x86_64-linux-gnu.so -> astropy/io/fits
+    Creating /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astropy.egg-link (link to .)
+    Adding astropy 4.0.dev24591 to easy-install.pth file
+    Installing fits2bitmap script to /opt/miniconda3/envs/testbed/bin
+    Installing fitscheck script to /opt/miniconda3/envs/testbed/bin
+    Installing fitsdiff script to /opt/miniconda3/envs/testbed/bin
+    Installing fitsheader script to /opt/miniconda3/envs/testbed/bin
+    Installing fitsinfo script to /opt/miniconda3/envs/testbed/bin
+    Installing samp_hub script to /opt/miniconda3/envs/testbed/bin
+    Installing showtable script to /opt/miniconda3/envs/testbed/bin
+    Installing volint script to /opt/miniconda3/envs/testbed/bin
+    Installing wcslint script to /opt/miniconda3/envs/testbed/bin
+
+    Installed /testbed
+Successfully installed astropy
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+  Link requires a different Python (3.9.20 not in: '>=3.10'): https://files.pythonhosted.org/packages/70/7a/be4bd8bcbb24ea475856dd68159d78b03b2bb53dae369f69c9606b8888f5/pip-26.1-py3-none-any.whl (from https://pypi.org/simple/pip/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.20 not in: '>=3.10'): https://files.pythonhosted.org/packages/73/7e/d2b04004e1068ad4fdfa2f227b839b5d03e602e47cdbbf49de71137c9546/pip-26.1.tar.gz (from https://pypi.org/simple/pip/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.20 not in: '>=3.10'): https://files.pythonhosted.org/packages/3a/eb/fea4d1d51c49832120f7f285d07306db3960f423a2612c6057caf3e8196f/pip-26.1.1-py3-none-any.whl (from https://pypi.org/simple/pip/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.20 not in: '>=3.10'): https://files.pythonhosted.org/packages/b6/48/cb9b7a682f6fe01a4221e1728941dd4ac3cd9090a17db3779d6ff490b602/pip-26.1.1.tar.gz (from https://pypi.org/simple/pip/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.20 not in: '>=3.10'): https://files.pythonhosted.org/packages/5d/95/6b5cb3461ea5673ba0995989746db58eb18b91b54dbf331e72f569540946/pip-26.1.2-py3-none-any.whl (from https://pypi.org/simple/pip/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.20 not in: '>=3.10'): https://files.pythonhosted.org/packages/01/91/47e7d486260f618783899587af63ccf7980fb60245c3e63dd4571c6b57ad/pip-26.1.2.tar.gz (from https://pypi.org/simple/pip/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.20 not in: '>=3.10'): https://files.pythonhosted.org/packages/62/36/a3aed958d60531cb442b7ab4596cda7b3621cfb916f8ae1d6769795c7dc1/pip-26.2-py3-none-any.whl (from https://pypi.org/simple/pip/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.20 not in: '>=3.10'): https://files.pythonhosted.org/packages/db/96/e6f8e9d9d7b9cc4457092712a7e919c3186aa2c2fa9ffed2c5d29cc947e8/pip-26.2.tar.gz (from https://pypi.org/simple/pip/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.20 not in: '>=3.10'): https://files.pythonhosted.org/packages/f3/6e/1736e5b4ae2b778ef2f81c47d797de9f891d4d8acb047a24ca37a60294dd/pip-26.2.1-py3-none-any.whl (from https://pypi.org/simple/pip/) (requires-python:>=3.10)
+  Link requires a different Python (3.9.20 not in: '>=3.10'): https://files.pythonhosted.org/packages/ae/15/4500e320e6b101ec3b719ae85b697d9940b6cda672bc555bd6016fc60c6f/pip-26.2.1.tar.gz (from https://pypi.org/simple/pip/) (requires-python:>=3.10)
++ git checkout a85a0747c54bac75e9c3b2fe436b105ea029d6cf astropy/io/fits/tests/test_header.py
+Updated 0 paths from a1021067d
++ git apply -v -
+Checking patch astropy/io/fits/tests/test_header.py...
+Applied patch astropy/io/fits/tests/test_header.py cleanly.
++ python -m pip install -q 'pytest<7.2'
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
++ : '>>>>> Start Test Output'
++ pytest -rA astropy/io/fits/tests/test_header.py
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.1.2, pluggy-1.3.0
+Matplotlib: 3.9.2
+Freetype: 2.6.1
+
+Running tests with Astropy version 4.0.dev24591.
+Running tests in astropy/io/fits/tests/test_header.py.
+
+Date: 2026-10-05T13:15:14
+
+Platform: Linux-6.12.76-linuxkit-x86_64-with-glibc2.35
+
+Executable: /opt/miniconda3/envs/testbed/bin/python
+
+Full Python Version: 
+3.9.20 (main, Oct  3 2024, 07:27:41) 
+[GCC 11.2.0]
+
+encodings: sys: utf-8, locale: UTF-8, filesystem: utf-8
+byteorder: little
+float info: dig: 15, mant_dig: 15
+
+Numpy: 1.25.2
+Scipy: not available
+Matplotlib: 3.9.2
+h5py: not available
+Pandas: not available
+Cython: not available
+Scikit-image: not available
+astropy_helpers: 3.2rc1
+Using Astropy options: remote_data: none.
+
+rootdir: /testbed, configfile: setup.cfg
+plugins: cov-4.1.0, mock-3.11.1, mpl-0.17.0, astropy-header-0.2.2, doctestplus-1.0.0, arraydiff-0.5.0, xdist-3.3.1, openfiles-0.5.0, astropy-0.10.0, filter-subpackage-0.1.2, hypothesis-6.82.6, remotedata-0.4.0
+collected 152 items
+
+astropy/io/fits/tests/test_header.py ..................F................ [ 23%]
+..F........F.........F..................F...........F.............FFF.FF [ 70%]
+.FF...F...FF.....F.....................FF....                            [100%]
+
+=================================== FAILURES ===================================
+___________________ TestHeaderFunctions.test_update_comment ____________________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7ffff95d3d30>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff966a5e0>
+
+    def test_update_comment(self):
+>       hdul = fits.open(self.data('arange.fits'))
+
+astropy/io/fits/tests/test_header.py:231: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / conforms to FITS standard                      BITPIX  =                   32 / arra...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+________________ TestHeaderFunctions.test_long_string_from_file ________________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7ffff96766d0>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff95298e0>
+
+    def test_long_string_from_file(self):
+        c = fits.Card('abc', 'long string value ' * 10, 'long comment ' * 10)
+        hdu = fits.PrimaryHDU()
+        hdu.header.append(c)
+        hdu.writeto(self.temp('test_new.fits'))
+    
+>       hdul = fits.open(self.temp('test_new.fits'))
+
+astropy/io/fits/tests/test_header.py:452: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / conforms to FITS standard                      BITPIX  =                    8 / arra...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+_____________ TestHeaderFunctions.test_verify_mixed_case_hierarch ______________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7fffe6479550>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff9669640>
+
+    def test_verify_mixed_case_hierarch(self):
+        """Regression test for
+        https://github.com/spacetelescope/PyFITS/issues/7
+    
+        Assures that HIERARCH keywords with lower-case characters and other
+        normally invalid keyword characters are not considered invalid.
+        """
+    
+        c = fits.Card('HIERARCH WeirdCard.~!@#_^$%&', 'The value', 'a comment')
+        # This should not raise any exceptions
+        c.verify('exception')
+        assert c.keyword == 'WeirdCard.~!@#_^$%&'
+        assert c.value == 'The value'
+        assert c.comment == 'a comment'
+    
+        # Test also the specific case from the original bug report
+        header = fits.Header([
+            ('simple', True),
+            ('BITPIX', 8),
+            ('NAXIS', 0),
+            ('EXTEND', True, 'May contain datasets'),
+            ('HIERARCH key.META_0', 'detRow')
+        ])
+        hdu = fits.PrimaryHDU(header=header)
+        hdu.writeto(self.temp('test.fits'))
+>       with fits.open(self.temp('test.fits')) as hdul:
+
+astropy/io/fits/tests/test_header.py:603: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / conforms to FITS standard                      BITPIX  =                    8 / arra...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+______________ TestHeaderFunctions.test_header_set_value_to_none _______________
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff95295b0>
+
+    def test_header_set_value_to_none(self):
+        """
+        Setting the value of a card to None should simply give that card an
+        undefined value.  Undefined value should map to None.
+        """
+    
+        header = fits.Header()
+        header['FOO'] = 'BAR'
+        assert header['FOO'] == 'BAR'
+        header['FOO'] = None
+        assert header['FOO'] is None
+    
+        # Create a header that contains an undefined value and a defined
+        # value.
+        hstr = "UNDEF   = \nDEFINED = 42"
+>       header = fits.Header.fromstring(hstr, sep='\n')
+
+astropy/io/fits/tests/test_header.py:823: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>, data = 'UNDEF   = \nDEFINED = 42'
+sep = '\n'
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+_____________________ TestHeaderFunctions.test_header_keys _____________________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7fffe63c6070>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff966afa0>
+
+    def test_header_keys(self):
+>       hdul = fits.open(self.data('arange.fits'))
+
+astropy/io/fits/tests/test_header.py:1029: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / conforms to FITS standard                      BITPIX  =                   32 / arra...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+_________________ TestHeaderFunctions.test_header_extend_exact _________________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7fffe640a6d0>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff95b2ac0>
+
+    def test_header_extend_exact(self):
+        """
+        Test that extending an empty header with the contents of an existing
+        header can exactly duplicate that header, given strip=False and
+        end=True.
+        """
+    
+>       header = fits.getheader(self.data('test0.fits'))
+
+astropy/io/fits/tests/test_header.py:1264: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/convenience.py:105: in getheader
+    hdulist, extidx = _getext(filename, mode, *args, **kwargs)
+astropy/io/fits/convenience.py:1029: in _getext
+    hdulist = fitsopen(filename, mode=mode, **kwargs)
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / file does conform to FITS standard             BITPIX  =                   16 / numb...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+______________________ TestHeaderFunctions.test_totxtfile ______________________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7ffff9522df0>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff952f100>
+
+    def test_totxtfile(self):
+>       hdul = fits.open(self.data('test0.fits'))
+
+astropy/io/fits/tests/test_header.py:1551: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / file does conform to FITS standard             BITPIX  =                   16 / numb...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+_________________ TestHeaderFunctions.test_header_fromtextfile _________________
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff952f310>
+
+    def test_header_fromtextfile(self):
+        """Regression test for https://aeon.stsci.edu/ssb/trac/pyfits/ticket/122
+    
+        Manually write a text file containing some header cards ending with
+        newlines and ensure that fromtextfile can read them back in.
+        """
+    
+        header = fits.Header()
+        header['A'] = ('B', 'C')
+        header['B'] = ('C', 'D')
+        header['C'] = ('D', 'E')
+    
+        with open(self.temp('test.hdr'), 'w') as f:
+            f.write('\n'.join(str(c).strip() for c in header.cards))
+    
+>       header2 = fits.Header.fromtextfile(self.temp('test.hdr'))
+
+astropy/io/fits/tests/test_header.py:1594: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/header.py:721: in fromtextfile
+    return cls.fromfile(fileobj, sep='\n', endcard=endcard, padding=False)
+astropy/io/fits/header.py:460: in fromfile
+    return cls._from_blocks(block_iter, is_binary, sep, endcard,
+astropy/io/fits/header.py:549: in _from_blocks
+    return header_str, cls.fromstring(header_str, sep=sep)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = "A       = 'B       '           / C\nB       = 'C       '           / D\nC       = 'D       '           / E"
+sep = '\n'
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+__________ TestHeaderFunctions.test_header_fromtextfile_with_end_card __________
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff952f430>
+
+    def test_header_fromtextfile_with_end_card(self):
+        """Regression test for https://aeon.stsci.edu/ssb/trac/pyfits/ticket/154
+    
+        Make sure that when a Header is read from a text file that the END card
+        is ignored.
+        """
+    
+        header = fits.Header([('A', 'B', 'C'), ('D', 'E', 'F')])
+    
+        # We don't use header.totextfile here because it writes each card with
+        # trailing spaces to pad them out to 80 characters.  But this bug only
+        # presents itself when each card ends immediately with a newline, and
+        # no trailing spaces
+        with open(self.temp('test.hdr'), 'w') as f:
+            f.write('\n'.join(str(c).strip() for c in header.cards))
+            f.write('\nEND')
+    
+>       new_header = fits.Header.fromtextfile(self.temp('test.hdr'))
+
+astropy/io/fits/tests/test_header.py:1614: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/header.py:721: in fromtextfile
+    return cls.fromfile(fileobj, sep='\n', endcard=endcard, padding=False)
+astropy/io/fits/header.py:460: in fromfile
+    return cls._from_blocks(block_iter, is_binary, sep, endcard,
+astropy/io/fits/header.py:549: in _from_blocks
+    return header_str, cls.fromstring(header_str, sep=sep)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = "A       = 'B       '           / C\nD       = 'E       '           / F\nEND"
+sep = '\n'
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+__________________ TestHeaderFunctions.test_invalid_end_cards __________________
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff966f820>
+
+    def test_invalid_end_cards(self):
+        """
+        Regression test for https://aeon.stsci.edu/ssb/trac/pyfits/ticket/217
+    
+        This tests the case where the END card looks like a normal card like
+        'END = ' and other similar oddities.  As long as a card starts with END
+        and looks like it was intended to be the END card we allow it, but with
+        a warning.
+        """
+    
+        horig = fits.PrimaryHDU(data=np.arange(100)).header
+    
+        def invalid_header(end, pad):
+            # Build up a goofy invalid header
+            # Start from a seemingly normal header
+            s = horig.tostring(sep='', endcard=False, padding=False)
+            # append the bogus end card
+            s += end
+            # add additional padding if requested
+            if pad:
+                s += ' ' * _pad_length(len(s))
+    
+            # This will differ between Python versions
+            if isinstance(s, bytes):
+                return BytesIO(s)
+            else:
+                return StringIO(s)
+    
+        # Basic case motivated by the original issue; it's as if the END card
+        # was appened by software that doesn't know to treat it specially, and
+        # it is given an = after it
+        s = invalid_header('END =', True)
+    
+        with catch_warnings() as w:
+>           h = fits.Header.fromfile(s)
+
+astropy/io/fits/tests/test_header.py:1672: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/header.py:460: in fromfile
+    return cls._from_blocks(block_iter, is_binary, sep, endcard,
+astropy/io/fits/header.py:549: in _from_blocks
+    return header_str, cls.fromstring(header_str, sep=sep)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / conforms to FITS standard                      BITPIX  =                   64 / arra...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+_________________ TestHeaderFunctions.test_invalid_characters __________________
+
+cls = <class 'astropy.io.fits.hdu.base._BaseHDU'>
+data = <astropy.io.fits.file._File <_io.FileIO name='/tmp/fits-test-v1irb_v2/test2.fits' mode='rb' closefd=True>>
+header = None, checksum = False, ignore_missing_end = False
+kwargs = {'uint': True}, hdu_buffer = None, hdu_fileobj = None
+header_offset = 0
+
+    @classmethod
+    def _readfrom_internal(cls, data, header=None, checksum=False,
+                           ignore_missing_end=False, **kwargs):
+        """
+        Provides the bulk of the internal implementation for readfrom and
+        fromstring.
+    
+        For some special cases, supports using a header that was already
+        created, and just using the input data for the actual array data.
+        """
+    
+        hdu_buffer = None
+        hdu_fileobj = None
+        header_offset = 0
+    
+        if isinstance(data, _File):
+            if header is None:
+                header_offset = data.tell()
+                try:
+                    # First we try to read the header with the fast parser
+                    # from _BasicHeader, which will read only the standard
+                    # 8 character keywords to get the structural keywords
+                    # that are needed to build the HDU object.
+>                   header_str, header = _BasicHeader.fromfile(data)
+
+astropy/io/fits/hdu/base.py:387: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header._BasicHeader'>
+fileobj = <astropy.io.fits.file._File <_io.FileIO name='/tmp/fits-test-v1irb_v2/test2.fits' mode='rb' closefd=True>>
+
+    @classmethod
+    def fromfile(cls, fileobj):
+        """The main method to parse a FITS header from a file. The parsing is
+        done with the parse_header function implemented in Cython."""
+    
+        close_file = False
+        if isinstance(fileobj, str):
+            fileobj = open(fileobj, 'rb')
+            close_file = True
+    
+        try:
+>           header_str, cards = parse_header(fileobj)
+
+astropy/io/fits/header.py:2025: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   block_str = block.decode('ascii')
+E   UnicodeDecodeError: 'ascii' codec can't decode byte 0xc0 in position 332: ordinal not in range(128)
+
+astropy/io/fits/_utils.pyx:38: UnicodeDecodeError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff966f850>
+
+    def test_invalid_characters(self):
+        """
+        Test header with invalid characters
+        """
+    
+        # Generate invalid file with non-ASCII character
+        h = fits.Header()
+        h['FOO'] = 'BAR'
+        h['COMMENT'] = 'hello'
+        hdul = fits.PrimaryHDU(header=h, data=np.arange(5))
+        hdul.writeto(self.temp('test.fits'))
+    
+        with open(self.temp('test.fits'), 'rb') as f:
+            out = f.read()
+        out = out.replace(b'hello', u'héllo'.encode('latin1'))
+        out = out.replace(b'BAR', u'BÀR'.encode('latin1'))
+        with open(self.temp('test2.fits'), 'wb') as f2:
+            f2.write(out)
+    
+        with catch_warnings() as w:
+>           h = fits.getheader(self.temp('test2.fits'))
+
+astropy/io/fits/tests/test_header.py:1731: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/convenience.py:105: in getheader
+    hdulist, extidx = _getext(filename, mode, *args, **kwargs)
+astropy/io/fits/convenience.py:1029: in _getext
+    hdulist = fitsopen(filename, mode=mode, **kwargs)
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1139: in _read_next_hdu
+    hdu = _BaseHDU.readfrom(fileobj, **kwargs)
+astropy/io/fits/hdu/base.py:315: in readfrom
+    hdu = cls._readfrom_internal(fileobj, checksum=checksum,
+astropy/io/fits/hdu/base.py:394: in _readfrom_internal
+    header = Header.fromfile(data,
+astropy/io/fits/header.py:460: in fromfile
+    return cls._from_blocks(block_iter, is_binary, sep, endcard,
+astropy/io/fits/header.py:549: in _from_blocks
+    return header_str, cls.fromstring(header_str, sep=sep)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / conforms to FITS standard                      BITPIX  =                   64 / arra...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+_________________ TestHeaderFunctions.test_invalid_float_cards _________________
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff966f2e0>
+
+    def test_invalid_float_cards(self):
+        """Regression test for https://aeon.stsci.edu/ssb/trac/pyfits/ticket/137"""
+    
+        # Create a header containing two of the problematic cards in the test
+        # case where this came up:
+        hstr = "FOCALLEN= +1.550000000000e+002\nAPERTURE= +0.000000000000e+000"
+>       h = fits.Header.fromstring(hstr, sep='\n')
+
+astropy/io/fits/tests/test_header.py:1784: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'FOCALLEN= +1.550000000000e+002\nAPERTURE= +0.000000000000e+000'
+sep = '\n'
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+________________ TestHeaderFunctions.test_invalid_float_cards2 _________________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7ffff9574d00>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff966f190>
+capsys = <_pytest.capture.CaptureFixture object at 0x7ffff95747f0>
+
+    def test_invalid_float_cards2(self, capsys):
+        """
+        Regression test for https://aeon.stsci.edu/ssb/trac/pyfits/ticket/140
+        """
+    
+        # The example for this test requires creating a FITS file containing a
+        # slightly misformatted float value.  I can't actually even find a way
+        # to do that directly through Astropy--it won't let me.
+        hdu = fits.PrimaryHDU()
+        hdu.header['TEST'] = 5.0022221e-07
+        hdu.writeto(self.temp('test.fits'))
+    
+        # Here we manually make the file invalid
+        with open(self.temp('test.fits'), 'rb+') as f:
+            f.seek(346)  # Location of the exponent 'E' symbol
+            f.write(encode_ascii('e'))
+    
+>       hdul = fits.open(self.temp('test.fits'))
+
+astropy/io/fits/tests/test_header.py:1849: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / conforms to FITS standard                      BITPIX  =                    8 / arra...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+___________________ TestHeaderFunctions.test_end_in_comment ____________________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7ffff952f160>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff966ff70>
+
+    def test_end_in_comment(self):
+        """
+        Regression test for https://aeon.stsci.edu/ssb/trac/pyfits/ticket/142
+    
+        Tests a case where the comment of a card ends with END, and is followed
+        by several blank cards.
+        """
+    
+        data = np.arange(100).reshape(10, 10)
+        hdu = fits.PrimaryHDU(data=data)
+        hdu.header['TESTKW'] = ('Test val', 'This is the END')
+        # Add a couple blanks after the END string
+        hdu.header.append()
+        hdu.header.append()
+        hdu.writeto(self.temp('test.fits'))
+    
+>       with fits.open(self.temp('test.fits'), memmap=False) as hdul:
+
+astropy/io/fits/tests/test_header.py:1988: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / conforms to FITS standard                      BITPIX  =                   64 / arra...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+________ TestHeaderFunctions.test_keep_duplicate_history_in_orig_header ________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7fffe6c4a520>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff966fee0>
+
+    def test_keep_duplicate_history_in_orig_header(self):
+        """
+        Regression test for https://aeon.stsci.edu/ssb/trac/pyfits/ticket/156
+    
+        When creating a new HDU from an existing Header read from an existing
+        FITS file, if the origianl header contains duplicate HISTORY values
+        those duplicates should be preserved just as in the original header.
+    
+        This bug occurred due to naivete in Header.extend.
+        """
+    
+        history = ['CCD parameters table ...',
+                   '   reference table oref$n951041ko_ccd.fits',
+                   '     INFLIGHT 12/07/2001 25/02/2002',
+                   '     all bias frames'] * 3
+    
+        hdu = fits.PrimaryHDU()
+        # Add the history entries twice
+        for item in history:
+            hdu.header['HISTORY'] = item
+    
+        hdu.writeto(self.temp('test.fits'))
+    
+>       with fits.open(self.temp('test.fits')) as hdul:
+
+astropy/io/fits/tests/test_header.py:2119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / conforms to FITS standard                      BITPIX  =                    8 / arra...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+________________ TestHeaderFunctions.test_invalid_keyword_cards ________________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7ffff8f1deb0>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff966f610>
+
+    def test_invalid_keyword_cards(self):
+        """
+        Test for https://aeon.stsci.edu/ssb/trac/pyfits/ticket/109
+    
+        Allow opening files with headers containing invalid keywords.
+        """
+    
+        # Create a header containing a few different types of BAD headers.
+        c1 = fits.Card.fromstring('CLFIND2D: contour = 0.30')
+        c2 = fits.Card.fromstring('Just some random text.')
+        c3 = fits.Card.fromstring('A' * 80)
+    
+        hdu = fits.PrimaryHDU()
+        # This should work with some warnings
+        with catch_warnings() as w:
+            hdu.header.append(c1)
+            hdu.header.append(c2)
+            hdu.header.append(c3)
+        assert len(w) == 3
+    
+        hdu.writeto(self.temp('test.fits'))
+    
+        with catch_warnings() as w:
+>           with fits.open(self.temp('test.fits')) as hdul:
+
+astropy/io/fits/tests/test_header.py:2152: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / conforms to FITS standard                      BITPIX  =                    8 / arra...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+_______________ TestHeaderFunctions.test_header_fromstring_bytes _______________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7ffff95dac10>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestHeaderFunctions object at 0x7ffff96d6ca0>
+
+    def test_header_fromstring_bytes(self):
+        """
+        Test reading a Header from a `bytes` string.
+    
+        See https://github.com/astropy/astropy/issues/8706
+        """
+    
+        with open(self.data('test0.fits'), 'rb') as fobj:
+            pri_hdr_from_bytes = fits.Header.fromstring(fobj.read())
+    
+>       pri_hdr = fits.getheader(self.data('test0.fits'))
+
+astropy/io/fits/tests/test_header.py:2351: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/convenience.py:105: in getheader
+    hdulist, extidx = _getext(filename, mode, *args, **kwargs)
+astropy/io/fits/convenience.py:1029: in _getext
+    hdulist = fitsopen(filename, mode=mode, **kwargs)
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / file does conform to FITS standard             BITPIX  =                   16 / numb...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+_____________ TestRecordValuedKeywordCards.test_fitsheader_script ______________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7fffe6479e20>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestRecordValuedKeywordCards object at 0x7ffff950f520>
+
+    def test_fitsheader_script(self):
+        """Tests the basic functionality of the `fitsheader` script."""
+        from astropy.io.fits.scripts import fitsheader
+    
+        # Can an extension by specified by the EXTNAME keyword?
+>       hf = fitsheader.HeaderFormatter(self.data('zerowidth.fits'))
+
+astropy/io/fits/tests/test_header.py:2741: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/scripts/fitsheader.py:99: in __init__
+    self._hdulist = fits.open(filename)
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / Standard FITS file                             BITPIX  =                    8 /     ...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+__________ TestRecordValuedKeywordCards.test_fitsheader_table_feature __________
+
+self = <astropy.io.fits.header._DelayedHeader object at 0x7ffff95d2c10>
+obj = <astropy.io.fits.hdu.image.PrimaryHDU object at 0x7ffff95a15b0>
+owner = <class 'astropy.io.fits.hdu.image.PrimaryHDU'>
+
+    def __get__(self, obj, owner=None):
+        try:
+>           return obj.__dict__['_header']
+E           KeyError: '_header'
+
+astropy/io/fits/header.py:1921: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <astropy.io.fits.tests.test_header.TestRecordValuedKeywordCards object at 0x7ffff950ffd0>
+
+    def test_fitsheader_table_feature(self):
+        """Tests the `--table` feature of the `fitsheader` script."""
+        from astropy.io import fits
+        from astropy.io.fits.scripts import fitsheader
+        test_filename = self.data('zerowidth.fits')
+>       fitsobj = fits.open(test_filename)
+
+astropy/io/fits/tests/test_header.py:2781: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+astropy/io/fits/hdu/hdulist.py:150: in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+astropy/io/fits/hdu/hdulist.py:388: in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+astropy/io/fits/hdu/hdulist.py:1064: in _readfrom
+    read_one = hdulist._read_next_hdu()
+astropy/io/fits/hdu/hdulist.py:1166: in _read_next_hdu
+    self.update_extend()
+astropy/io/fits/hdu/hdulist.py:851: in update_extend
+    hdr = self[0].header
+astropy/io/fits/hdu/image.py:204: in header
+    return self._header
+astropy/io/fits/header.py:1924: in __get__
+    hdr = Header.fromstring(obj._header_str)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'astropy.io.fits.header.Header'>
+data = 'SIMPLE  =                    T / Standard FITS file                             BITPIX  =                    8 /     ...                                                                                                                      '
+sep = ''
+
+    @classmethod
+    def fromstring(cls, data, sep=''):
+        """
+        Creates an HDU header from a byte string containing the entire header
+        data.
+    
+        Parameters
+        ----------
+        data : str or bytes
+           String containing the entire header.
+    
+        sep : str, optional
+            The string separating cards from each other, such as a newline.  By
+            default there is no card separator (as is the case in a raw FITS
+            file).
+    
+        Returns
+        -------
+        header
+            A new `Header` instance.
+        """
+    
+        # Decode bytes to str if necessary
+        if isinstance(data, bytes):
+            data = decode_ascii(data)
+>       elif isinstance(data, np.ndarray):
+E       NameError: name 'np' is not defined
+
+astropy/io/fits/header.py:354: NameError
+==================================== PASSES ====================================
+__________ TestHeaderFunctions.test_short_hierarch_create_and_update ___________
+----------------------------- Captured stdout call -----------------------------
+[<class 'astropy.io.fits.verify.VerifyWarning'>]
+=========================== short test summary info ============================
+PASSED astropy/io/fits/tests/test_header.py::test_shallow_copy
+PASSED astropy/io/fits/tests/test_header.py::test_init_with_header
+PASSED astropy/io/fits/tests/test_header.py::test_init_with_dict
+PASSED astropy/io/fits/tests/test_header.py::test_init_with_ordereddict
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_rename_keyword
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_card_constructor_default_args
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_card_from_bytes
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_string_value_card
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_boolean_value_card
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_long_integer_value_card
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_floating_point_value_card
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_complex_value_card
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_card_image_constructed_too_long
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_constructor_filter_illegal_data_structures
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_keyword_too_long
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_illegal_characters_in_key
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_add_commentary
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_update
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_commentary_cards
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_commentary_card_created_by_fromstring
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_commentary_card_will_not_parse_numerical_value
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_equal_sign_after_column8
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_blank_keyword
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_specify_undefined_value
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_complex_number_using_string_input
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_fixable_non_standard_fits_card
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_fixable_non_fsc
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_undefined_value_using_string_input
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_mislocated_equal_sign
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_equal_only_up_to_column_10
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_verify_invalid_equal_sign
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_fix_invalid_equal_sign
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_long_string_value
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_long_unicode_string
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_long_string_repr
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_blank_keyword_long_value
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_word_in_long_string_too_long
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_long_string_value_via_fromstring
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_continue_card_with_equals_in_value
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_final_continue_card_lacks_ampersand
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_final_continue_card_ampersand_removal_on_long_comments
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_hierarch_card_creation
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_hierarch_with_abbrev_value_indicator
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_hierarch_keyword_whitespace
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_missing_keyword
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_hierarch_card_lookup
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_hierarch_card_delete
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_hierarch_card_insert_delete
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_hierarch_create_and_update
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_short_hierarch_create_and_update
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_setitem_invalid
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_setitem_1tuple
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_setitem_2tuple
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_set_comment_only
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_iter
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_slice
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_slice_assignment
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_slice_delete
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_wildcard_slice
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_wildcard_with_hyphen
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_wildcard_slice_assignment
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_wildcard_slice_deletion
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_history
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_clear
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_fromkeys
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_fromkeys_with_value
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_fromkeys_with_value_and_comment
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_fromkeys_with_duplicates
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_items
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_iterkeys
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_itervalues
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_list_like_pop
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_dict_like_pop
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_popitem
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_setdefault
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_update_from_dict
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_update_from_iterable
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_extend
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_extend_unique
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_extend_unique_commentary
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_extend_update
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_extend_update_commentary
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_count
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_append_use_blanks
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_append_keyword_only
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_insert_use_blanks
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_insert_before_keyword
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_remove
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_comments
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_comment_slices_and_filters
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_comment_slice_filter_assign
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_commentary_slicing
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_update_commentary
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_commentary_comparison
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_long_commentary_card
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_append_end_card
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_unnecessary_move
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_leading_zeros
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_assign_boolean
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_method_keyword_normalization
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_assign_unicode
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_assign_non_ascii
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_strip_whitespace
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_fix_hierarch_with_invalid_value
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_assign_inf_nan
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_update_bool
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_update_numeric
+PASSED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_newlines_in_commentary
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_initialize_rvkc
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_parse_field_specifier
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_update_field_specifier
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_field_specifier_case_senstivity
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_get_rvkc_by_index
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_get_rvkc_by_keyword
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_get_rvkc_by_keyword_and_field_specifier
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_access_nonexistent_rvkc
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_update_rvkc
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_update_rvkc_2
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_raw_keyword_value
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_rvkc_insert_after
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_rvkc_delete
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_pattern_matching_keys
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_pattern_matching_key_deletion
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_successive_pattern_matching
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_rvkc_in_cardlist_keys
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_rvkc_in_cardlist_values
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_rvkc_value_attribute
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_overly_permissive_parsing
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_overly_aggressive_rvkc_lookup
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_hdu_writeto_mode[wb]
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_hdu_writeto_mode[wb+]
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_hdu_writeto_mode[ab]
+PASSED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_hdu_writeto_mode[ab+]
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_update_comment
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_long_string_from_file
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_verify_mixed_case_hierarch
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_set_value_to_none
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_keys
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_extend_exact
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_totxtfile
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_fromtextfile
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_fromtextfile_with_end_card
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_invalid_end_cards
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_invalid_characters
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_invalid_float_cards
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_invalid_float_cards2
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_end_in_comment
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_keep_duplicate_history_in_orig_header
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_invalid_keyword_cards
+FAILED astropy/io/fits/tests/test_header.py::TestHeaderFunctions::test_header_fromstring_bytes
+FAILED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_fitsheader_script
+FAILED astropy/io/fits/tests/test_header.py::TestRecordValuedKeywordCards::test_fitsheader_table_feature
+======================== 19 failed, 133 passed in 3.27s ========================
++ SWEBENCH_TEST_EXIT_CODE=1
++ : '>>>>> End Test Output'
++ echo '>>>>> Test Exit Code: 1'
++ git checkout a85a0747c54bac75e9c3b2fe436b105ea029d6cf astropy/io/fits/tests/test_header.py
+>>>>> Test Exit Code: 1
+Updated 1 path from a1021067d

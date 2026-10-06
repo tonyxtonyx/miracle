@@ -1,0 +1,1 @@
+Release notes: pricing now rounds to cents. Stock alerts use the low stock threshold.

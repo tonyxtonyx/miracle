@@ -1,0 +1,21 @@
+{
+  "name": "smoke",
+  "dataset": {
+    "name": "SWE-bench/SWE-bench_Verified",
+    "revision": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+    "sha256": "87a3d67eb9108386b0a3406ebd1ada9543cb160cd96cfdb792f82de40cd8bcb8"
+  },
+  "spec": {
+    "ids": [
+      "django__django-11099"
+    ],
+    "repos": [],
+    "difficulties": [],
+    "exclude": [],
+    "n": null,
+    "seed": 0
+  },
+  "instance_ids": [
+    "django__django-11099"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "dataset": "<project>/runs/s0-dev10/instances.jsonl",
+  "split": "test",
+  "task_repo": null,
+  "created_at": "2026-10-05T14:36:45+00:00"
+}

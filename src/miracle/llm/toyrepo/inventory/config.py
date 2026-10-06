@@ -1,0 +1,5 @@
+"""Shared settings."""
+
+DEFAULT_CURRENCY = "EUR"
+MAX_ITEMS_PER_ORDER = 42
+TAX_RATE = 0.0825

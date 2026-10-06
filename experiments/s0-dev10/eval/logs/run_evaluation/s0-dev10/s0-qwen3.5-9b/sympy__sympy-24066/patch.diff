@@ -1,0 +1,277 @@
+diff --git a/sympy/physics/units/unitsystem.py b/sympy/physics/units/unitsystem.py
+index 3daf84c108..b4f4f6d83d 100755
+--- a/sympy/physics/units/unitsystem.py
++++ b/sympy/physics/units/unitsystem.py
+@@ -192,6 +192,10 @@ def _collect_factor_and_dimension(self, expr):
+         elif isinstance(expr, Function):
+             fds = [self._collect_factor_and_dimension(
+                 arg) for arg in expr.args]
++            # Check if all arguments are dimensionless
++            if all(self.get_dimension_system().is_dimensionless(d[1]) for d in fds):
++                return (expr.func(*(f[0] for f in fds)),
++                        1)
+             return (expr.func(*(f[0] for f in fds)),
+                     *(d[1] for d in fds))
+         elif isinstance(expr, Dimension):
+diff --git a/test_bug.py b/test_bug.py
+new file mode 100644
+index 0000000000..1f48063250
+--- /dev/null
++++ b/test_bug.py
+@@ -0,0 +1,20 @@
++from sympy import exp
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++expr = units.second / (units.ohm * units.farad)
++dim = SI._collect_factor_and_dimension(expr)[1]
++
++print(f"expr = {expr}")
++print(f"dim = {dim}")
++print(f"Is dimensionless? {SI.get_dimension_system().is_dimensionless(dim)}")
++
++assert SI.get_dimension_system().is_dimensionless(dim), "expr should be dimensionless"
++
++buggy_expr = 100 + exp(expr)
++print(f"\nbuggy_expr = {buggy_expr}")
++try:
++    result = SI._collect_factor_and_dimension(buggy_expr)
++    print(f"Result: {result}")
++except ValueError as e:
++    print(f"ValueError: {e}")
+diff --git a/test_cap_imp.py b/test_cap_imp.py
+new file mode 100644
+index 0000000000..fd44b2b0eb
+--- /dev/null
++++ b/test_cap_imp.py
+@@ -0,0 +1,19 @@
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++print(f"capacitance: {units.capacitance}")
++print(f"get_dimensional_expr(capacitance): {SI.get_dimensional_expr(units.capacitance)}")
++print(f"impedance: {units.impedance}")
++print(f"get_dimensional_expr(impedance): {SI.get_dimensional_expr(units.impedance)}")
++
++print(f"\nfarad: {units.farad}")
++print(f"get_dimensional_expr(farad): {SI.get_dimensional_expr(units.farad)}")
++print(f"ohm: {units.ohm}")
++print(f"get_dimensional_expr(ohm): {SI.get_dimensional_expr(units.ohm)}")
++
++print(f"\nsecond: {units.second}")
++print(f"get_dimensional_expr(second): {SI.get_dimensional_expr(units.second)}")
++
++print(f"\nexpr = second/(farad*ohm)")
++expr = units.second / (units.farad * units.ohm)
++print(f"get_dimensional_expr(expr): {SI.get_dimensional_expr(expr)}")
+diff --git a/test_debug.py b/test_debug.py
+new file mode 100644
+index 0000000000..9f2c066df4
+--- /dev/null
++++ b/test_debug.py
+@@ -0,0 +1,28 @@
++from sympy import exp
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++expr = units.second / (units.ohm * units.farad)
++
++print(f"expr = {expr}")
++print(f"Type: {type(expr)}")
++
++# Check if expr is dimensionless
++factor, dim = SI._collect_factor_and_dimension(expr)
++print(f"_collect_factor_and_dimension(expr): ({factor}, {dim})")
++print(f"dim == 1? {dim == 1}")
++print(f"Is dim dimensionless? {SI.get_dimension_system().is_dimensionless(dim)}")
++
++# Check exp(expr)
++exp_expr = exp(expr)
++print(f"\nexp_expr = {exp_expr}")
++print(f"Type: {type(exp_expr)}")
++print(f"exp_expr.args: {exp_expr.args}")
++print(f"exp_expr.func: {exp_expr.func}")
++
++# Check _collect_factor_and_dimension for exp(expr)
++try:
++    result = SI._collect_factor_and_dimension(exp_expr)
++    print(f"_collect_factor_and_dimension(exp_expr): {result}")
++except Exception as e:
++    print(f"Error: {e}")
+diff --git a/test_debug2.py b/test_debug2.py
+new file mode 100644
+index 0000000000..ee0a9a00f9
+--- /dev/null
++++ b/test_debug2.py
+@@ -0,0 +1,32 @@
++from sympy import exp
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++expr = units.second / (units.ohm * units.farad)
++
++print(f"expr = {expr}")
++
++# Check exp(expr)
++exp_expr = exp(expr)
++print(f"\nexp_expr = {exp_expr}")
++
++# Check _collect_factor_and_dimension for exp(expr)
++result = SI._collect_factor_and_dimension(exp_expr)
++print(f"_collect_factor_and_dimension(exp_expr): {result}")
++print(f"result[1] = {result[1]}")
++print(f"type(result[1]) = {type(result[1])}")
++print(f"result[1] == 1? {result[1] == 1}")
++
++# Check the Add case
++add_expr = 100 + exp_expr
++print(f"\nadd_expr = {add_expr}")
++print(f"add_expr.args: {add_expr.args}")
++
++# Check _collect_factor_and_dimension for add_expr
++try:
++    result2 = SI._collect_factor_and_dimension(add_expr)
++    print(f"_collect_factor_and_dimension(add_expr): {result2}")
++except Exception as e:
++    print(f"Error: {e}")
++    import traceback
++    traceback.print_exc()
+diff --git a/test_dim_check.py b/test_dim_check.py
+new file mode 100644
+index 0000000000..cf1cf33fcc
+--- /dev/null
++++ b/test_dim_check.py
+@@ -0,0 +1,18 @@
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++# Check if time/(capacitance*impedance) is dimensionless
++dim = units.time / (units.capacitance * units.impedance)
++print(f"dim = {dim}")
++print(f"dim.name: {dim.name}")
++print(f"Is dim dimensionless? {SI.get_dimension_system().is_dimensionless(dim)}")
++
++# Let's check the dimensions of capacitance and impedance
++print(f"\ncapacitance dimension: {SI.get_dimensional_expr(units.capacitance)}")
++print(f"impedance dimension: {SI.get_dimensional_expr(units.impedance)}")
++
++# Check what farad and ohm are
++print(f"\nfarad: {units.farad}")
++print(f"ohm: {units.ohm}")
++print(f"farad dimension: {SI.get_quantity_dimension(units.farad)}")
++print(f"ohm dimension: {SI.get_quantity_dimension(units.ohm)}")
+diff --git a/test_dim_expr.py b/test_dim_expr.py
+new file mode 100644
+index 0000000000..6c4ad20ffe
+--- /dev/null
++++ b/test_dim_expr.py
+@@ -0,0 +1,15 @@
++from sympy import exp
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++expr = units.second / (units.ohm * units.farad)
++
++print(f"expr = {expr}")
++print(f"get_dimensional_expr(expr): {SI.get_dimensional_expr(expr)}")
++print(f"type: {type(SI.get_dimensional_expr(expr))}")
++
++# Check exp(expr)
++exp_expr = exp(expr)
++print(f"\nexp_expr = {exp_expr}")
++print(f"get_dimensional_expr(exp_expr): {SI.get_dimensional_expr(exp_expr)}")
++print(f"type: {type(SI.get_dimensional_expr(exp_expr))}")
+diff --git a/test_dim_expr2.py b/test_dim_expr2.py
+new file mode 100644
+index 0000000000..b39143568d
+--- /dev/null
++++ b/test_dim_expr2.py
+@@ -0,0 +1,14 @@
++from sympy import exp
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++expr = units.second / (units.ohm * units.farad)
++
++print(f"expr = {expr}")
++print(f"get_dimensional_expr(expr): {SI.get_dimensional_expr(expr)}")
++print(f"get_dimensional_expr(expr) == 1? {SI.get_dimensional_expr(expr) == 1}")
++
++# Check if expr is dimensionless
++from sympy.physics.units.dimensions import Dimension
++dim = SI.get_dimensional_expr(expr)
++print(f"\nIs dim dimensionless? {SI.get_dimension_system().is_dimensionless(Dimension(dim))}")
+diff --git a/test_exp_dimless.py b/test_exp_dimless.py
+new file mode 100644
+index 0000000000..ed45f7cb03
+--- /dev/null
++++ b/test_exp_dimless.py
+@@ -0,0 +1,19 @@
++from sympy import exp
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++expr = units.second / (units.ohm * units.farad)
++
++print(f"expr = {expr}")
++print(f"get_dimensional_expr(expr): {SI.get_dimensional_expr(expr)}")
++print(f"Type: {type(SI.get_dimensional_expr(expr))}")
++
++# Let's check the dimension of each component
++print(f"\nsecond dimension: {SI.get_dimensional_expr(units.second)}")
++print(f"ohm dimension: {SI.get_dimensional_expr(units.ohm)}")
++print(f"farad dimension: {SI.get_dimensional_expr(units.farad)}")
++
++# Check if the expression is dimensionless using _collect_factor_and_dimension
++factor, dim = SI._collect_factor_and_dimension(expr)
++print(f"\n_collect_factor_and_dimension(expr): ({factor}, {dim})")
++print(f"Is dim dimensionless? {SI.get_dimension_system().is_dimensionless(dim)}")
+diff --git a/test_log.py b/test_log.py
+new file mode 100644
+index 0000000000..592fd22f75
+--- /dev/null
++++ b/test_log.py
+@@ -0,0 +1,20 @@
++from sympy import log, exp
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++from sympy.physics.units import Quantity
++
++cH = Quantity('cH')
++SI.set_quantity_dimension(cH, units.amount_of_substance/units.volume)
++
++pH = -log(cH)
++
++print(f"cH dimension: {SI.get_quantity_dimension(cH)}")
++print(f"pH = {pH}")
++print(f"pH args: {pH.args}")
++print(f"pH.func: {pH.func}")
++
++print(f"\nget_dimensional_expr(pH): {SI.get_dimensional_expr(pH)}")
++print(f"get_dimensional_expr(cH): {SI.get_dimensional_expr(cH)}")
++
++print(f"\n_collect_factor_and_dimension(pH): {SI._collect_factor_and_dimension(pH)}")
++print(f"_collect_factor_and_dimension(exp(pH)): {SI._collect_factor_and_dimension(exp(pH))}")
+diff --git a/test_sin.py b/test_sin.py
+new file mode 100644
+index 0000000000..57842b3a8f
+--- /dev/null
++++ b/test_sin.py
+@@ -0,0 +1,17 @@
++from sympy import sin
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++from sympy.physics.units import Quantity
++
++v_w1 = Quantity('v_w1')
++v_w2 = Quantity('v_w2')
++v_w1.set_global_relative_scale_factor(1, units.meter/units.second)
++v_w2.set_global_relative_scale_factor(1, units.meter/units.second)
++
++print(f"v_w1/v_w2 = {v_w1/v_w2}")
++print(f"get_dimensional_expr(v_w1/v_w2): {SI.get_dimensional_expr(v_w1/v_w2)}")
++print(f"get_dimensional_expr(v_w1/v_w2) == 1? {SI.get_dimensional_expr(v_w1/v_w2) == 1}")
++
++print(f"\nsin(v_w1/v_w2) = {sin(v_w1/v_w2)}")
++print(f"get_dimensional_expr(sin(v_w1/v_w2)): {SI.get_dimensional_expr(sin(v_w1/v_w2))}")
++print(f"get_dimensional_expr(sin(v_w1/v_w2)) == 1? {SI.get_dimensional_expr(sin(v_w1/v_w2)) == 1}")

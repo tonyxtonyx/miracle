@@ -1,0 +1,387 @@
+diff --git a/test_colorbar_bug.py b/test_colorbar_bug.py
+new file mode 100644
+index 0000000000..0bece3465c
+--- /dev/null
++++ b/test_colorbar_bug.py
+@@ -0,0 +1,25 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_colorbar_bug.png')
++print("Saved test_colorbar_bug.png")
++
++# Also test without extend to see the difference
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar2 = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True, extend='neither')
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_colorbar_neither.png')
++print("Saved test_colorbar_neither.png")
+diff --git a/test_debug.py b/test_debug.py
+new file mode 100644
+index 0000000000..c751cbd023
+--- /dev/null
++++ b/test_debug.py
+@@ -0,0 +1,32 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++# Monkey-patch to add debug output
++original_add_solids = mpl.colorbar.Colorbar._add_solids
++
++def debug_add_solids(self, X, Y, C):
++    print(f"X shape: {X.shape}")
++    print(f"Y shape: {Y.shape}")
++    print(f"X:\n{X}")
++    print(f"Y:\n{Y}")
++    print(f"C shape: {C.shape}")
++    print(f"Number of colors: {len(C)}")
++    print(f"Number of divider segments: {len(np.dstack([X, Y])[1:-1])}")
++    return original_add_solids(self, X, Y, C)
++
++mpl.colorbar.Colorbar._add_solids = debug_add_solids
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_debug.png')
++print("Saved test_debug.png")
+diff --git a/test_debug2.py b/test_debug2.py
+new file mode 100644
+index 0000000000..f6cc80e7d2
+--- /dev/null
++++ b/test_debug2.py
+@@ -0,0 +1,43 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++# Monkey-patch to add debug output
++original_add_solids = mpl.colorbar.Colorbar._add_solids
++
++def debug_add_solids(self, X, Y, C):
++    print(f"X shape: {X.shape}")
++    print(f"Y shape: {Y.shape}")
++    print(f"X:\n{X}")
++    print(f"Y:\n{Y}")
++    print(f"C shape: {C.shape}")
++    print(f"Number of colors: {len(C)}")
++    print(f"Number of divider segments: {len(np.dstack([X, Y])[1:-1])}")
++    print(f"Number of divider segments (all): {len(np.dstack([X, Y]))}")
++    print(f"Number of divider segments (first): {len(np.dstack([X, Y])[:1])}")
++    print(f"Number of divider segments (last): {len(np.dstack([X, Y])[-1:])}")
++    print(f"Number of divider segments (middle): {len(np.dstack([X, Y])[1:-1])}")
++    return original_add_solids(self, X, Y, C)
++
++mpl.colorbar.Colorbar._add_solids = debug_add_solids
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++print(f"Extend: {my_norm.extend}")
++print(f"Extend lower: {my_norm._extend_lower()}")
++print(f"Extend upper: {my_norm._extend_upper()}")
++print(f"Inside slice: {my_norm._inside}")
++print(f"Boundaries: {my_norm._boundaries}")
++print(f"Values: {my_norm._values}")
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_debug2.png')
++print("Saved test_debug2.png")
+diff --git a/test_debug3.py b/test_debug3.py
+new file mode 100644
+index 0000000000..59a1a1c6c0
+--- /dev/null
++++ b/test_debug3.py
+@@ -0,0 +1,42 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++# Monkey-patch to add debug output
++original_add_solids = mpl.colorbar.Colorbar._add_solids
++
++def debug_add_solids(self, X, Y, C):
++    print(f"X shape: {X.shape}")
++    print(f"Y shape: {Y.shape}")
++    print(f"X:\n{X}")
++    print(f"Y:\n{Y}")
++    print(f"C shape: {C.shape}")
++    print(f"Number of colors: {len(C)}")
++    print(f"Number of divider segments: {len(np.dstack([X, Y])[1:-1])}")
++    print(f"Number of divider segments (all): {len(np.dstack([X, Y]))}")
++    print(f"Number of divider segments (first): {len(np.dstack([X, Y])[:1])}")
++    print(f"Number of divider segments (last): {len(np.dstack([X, Y])[-1:])}")
++    print(f"Number of divider segments (middle): {len(np.dstack([X, Y])[1:-1])}")
++    print(f"Extend: {self.extend}")
++    print(f"Extend lower: {self._extend_lower()}")
++    print(f"Extend upper: {self._extend_upper()}")
++    print(f"Inside slice: {self._inside}")
++    print(f"Boundaries: {self._boundaries}")
++    print(f"Values: {self._values}")
++    return original_add_solids(self, X, Y, C)
++
++mpl.colorbar.Colorbar._add_solids = debug_add_solids
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_debug3.png')
++print("Saved test_debug3.png")
+diff --git a/test_debug4.py b/test_debug4.py
+new file mode 100644
+index 0000000000..548d45e4a2
+--- /dev/null
++++ b/test_debug4.py
+@@ -0,0 +1,56 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++# Monkey-patch to add debug output
++original_add_solids = mpl.colorbar.Colorbar._add_solids
++
++def debug_add_solids(self, X, Y, C):
++    print(f"X shape: {X.shape}")
++    print(f"Y shape: {Y.shape}")
++    print(f"C shape: {C.shape}")
++    print(f"C:\n{C}")
++    print(f"Number of colors: {len(C)}")
++    print(f"Number of divider segments (all): {len(np.dstack([X, Y]))}")
++    print(f"Number of divider segments (middle): {len(np.dstack([X, Y])[1:-1])}")
++    print(f"Number of divider segments (first): {len(np.dstack([X, Y])[:1])}")
++    print(f"Number of divider segments (last): {len(np.dstack([X, Y])[-1:])}")
++    print(f"Extend: {self.extend}")
++    print(f"Extend lower: {self._extend_lower()}")
++    print(f"Extend upper: {self._extend_upper()}")
++    print(f"Inside slice: {self._inside}")
++    print(f"Boundaries: {self._boundaries}")
++    print(f"Values: {self._values}")
++    
++    # Check which colors are used
++    print(f"\nColors used in _add_solids:")
++    print(f"  C shape: {C.shape}")
++    print(f"  C values: {C.flatten()}")
++    
++    # Check what indices are used
++    ind = np.arange(len(self._values))
++    print(f"  Original indices: {ind}")
++    if self._extend_lower():
++        ind = ind[1:]
++        print(f"  After _extend_lower: {ind}")
++    if self._extend_upper():
++        ind = ind[:-1]
++        print(f"  After _extend_upper: {ind}")
++    
++    return original_add_solids(self, X, Y, C)
++
++mpl.colorbar.Colorbar._add_solids = debug_add_solids
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_debug4.png')
++print("Saved test_debug4.png")
+diff --git a/test_debug5.py b/test_debug5.py
+new file mode 100644
+index 0000000000..5b139eb9b6
+--- /dev/null
++++ b/test_debug5.py
+@@ -0,0 +1,68 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++# Monkey-patch to add debug output
++original_add_solids = mpl.colorbar.Colorbar._add_solids
++
++def debug_add_solids(self, X, Y, C):
++    print(f"X shape: {X.shape}")
++    print(f"Y shape: {Y.shape}")
++    print(f"C shape: {C.shape}")
++    print(f"Number of colors: {len(C)}")
++    print(f"Number of divider segments (all): {len(np.dstack([X, Y]))}")
++    print(f"Number of divider segments (middle): {len(np.dstack([X, Y])[1:-1])}")
++    print(f"Number of divider segments (first): {len(np.dstack([X, Y])[:1])}")
++    print(f"Number of divider segments (last): {len(np.dstack([X, Y])[-1:])}")
++    print(f"Extend: {self.extend}")
++    print(f"Extend lower: {self._extend_lower()}")
++    print(f"Extend upper: {self._extend_upper()}")
++    print(f"Inside slice: {self._inside}")
++    print(f"Boundaries: {self._boundaries}")
++    print(f"Values: {self._values}")
++    
++    # Check which colors are used
++    print(f"\nColors used in _add_solids:")
++    print(f"  C shape: {C.shape}")
++    print(f"  C values: {C.flatten()}")
++    
++    # Check what indices are used
++    ind = np.arange(len(self._values))
++    print(f"  Original indices: {ind}")
++    if self._extend_lower():
++        ind = ind[1:]
++        print(f"  After _extend_lower: {ind}")
++    if self._extend_upper():
++        ind = ind[:-1]
++        print(f"  After _extend_upper: {ind}")
++    
++    # Check the mesh
++    print(f"\nMesh details:")
++    print(f"  X[0]: {X[0]}")
++    print(f"  X[-1]: {X[-1]}")
++    print(f"  Y[0]: {Y[0]}")
++    print(f"  Y[-1]: {Y[-1]}")
++    
++    # Check the dividers
++    print(f"\nDividers:")
++    print(f"  First segment: {np.dstack([X, Y])[0]}")
++    print(f"  Last segment: {np.dstack([X, Y])[-1]}")
++    print(f"  Middle segments: {np.dstack([X, Y])[1:-1]}")
++    
++    return original_add_solids(self, X, Y, C)
++
++mpl.colorbar.Colorbar._add_solids = debug_add_solids
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_debug5.png')
++print("Saved test_debug5.png")
+diff --git a/test_debug6.py b/test_debug6.py
+new file mode 100644
+index 0000000000..a8e75f9ff4
+--- /dev/null
++++ b/test_debug6.py
+@@ -0,0 +1,79 @@
++import matplotlib as mpl
++import numpy as np
++import matplotlib.pyplot as plt  
++from matplotlib.colors import from_levels_and_colors
++
++# Monkey-patch to add debug output
++original_add_solids = mpl.colorbar.Colorbar._add_solids
++
++def debug_add_solids(self, X, Y, C):
++    print(f"X shape: {X.shape}")
++    print(f"Y shape: {Y.shape}")
++    print(f"C shape: {C.shape}")
++    print(f"Number of colors: {len(C)}")
++    print(f"Number of divider segments (all): {len(np.dstack([X, Y]))}")
++    print(f"Number of divider segments (middle): {len(np.dstack([X, Y])[1:-1])}")
++    print(f"Number of divider segments (first): {len(np.dstack([X, Y])[:1])}")
++    print(f"Number of divider segments (last): {len(np.dstack([X, Y])[-1:])}")
++    print(f"Extend: {self.extend}")
++    print(f"Extend lower: {self._extend_lower()}")
++    print(f"Extend upper: {self._extend_upper()}")
++    print(f"Inside slice: {self._inside}")
++    print(f"Boundaries: {self._boundaries}")
++    print(f"Values: {self._values}")
++    
++    # Check which colors are used
++    print(f"\nColors used in _add_solids:")
++    print(f"  C shape: {C.shape}")
++    print(f"  C values: {C.flatten()}")
++    
++    # Check what indices are used
++    ind = np.arange(len(self._values))
++    print(f"  Original indices: {ind}")
++    if self._extend_lower():
++        ind = ind[1:]
++        print(f"  After _extend_lower: {ind}")
++    if self._extend_upper():
++        ind = ind[:-1]
++        print(f"  After _extend_upper: {ind}")
++    
++    # Check the mesh
++    print(f"\nMesh details:")
++    print(f"  X[0]: {X[0]}")
++    print(f"  X[-1]: {X[-1]}")
++    print(f"  Y[0]: {Y[0]}")
++    print(f"  Y[-1]: {Y[-1]}")
++    
++    # Check the dividers
++    print(f"\nDividers:")
++    print(f"  First segment: {np.dstack([X, Y])[0]}")
++    print(f"  Last segment: {np.dstack([X, Y])[-1]}")
++    print(f"  Middle segments: {np.dstack([X, Y])[1:-1]}")
++    
++    # Check what the dividers should be
++    print(f"\nWhat the dividers should be:")
++    print(f"  To separate {len(C)} colors, we need {len(C)-1} divider segments")
++    print(f"  But we have {len(np.dstack([X, Y]))} segments in the mesh")
++    print(f"  The dividers should be at indices 0 to {len(C)-2} to separate the colors")
++    
++    # Check the actual dividers
++    print(f"\nActual dividers set:")
++    print(f"  {len(np.dstack([X, Y])[1:-1])} segments")
++    print(f"  These are at indices 1 to {len(np.dstack([X, Y]))-2}")
++    
++    return original_add_solids(self, X, Y, C)
++
++mpl.colorbar.Colorbar._add_solids = debug_add_solids
++
++my_cmap = mpl.cm.viridis
++bounds = np.arange(10)
++nb_colors = len(bounds) + 1
++colors = my_cmap(np.linspace(100, 255, nb_colors).astype(int))
++my_cmap, my_norm = from_levels_and_colors(bounds, colors, extend='both')
++
++plt.figure(figsize=(5, 1))
++ax = plt.subplot(111)
++cbar = mpl.colorbar.ColorbarBase(ax, cmap=my_cmap, norm=my_norm, orientation='horizontal', drawedges=True)
++plt.subplots_adjust(left=0.05, bottom=0.4, right=0.95, top=0.9)
++plt.savefig('test_debug6.png')
++print("Saved test_debug6.png")

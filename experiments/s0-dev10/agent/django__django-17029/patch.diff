@@ -1,0 +1,89 @@
+diff --git a/django/apps/registry.py b/django/apps/registry.py
+index 0683f3ad3c..481dd1fc86 100644
+--- a/django/apps/registry.py
++++ b/django/apps/registry.py
+@@ -376,6 +376,7 @@ class Apps:
+         # Call expire cache on each model. This will purge
+         # the relation tree and the fields cache.
+         self.get_models.cache_clear()
++        self.get_swappable_settings_name.cache_clear()
+         if self.ready:
+             # Circumvent self.get_models() to prevent that the cache is refilled.
+             # This particularly prevents that an empty value is cached while cloning.
+diff --git a/tests/apps/test_clear_cache.py b/tests/apps/test_clear_cache.py
+new file mode 100644
+index 0000000000..953a231dd3
+--- /dev/null
++++ b/tests/apps/test_clear_cache.py
+@@ -0,0 +1,71 @@
++"""
++Tests for apps.clear_cache() to ensure it clears all caches including
++get_swappable_settings_name.
++"""
++from django.apps import apps
++from django.test import SimpleTestCase, override_settings
++
++
++class ClearCacheTests(SimpleTestCase):
++    """Test that clear_cache() clears all caches properly."""
++
++    @override_settings(
++        INSTALLED_APPS=[
++            "django.contrib.contenttypes",
++            "django.contrib.auth",
++        ]
++    )
++    def test_clear_cache_clears_get_swappable_settings_name(self):
++        """
++        Test that apps.clear_cache() clears the get_swappable_settings_name cache.
++        
++        This is a regression test for the issue where get_swappable_settings_name
++        cache was not being cleared when apps.clear_cache() was called.
++        """
++        # First, call get_swappable_settings_name to populate the cache
++        result1 = apps.get_swappable_settings_name("auth.User")
++        self.assertIsNotNone(result1)
++        
++        # Verify the cache is populated
++        self.assertIn("auth.User", apps.get_swappable_settings_name.cache_info().cache)
++        
++        # Now clear the cache
++        apps.clear_cache()
++        
++        # Verify the cache is cleared
++        self.assertEqual(apps.get_swappable_settings_name.cache_info().currsize, 0)
++        
++        # Call it again to ensure it still works after cache clear
++        result2 = apps.get_swappable_settings_name("auth.User")
++        self.assertIsNotNone(result2)
++        self.assertEqual(result1, result2)
++
++    @override_settings(
++        INSTALLED_APPS=[
++            "django.contrib.contenttypes",
++            "django.contrib.auth",
++        ]
++    )
++    def test_clear_cache_clears_get_models(self):
++        """
++        Test that apps.clear_cache() also clears the get_models cache.
++        
++        This verifies that the existing behavior is preserved.
++        """
++        # First, call get_models to populate the cache
++        models1 = list(apps.get_models())
++        self.assertGreater(len(models1), 0)
++        
++        # Verify the cache is populated
++        self.assertGreater(apps.get_models.cache_info().currsize, 0)
++        
++        # Now clear the cache
++        apps.clear_cache()
++        
++        # Verify the cache is cleared
++        self.assertEqual(apps.get_models.cache_info().currsize, 0)
++        
++        # Call it again to ensure it still works after cache clear
++        models2 = list(apps.get_models())
++        self.assertGreater(len(models2), 0)
++        self.assertEqual(len(models1), len(models2))

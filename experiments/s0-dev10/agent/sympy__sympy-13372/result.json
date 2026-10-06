@@ -1,0 +1,162 @@
+{
+  "instance_id": "sympy__sympy-13372",
+  "latency_s": 238.919,
+  "metadata": {
+    "commands": [
+      {
+        "command": "cd /testbed && python -c \"from sympy import *; Mul(x, Max(0, y), evaluate=False).evalf()\"",
+        "duration_s": 2.108,
+        "exit_code": 1,
+        "is_test": false,
+        "step": 6,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"from sympy import *; x, y = symbols('x y'); Mul(x, Max(0, y), evaluate=False).evalf()\"",
+        "duration_s": 1.021,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 7,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"from sympy import *; x, y = symbols('x y'); Mul(Max(0, y), x, evaluate=False).evalf()\"",
+        "duration_s": 1.013,
+        "exit_code": 1,
+        "is_test": false,
+        "step": 8,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"from sympy import *; x, y = symbols('x y'); print('Test 1:', Mul(x, Max(0, y), evaluate=False).evalf())\"",
+        "duration_s": 1.115,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 12,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"from sympy import *; x, y = symbols('x y'); print('Test 2:', Mul(Max(0, y), x, evaluate=False).evalf())\"",
+        "duration_s": 1.165,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 13,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy import *\nx, y = symbols('x y')\n\n# Test various cases\nprint('Test 1 (original issue):', Mul(x, Max(0, y), evaluate=False).evalf())\nprint('Test 2 (original issue):', Mul(Max(0, y), x, evaluate=False).evalf())\nprint('Test 3 (normal mul):', Mul(x, y).evalf())\nprint('Test 4 (float mul):', Mul(1.5, 2.5).evalf())\nprint('Test 5 (int mul):', Mul(2, 3).evalf())\nprint('Test 6 (complex):', Mul(1+2*I, 3+4*I).evalf())\nprint('Test 7 (with zero):', Mul(0, x).evalf())\nprint('Test 8 (with pi):', Mul(pi, x).evalf())\n\"",
+        "duration_s": 1.209,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 14,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -m pytest sympy/core/tests/test_evalf.py -v",
+        "duration_s": 0.73,
+        "exit_code": 1,
+        "is_test": true,
+        "step": 15,
+        "summary": {
+          "tail": "exit_code: 1\n/opt/miniconda3/envs/testbed/bin/python: No module named pytest"
+        },
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -m sympy.testing.runtests sympy/core/tests/test_evalf.py",
+        "duration_s": 1.373,
+        "exit_code": 1,
+        "is_test": false,
+        "step": 16,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"import sympy; sympy.test('sympy/core/tests/test_evalf.py')\"",
+        "duration_s": 5.34,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 17,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"import sympy; sympy.test('sympy/core/tests/test_mul.py')\"",
+        "duration_s": 1.851,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 18,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy import *\nx, y, z = symbols('x y z')\n\n# Test various edge cases\nprint('Test 1: Mul with Max in different positions')\nprint('  Mul(x, Max(0, y), evaluate=False).evalf():', Mul(x, Max(0, y), evaluate=False).evalf())\nprint('  Mul(Max(0, y), x, evaluate=False).evalf():', Mul(Max(0, y), x, evaluate=False).evalf())\nprint('  Mul(Max(0, y), Max(0, z), evaluate=False).evalf():', Mul(Max(0, y), Max(0, z), evaluate=False).evalf())\n\nprint('Test 2: Mul with Min')\nprint('  Mul(x, Min(0, y), evaluate=False).evalf():', Mul(x, Min(0, y), evaluate=False).evalf())\nprint('  Mul(Min(0, y), x, evaluate=False).evalf():', Mul(Min(0, y), x, evaluate=False).evalf())\n\nprint('Test 3: Mul with Abs')\nprint('  Mul(x, Abs(y), evaluate=False).evalf():', Mul(x, Abs(y), evaluate=False).evalf())\nprint('  Mul(Abs(y), x, evaluate=False).evalf():', Mul(Abs(y), x, evaluate=False).evalf())\n\nprint('Test 4: Mul with Piecewise')\nprint('  Mul(x, Piecewise((1, x>0), (0, True)), evaluate=False).evalf():', \n      Mul(x, Piecewise((1, x>0), (0, True)), evaluate=False).evalf())\n\nprint('Test 5: Mul with symbols only')\nprint('  Mul(x, y, z).evalf():', Mul(x, y, z).evalf())\n\nprint('Test 6: Mul with mixed types')\nprint('  Mul(x, 2, y).evalf():', Mul(x, 2, y).evalf())\nprint('  Mul(2, x, y).evalf():', Mul(2, x, y).evalf())\n\"",
+        "duration_s": 1.116,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 19,
+        "timed_out": false
+      },
+      {
+        "command": "cd /testbed && python -c \"\nfrom sympy import *\nx, y = symbols('x y')\n\n# Test the original issue\nprint('Testing original issue...')\ntry:\n    result1 = Mul(x, Max(0, y), evaluate=False).evalf()\n    print('  Mul(x, Max(0, y), evaluate=False).evalf() =', result1)\nexcept Exception as e:\n    print('  ERROR:', e)\n\ntry:\n    result2 = Mul(Max(0, y), x, evaluate=False).evalf()\n    print('  Mul(Max(0, y), x, evaluate=False).evalf() =', result2)\nexcept Exception as e:\n    print('  ERROR:', e)\n\nprint('Both tests passed!')\n\"",
+        "duration_s": 1.154,
+        "exit_code": 0,
+        "is_test": false,
+        "step": 22,
+        "timed_out": false
+      }
+    ],
+    "final_answer": "Excellent! The fix works correctly. Let me summarize what was done:\n\n## Summary\n\nThe issue was an `UnboundLocalError` in `sympy/core/evalf.py` when evaluating `Mul(Max(0, y), x, evaluate=False).evalf()`.\n\n### Root Cause\nIn the `evalf` function (lines 1284-1316), when a symbolic expression like `Max(0, y)` is encountered:\n1. The code tries to find an entry in `evalf_table` for `Max`, but there isn't one (KeyError)\n2. It falls back to the fallback code that calls `x._eval_evalf(prec)` and gets `re, im = xe.as_real_imag()`\n3. For symbolic expressions like `Max(0, y)`, `re` is not 0 and not a number, so `reprec` is never assigned\n4. Similarly, `im` is not 0 and not a number, so `imprec` is never assigned\n5. At line 1310, the code tries to return `re, im, reprec, imprec`, causing `UnboundLocalError`\n\n### Fix\nAdded `else: raise NotImplementedError` clauses after both the `re` and `im` conditional blocks to handle cases where the expression cannot be evaluated to a numeric value. This is consistent with the existing pattern at line 1296-1297 where `NotImplementedError` is raised when `re.has(re_) or im.has(im_)`.\n\nThe fix ensures that when an expression cannot be evaluated numerically, it raises `NotImplementedError` instead of causing an `UnboundLocalError`. This allows the expression to be returned unevaluated, which is the correct behavior for symbolic expressions.\n\n### Testing\n- Both original test cases now work correctly\n- All existing evalf tests pass (46 passed, 2 expected to fail)\n- Various edge cases with Max, Min, Abs, Piecewise, and other symbolic expressions work correctly",
+    "modified_files": [
+      "sympy/core/evalf.py"
+    ],
+    "stats": {
+      "calls_by_tool": {
+        "edit_file": 1,
+        "git_diff": 1,
+        "read_file": 7,
+        "run_command": 12,
+        "search_code": 1
+      },
+      "edit_errors": 0,
+      "empty_steps": 0,
+      "finish_reasons": {
+        "stop": 1,
+        "tool_calls": 22
+      },
+      "first_edit_step": 11,
+      "invalid_arguments": 0,
+      "repeated_identical_calls": 0,
+      "steps": 23,
+      "stop_reason": "final_answer",
+      "successful_edits": 1,
+      "tested_after_last_edit": true,
+      "tests_run": 1,
+      "tool_calls": 22,
+      "tool_errors": 4
+    },
+    "stop_reason": "final_answer",
+    "tests": [
+      {
+        "command": "cd /testbed && python -m pytest sympy/core/tests/test_evalf.py -v",
+        "duration_s": 0.73,
+        "exit_code": 1,
+        "is_test": true,
+        "step": 15,
+        "summary": {
+          "tail": "exit_code: 1\n/opt/miniconda3/envs/testbed/bin/python: No module named pytest"
+        },
+        "timed_out": false
+      }
+    ],
+    "trace_path": "agent/sympy__sympy-13372/trace.json"
+  },
+  "patch_bytes": 770,
+  "setup_s": 84.764,
+  "started_at": "2026-10-05T14:13:44+00:00",
+  "status": "ok",
+  "usage": {
+    "completion_tokens": 3942,
+    "cost_usd": 0.0206043,
+    "llm_calls": 23,
+    "prompt_tokens": 200130,
+    "tool_calls": 22
+  }
+}
