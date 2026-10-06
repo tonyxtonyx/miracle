@@ -164,3 +164,31 @@ instance and is **not** part of the baseline.
 
 **Fixed development set:** `subsets/dev10.json` (seed-0 random sample of Verified, dataset revision + sha256 pinned; created before any
 agent existed). `miracle run --subset dev10` refuses to run if the dataset snapshot no longer matches.
+
+## S1: S0 + handling of `finish_reason == "length"` (`src/miracle/agents/s1.py`)
+
+**Problem found in S0:** a reply cut off by the output-token cap (`finish_reason == "length"`) with no tool call was treated like any other
+tool-less reply, i.e. "the agent is done". 2 of 10 dev10 runs (sphinx-11510, matplotlib-22865) ended this way mid-investigation, before any source edit.
+
+**Change (the only one):** `run_tool_loop(..., length_nudge=TEXT)`. When `finish_reason == "length"` the run is never ended:
+the truncated reply stays in the conversation and a user message is appended:
+
+> Your previous response was truncated by the output token limit. Continue the investigation from where you stopped. Use the available tools when appropriate.
+
+- Applies whether or not the truncated reply contained tool calls. A truncated tool call still gets its (error) tool result first, so the message order stays valid (tool results, then the nudge).
+- Each continuation is an ordinary step and **counts against the 50-step budget**; consecutive truncations each get a nudge. A nudge is not appended after the final step (it could never be answered), so a truncation on step 50 ends the run as `length`.
+- Default is off (`length_nudge=None`), which is exactly S0's behaviour; S0's `describe()`/manifests are unchanged. `S1Runtime` subclasses `S0Runtime` and sets only the nudge: same model, decoding, system prompt, tools and budget, so S0 vs S1 is a one-variable comparison.
+- Recorded: `length_nudge` flag on each affected step, `totals.length_nudges` in the trace, `stats.length_nudges` per run.
+
+```bash
+.venv/bin/miracle run --runtime s1 --subset dev10 --name s1-dev10 --pipeline --rm-images -j 1
+.venv/bin/miracle compare s0-dev10 s1-dev10
+```
+
+Verified: unit tests (loop edge cases, S0-unchanged regression, an S0-fails/S1-recovers scenario) and live against DeepInfra with forced truncations
+(the plain-text case works: the API accepts truncated-assistant-then-user and the model continues). A truncated *tool call* could not be provoked live
+(DeepInfra returned complete calls even at `max_tokens=12`), so that path is unit-tested only.
+
+**Patch-extraction pitfall (fixed):** `git add` exits 1, while still staging everything, when a gitignored path such as `.pytest_cache` exists. `DockerEnvironment._stage` therefore never gates
+the binary-unstaging step on `git add`'s exit status (`|| true`, then `;`). Regression test: `tests/test_docker_env_staging.py`.
+

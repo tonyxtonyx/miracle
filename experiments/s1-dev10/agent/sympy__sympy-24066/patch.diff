@@ -1,0 +1,310 @@
+diff --git a/sympy/physics/units/unitsystem.py b/sympy/physics/units/unitsystem.py
+index 3daf84c108..faee82ac90 100755
+--- a/sympy/physics/units/unitsystem.py
++++ b/sympy/physics/units/unitsystem.py
+@@ -192,6 +192,12 @@ def _collect_factor_and_dimension(self, expr):
+         elif isinstance(expr, Function):
+             fds = [self._collect_factor_and_dimension(
+                 arg) for arg in expr.args]
++            # Check if all argument dimensions are dimensionless
++            # If so, the function result should also be dimensionless
++            if all(self.get_dimension_system().is_dimensionless(d[1]) 
++                   for d in fds):
++                return (expr.func(*(f[0] for f in fds)),
++                        Dimension(1))
+             return (expr.func(*(f[0] for f in fds)),
+                     *(d[1] for d in fds))
+         elif isinstance(expr, Dimension):
+diff --git a/test_cgs.py b/test_cgs.py
+new file mode 100644
+index 0000000000..14a8fc5886
+--- /dev/null
++++ b/test_cgs.py
+@@ -0,0 +1,26 @@
++from sympy import exp
++from sympy.physics import units
++from sympy.physics.units.systems.cgs import cgs_gauss
++
++# Test with CGS system
++expr = units.second / (units.ohm * units.farad)
++dim = cgs_gauss._collect_factor_and_dimension(expr)[1]
++
++print(f"expr = {expr}")
++print(f"dim = {dim}")
++print(f"Is dimensionless? {cgs_gauss.get_dimension_system().is_dimensionless(dim)}")
++
++# This should pass
++assert cgs_gauss.get_dimension_system().is_dimensionless(dim), "expr should be dimensionless"
++
++buggy_expr = 100 + exp(expr)
++print(f"\nbuggy_expr = {buggy_expr}")
++try:
++    result = cgs_gauss._collect_factor_and_dimension(buggy_expr)
++    print(f"Result: {result}")
++    print(f"Dimension is dimensionless: {cgs_gauss.get_dimension_system().is_dimensionless(result[1])}")
++    assert cgs_gauss.get_dimension_system().is_dimensionless(result[1])
++    print("✓ CGS test passed!")
++except ValueError as e:
++    print(f"ValueError: {e}")
++    print("✗ CGS test failed!")
+diff --git a/test_comprehensive.py b/test_comprehensive.py
+new file mode 100644
+index 0000000000..140b718318
+--- /dev/null
++++ b/test_comprehensive.py
+@@ -0,0 +1,95 @@
++from sympy import exp, log, sin, cos, tan, sqrt, Add, Mul
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++# Test 1: exp of dimensionless quantity
++print("Test 1: exp of dimensionless quantity")
++expr1 = units.second / (units.ohm * units.farad)
++print(f"  expr1 = {expr1}")
++dim1 = SI._collect_factor_and_dimension(expr1)[1]
++print(f"  is_dimensionless? {SI.get_dimension_system().is_dimensionless(dim1)}")
++
++result1 = SI._collect_factor_and_dimension(expr1)
++print(f"  _collect_factor_and_dimension(expr1) = {result1}")
++assert SI.get_dimension_system().is_dimensionless(result1[1]), "expr1 should be dimensionless"
++print("  ✓ PASS")
++
++# Test 2: exp of dimensionless quantity in an Add expression
++print("\nTest 2: exp of dimensionless quantity in an Add expression")
++buggy_expr = 100 + exp(expr1)
++print(f"  buggy_expr = {buggy_expr}")
++result2 = SI._collect_factor_and_dimension(buggy_expr)
++print(f"  _collect_factor_and_dimension(buggy_expr) = {result2}")
++assert SI.get_dimension_system().is_dimensionless(result2[1]), "buggy_expr should be dimensionless"
++print("  ✓ PASS")
++
++# Test 3: log of dimensionless quantity
++print("\nTest 3: log of dimensionless quantity")
++result3 = SI._collect_factor_and_dimension(log(expr1))
++print(f"  _collect_factor_and_dimension(log(expr1)) = {result3}")
++assert SI.get_dimension_system().is_dimensionless(result3[1]), "log(expr1) should be dimensionless"
++print("  ✓ PASS")
++
++# Test 4: sin of dimensionless quantity
++print("\nTest 4: sin of dimensionless quantity")
++result4 = SI._collect_factor_and_dimension(sin(expr1))
++print(f"  _collect_factor_and_dimension(sin(expr1)) = {result4}")
++assert SI.get_dimension_system().is_dimensionless(result4[1]), "sin(expr1) should be dimensionless"
++print("  ✓ PASS")
++
++# Test 5: cos of dimensionless quantity
++print("\nTest 5: cos of dimensionless quantity")
++result5 = SI._collect_factor_and_dimension(cos(expr1))
++print(f"  _collect_factor_and_dimension(cos(expr1)) = {result5}")
++assert SI.get_dimension_system().is_dimensionless(result5[1]), "cos(expr1) should be dimensionless"
++print("  ✓ PASS")
++
++# Test 6: sqrt of dimensioned quantity (should NOT be dimensionless)
++print("\nTest 6: sqrt of dimensioned quantity")
++expr6 = units.meter
++print(f"  expr6 = {expr6}")
++result6 = SI._collect_factor_and_dimension(sqrt(expr6))
++print(f"  _collect_factor_and_dimension(sqrt(expr6)) = {result6}")
++assert not SI.get_dimension_system().is_dimensionless(result6[1]), "sqrt(meter) should NOT be dimensionless"
++print("  ✓ PASS")
++
++# Test 7: exp of dimensioned quantity (should raise an error or have non-dimensionless result)
++print("\nTest 7: exp of dimensioned quantity")
++expr7 = units.meter
++print(f"  expr7 = {expr7}")
++try:
++    result7 = SI._collect_factor_and_dimension(exp(expr7))
++    print(f"  _collect_factor_and_dimension(exp(expr7)) = {result7}")
++    # This should have a non-dimensionless result
++    assert not SI.get_dimension_system().is_dimensionless(result7[1]), "exp(meter) should NOT be dimensionless"
++    print("  ✓ PASS (result is not dimensionless as expected)")
++except Exception as e:
++    print(f"  Exception: {e}")
++    print("  ✓ PASS (exception raised as expected)")
++
++# Test 8: Nested functions
++print("\nTest 8: Nested functions")
++expr8 = exp(sin(expr1))
++print(f"  expr8 = {expr8}")
++result8 = SI._collect_factor_and_dimension(expr8)
++print(f"  _collect_factor_and_dimension(expr8) = {result8}")
++assert SI.get_dimension_system().is_dimensionless(result8[1]), "exp(sin(expr1)) should be dimensionless"
++print("  ✓ PASS")
++
++# Test 9: Multiple arguments to a function
++print("\nTest 9: Multiple arguments to a function")
++expr9 = sin(expr1 + expr1)
++print(f"  expr9 = {expr9}")
++result9 = SI._collect_factor_and_dimension(expr9)
++print(f"  _collect_factor_and_dimension(expr9) = {result9}")
++assert SI.get_dimension_system().is_dimensionless(result9[1]), "sin(expr1 + expr1) should be dimensionless"
++print("  ✓ PASS")
++
++# Test 10: tan of dimensionless quantity
++print("\nTest 10: tan of dimensionless quantity")
++result10 = SI._collect_factor_and_dimension(tan(expr1))
++print(f"  _collect_factor_and_dimension(tan(expr1)) = {result10}")
++assert SI.get_dimension_system().is_dimensionless(result10[1]), "tan(expr1) should be dimensionless"
++print("  ✓ PASS")
++
++print("\n✓ All tests passed!")
+diff --git a/test_edge_cases.py b/test_edge_cases.py
+new file mode 100644
+index 0000000000..1d8d6df4a7
+--- /dev/null
++++ b/test_edge_cases.py
+@@ -0,0 +1,73 @@
++from sympy import exp, E, pi, sin, cos
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++# Test 1: exp with no arguments (should be E)
++print("Test 1: exp with no arguments")
++try:
++    result = SI._collect_factor_and_dimension(exp(1))
++    print(f"  Result: {result}")
++    print(f"  Dimension is dimensionless: {SI.get_dimension_system().is_dimensionless(result[1])}")
++    assert SI.get_dimension_system().is_dimensionless(result[1])
++    print("  ✓ PASS")
++except Exception as e:
++    print(f"  Exception: {e}")
++    print("  ✗ FAIL")
++
++# Test 2: exp(1) - should be E
++print("\nTest 2: exp(1)")
++result = SI._collect_factor_and_dimension(exp(1))
++print(f"  Result: {result}")
++print(f"  Dimension is dimensionless: {SI.get_dimension_system().is_dimensionless(result[1])}")
++assert SI.get_dimension_system().is_dimensionless(result[1])
++print("  ✓ PASS")
++
++# Test 3: exp(pi) - should be dimensionless
++print("\nTest 3: exp(pi)")
++result = SI._collect_factor_and_dimension(exp(pi))
++print(f"  Result: {result}")
++print(f"  Dimension is dimensionless: {SI.get_dimension_system().is_dimensionless(result[1])}")
++assert SI.get_dimension_system().is_dimensionless(result[1])
++print("  ✓ PASS")
++
++# Test 4: sin with no arguments (should be 0)
++print("\nTest 4: sin with no arguments")
++result = SI._collect_factor_and_dimension(sin(0))
++print(f"  Result: {result}")
++print(f"  Dimension is dimensionless: {SI.get_dimension_system().is_dimensionless(result[1])}")
++assert SI.get_dimension_system().is_dimensionless(result[1])
++print("  ✓ PASS")
++
++# Test 5: cos with no arguments (should be 1)
++print("\nTest 5: cos with no arguments")
++result = SI._collect_factor_and_dimension(cos(0))
++print(f"  Result: {result}")
++print(f"  Dimension is dimensionless: {SI.get_dimension_system().is_dimensionless(result[1])}")
++assert SI.get_dimension_system().is_dimensionless(result[1])
++print("  ✓ PASS")
++
++# Test 3: exp(pi) - should be dimensionless
++print("\nTest 3: exp(pi)")
++result = SI._collect_factor_and_dimension(exp(pi))
++print(f"  Result: {result}")
++print(f"  Dimension is dimensionless: {SI.get_dimension_system().is_dimensionless(result[1])}")
++assert SI.get_dimension_system().is_dimensionless(result[1])
++print("  ✓ PASS")
++
++# Test 4: sin with no arguments (should be 0)
++print("\nTest 4: sin with no arguments")
++result = SI._collect_factor_and_dimension(sin())
++print(f"  Result: {result}")
++print(f"  Dimension is dimensionless: {SI.get_dimension_system().is_dimensionless(result[1])}")
++assert SI.get_dimension_system().is_dimensionless(result[1])
++print("  ✓ PASS")
++
++# Test 5: cos with no arguments (should be 1)
++print("\nTest 5: cos with no arguments")
++result = SI._collect_factor_and_dimension(cos())
++print(f"  Result: {result}")
++print(f"  Dimension is dimensionless: {SI.get_dimension_system().is_dimensionless(result[1])}")
++assert SI.get_dimension_system().is_dimensionless(result[1])
++print("  ✓ PASS")
++
++print("\n✓ All edge case tests passed!")
+diff --git a/test_issue.py b/test_issue.py
+new file mode 100644
+index 0000000000..3c9ee81092
+--- /dev/null
++++ b/test_issue.py
+@@ -0,0 +1,21 @@
++from sympy import exp
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++expr = units.second / (units.ohm * units.farad)
++dim = SI._collect_factor_and_dimension(expr)[1]
++
++print(f"expr = {expr}")
++print(f"dim = {dim}")
++print(f"Is dimensionless? {SI.get_dimension_system().is_dimensionless(dim)}")
++
++# This should pass
++assert SI.get_dimension_system().is_dimensionless(dim), "expr should be dimensionless"
++
++buggy_expr = 100 + exp(expr)
++print(f"\nbuggy_expr = {buggy_expr}")
++try:
++    result = SI._collect_factor_and_dimension(buggy_expr)
++    print(f"Result: {result}")
++except ValueError as e:
++    print(f"ValueError: {e}")
+diff --git a/test_mksa.py b/test_mksa.py
+new file mode 100644
+index 0000000000..d2e3c72d82
+--- /dev/null
++++ b/test_mksa.py
+@@ -0,0 +1,26 @@
++from sympy import exp
++from sympy.physics import units
++from sympy.physics.units.systems.mksa import MKSA
++
++# Test with MKSA system
++expr = units.second / (units.ohm * units.farad)
++dim = MKSA._collect_factor_and_dimension(expr)[1]
++
++print(f"expr = {expr}")
++print(f"dim = {dim}")
++print(f"Is dimensionless? {MKSA.get_dimension_system().is_dimensionless(dim)}")
++
++# This should pass
++assert MKSA.get_dimension_system().is_dimensionless(dim), "expr should be dimensionless"
++
++buggy_expr = 100 + exp(expr)
++print(f"\nbuggy_expr = {buggy_expr}")
++try:
++    result = MKSA._collect_factor_and_dimension(buggy_expr)
++    print(f"Result: {result}")
++    print(f"Dimension is dimensionless: {MKSA.get_dimension_system().is_dimensionless(result[1])}")
++    assert MKSA.get_dimension_system().is_dimensionless(result[1])
++    print("✓ MKSA test passed!")
++except ValueError as e:
++    print(f"ValueError: {e}")
++    print("✗ MKSA test failed!")
+diff --git a/test_original_issue.py b/test_original_issue.py
+new file mode 100644
+index 0000000000..baf5497fb0
+--- /dev/null
++++ b/test_original_issue.py
+@@ -0,0 +1,16 @@
++from sympy import exp
++from sympy.physics import units
++from sympy.physics.units.systems.si import SI
++
++expr = units.second / (units.ohm * units.farad)
++dim = SI._collect_factor_and_dimension(expr)[1]
++
++assert SI.get_dimension_system().is_dimensionless(dim)
++
++buggy_expr = 100 + exp(expr)
++result = SI._collect_factor_and_dimension(buggy_expr)
++
++print(f"Result: {result}")
++print(f"Dimension is dimensionless: {SI.get_dimension_system().is_dimensionless(result[1])}")
++assert SI.get_dimension_system().is_dimensionless(result[1])
++print("✓ Original issue is fixed!")

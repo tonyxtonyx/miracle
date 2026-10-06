@@ -1,0 +1,473 @@
+{
+  "created_at": "2026-10-06T08:47:06+00:00",
+  "dataset": {
+    "name": "SWE-bench/SWE-bench_Verified",
+    "revision": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+    "sha256": "87a3d67eb9108386b0a3406ebd1ada9543cb160cd96cfdb792f82de40cd8bcb8"
+  },
+  "env": {
+    "docker_server": "29.4.0",
+    "git_branch": "s1",
+    "git_commit": "f3f5d401dbb0bda362f63097b466b1edb4b2abd5",
+    "git_dirty": true,
+    "machine": "arm64",
+    "miracle": "0.1.0",
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "python": "3.12.10",
+    "swebench": "5.0.2"
+  },
+  "evaluation": [
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "astropy__astropy-8707"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T08:55:01+00:00",
+      "summary_path": "summary-0.json",
+      "timeout_s": 1800,
+      "wall_s": 34.02,
+      "workers": 1
+    },
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "django__django-13821"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T08:59:58+00:00",
+      "summary_path": "summary-1.json",
+      "timeout_s": 1800,
+      "wall_s": 35.07,
+      "workers": 1
+    },
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "django__django-15561"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T09:06:03+00:00",
+      "summary_path": "summary-2.json",
+      "timeout_s": 1800,
+      "wall_s": 30.04,
+      "workers": 1
+    },
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "django__django-16082"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T09:13:10+00:00",
+      "summary_path": "summary-3.json",
+      "timeout_s": 1800,
+      "wall_s": 28.25,
+      "workers": 1
+    },
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "django__django-17029"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T09:18:09+00:00",
+      "summary_path": "summary-4.json",
+      "timeout_s": 1800,
+      "wall_s": 26.07,
+      "workers": 1
+    },
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "matplotlib__matplotlib-22865"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T09:55:53+00:00",
+      "summary_path": "summary-5.json",
+      "timeout_s": 1800,
+      "wall_s": 138.89,
+      "workers": 1
+    },
+    {
+      "fresh": false,
+      "instances": [
+        "astropy__astropy-8707"
+      ],
+      "n_to_run": 0,
+      "note": "nothing to run (empty patches or already graded)",
+      "started_at": "2026-10-06T10:05:53+00:00",
+      "timeout_s": 1800,
+      "workers": 1
+    },
+    {
+      "fresh": false,
+      "instances": [
+        "django__django-13821"
+      ],
+      "n_to_run": 0,
+      "note": "nothing to run (empty patches or already graded)",
+      "started_at": "2026-10-06T10:05:53+00:00",
+      "timeout_s": 1800,
+      "workers": 1
+    },
+    {
+      "fresh": false,
+      "instances": [
+        "django__django-15561"
+      ],
+      "n_to_run": 0,
+      "note": "nothing to run (empty patches or already graded)",
+      "started_at": "2026-10-06T10:05:53+00:00",
+      "timeout_s": 1800,
+      "workers": 1
+    },
+    {
+      "fresh": false,
+      "instances": [
+        "django__django-16082"
+      ],
+      "n_to_run": 0,
+      "note": "nothing to run (empty patches or already graded)",
+      "started_at": "2026-10-06T10:05:54+00:00",
+      "timeout_s": 1800,
+      "workers": 1
+    },
+    {
+      "fresh": false,
+      "instances": [
+        "django__django-17029"
+      ],
+      "n_to_run": 0,
+      "note": "nothing to run (empty patches or already graded)",
+      "started_at": "2026-10-06T10:05:54+00:00",
+      "timeout_s": 1800,
+      "workers": 1
+    },
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "matplotlib__matplotlib-22865"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T10:05:54+00:00",
+      "summary_path": "summary-11.json",
+      "timeout_s": 1800,
+      "wall_s": 36.18,
+      "workers": 1
+    },
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "sphinx-doc__sphinx-11510"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T10:10:32+00:00",
+      "summary_path": "summary-12.json",
+      "timeout_s": 1800,
+      "wall_s": 24.57,
+      "workers": 1
+    },
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "sympy__sympy-13372"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T10:14:58+00:00",
+      "summary_path": "summary-13.json",
+      "timeout_s": 1800,
+      "wall_s": 35.56,
+      "workers": 1
+    },
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "sympy__sympy-16597"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T10:21:01+00:00",
+      "summary_path": "summary-14.json",
+      "timeout_s": 1800,
+      "wall_s": 33.44,
+      "workers": 1
+    },
+    {
+      "command": [
+        "<project>/.venv/bin/python3.12",
+        "-m",
+        "swebench.harness.run_evaluation",
+        "--dataset_name",
+        "<project>/runs/s1-dev10/instances.jsonl",
+        "--predictions_path",
+        "<project>/runs/s1-dev10/eval/predictions.jsonl",
+        "--run_id",
+        "s1-dev10",
+        "--max_workers",
+        "1",
+        "--timeout",
+        "1800",
+        "--report_dir",
+        "."
+      ],
+      "fresh": false,
+      "image_pull_failures": {},
+      "instances": [
+        "sympy__sympy-24066"
+      ],
+      "n_to_run": 1,
+      "returncode": 0,
+      "started_at": "2026-10-06T10:31:02+00:00",
+      "summary_path": "summary-15.json",
+      "timeout_s": 1800,
+      "wall_s": 25.95,
+      "workers": 1
+    }
+  ],
+  "image_ids": {
+    "astropy__astropy-8707": "sha256:7e8744255777087d6a5c5806921bc30330de5c610de1c227e8a4dd0e3257d1fb",
+    "django__django-13821": "sha256:770da3d3b8a11de3947c1e0183a61a516c04ff04039ddd14440faa55c1fd405e",
+    "django__django-15561": "sha256:b2501135cfa0f522ac81df2ee521339db64118ca1c1f08314e4aceb1959c4008",
+    "django__django-16082": "sha256:7c100d59942555019000e212bddc7178a551ae435b30df50eeb4a062574fddf4",
+    "django__django-17029": "sha256:4083fc9db28ac1497383d291670ca3138bee51c7d283dcc53849aa88bc719f79",
+    "matplotlib__matplotlib-22865": "sha256:c360512331dd3a9bb6053a0601eb348c7c56d6f65e793127864cba8da5ed6083",
+    "sphinx-doc__sphinx-11510": "sha256:ef65c93f68bbc3d40e35f0ec753a359e8de0e5e710fa3225aab2f629131b2807",
+    "sympy__sympy-13372": "sha256:20acf8d7c53452554534d23cea08d3f2a7944a0a5ae6050215dfb27a52bc48e4",
+    "sympy__sympy-16597": "sha256:59c3feb43ef65a47e9d969d41d058cc5e9e664a27900fb750311a05b04733629",
+    "sympy__sympy-24066": "sha256:740efc23835b3348bbb35d3ac5ff055a7873aac5ee46ed353743930b764f0c81"
+  },
+  "images_preexisting": [],
+  "instance_ids": [
+    "astropy__astropy-8707",
+    "django__django-13821",
+    "django__django-15561",
+    "django__django-16082",
+    "django__django-17029",
+    "matplotlib__matplotlib-22865",
+    "sphinx-doc__sphinx-11510",
+    "sympy__sympy-13372",
+    "sympy__sympy-16597",
+    "sympy__sympy-24066"
+  ],
+  "instances_sha256": "47c5718a327cc357a907706472db9e5da88d56aec6ce6962c36dbb5529338a2e",
+  "name": "s1-dev10",
+  "runtime": {
+    "class": "S1Runtime",
+    "length_nudge": "Your previous response was truncated by the output token limit. Continue the investigation from where you stopped. Use the available tools when appropriate.",
+    "llm": {
+      "api_key_env": "DEEPINFRA_API_KEY",
+      "api_key_set": true,
+      "base_url": "https://api.deepinfra.com/v1/openai",
+      "max_retries": 3,
+      "max_tokens": 4096,
+      "model": "Qwen/Qwen3.5-9B",
+      "reasoning_effort": "none",
+      "temperature": 0.0,
+      "timeout_s": 120.0
+    },
+    "max_steps": 50,
+    "name": "s1-qwen3.5-9b",
+    "strategy": "S1: S0 + continue (not stop) on finish_reason=length",
+    "system_prompt": "You are a software engineering agent. Solve the given issue using the available repository tools. Inspect the repository, make the necessary changes, and verify your solution with tests when possible.",
+    "tools": [
+      "list_files",
+      "read_file",
+      "search_code",
+      "edit_file",
+      "write_file",
+      "run_command",
+      "git_diff"
+    ]
+  },
+  "subset": "dev10"
+}

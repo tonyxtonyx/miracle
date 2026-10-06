@@ -20,6 +20,8 @@ def build_runtime(spec: str, config: dict, instances: list[dict]) -> AgentRuntim
         return NoopEditRuntime()
     if spec == "broken":
         return BrokenPatchRuntime()
+    if spec == "s1":
+        spec = "miracle.agents.s1:S1Runtime"
     if spec == "s0":
         spec = "miracle.agents.s0:S0Runtime"
     if spec == "toolloop":

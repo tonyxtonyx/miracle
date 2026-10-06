@@ -55,7 +55,7 @@ class DockerEnvironment(Environment):
         # same locale setup the official eval script performs; baseline snapshot of the tree
         setup = (f"cd {self.root} && git config --global --add safe.directory {self.root} && "
                  "{ sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen; } >/dev/null 2>&1; "
-                 f"git rev-parse HEAD && git add -A -- {_PATHSPEC} && git write-tree")
+                 f"git rev-parse HEAD && {{ git add -A -- {_PATHSPEC} >/dev/null 2>&1 || true; }} && git write-tree")
         r = self._raw(["bash", "-c", setup], timeout=300)
         lines = r.stdout.decode().split()
         if r.returncode != 0 or len(lines) < 2:
@@ -105,7 +105,9 @@ class DockerEnvironment(Environment):
     # -- patch extraction ---------------------------------------------------------
     def _stage(self) -> str:
         """Stage everything, then un-stage binary files (a text patch can't carry them)."""
-        return (f"cd {self.root} && git add -A -- {_PATHSPEC} 2>/dev/null && "
+        # `git add` exits 1 (while still staging everything) when a gitignored path such as .pytest_cache exists;
+        # its status must not gate the binary filter below, so it is deliberately not chained with &&.
+        return (f"cd {self.root} && {{ git add -A -- {_PATHSPEC} >/dev/null 2>&1 || true; }}; "
                 f"git diff --cached --no-renames --numstat {self._base_tree} | "
                 "awk -F'\\t' '$1==\"-\" && $2==\"-\" {print $3}' | while IFS= read -r f; do git reset -q -- \"$f\"; done")
 
