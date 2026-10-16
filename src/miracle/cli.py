@@ -177,6 +177,8 @@ def main(argv=None):
     add_parser(sub)
     from .checker_eval.cli import add_parser as add_ce_parser
     add_ce_parser(sub)
+    from .diagnosis.cli import add_parser as add_diag_parser
+    add_diag_parser(sub)
     a = p.parse_args(argv)
     sys.stdout.reconfigure(line_buffering=True)    # progress must be visible when redirected to a log
     guarded(a.fn, a)

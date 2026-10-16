@@ -297,6 +297,23 @@ assumed deterministic. Negatives are concentrated in matplotlib/sympy/sphinx.
 carry test evidence: more instances, graded intermediate edit-states, or synthetic partial fixes (e.g. gold patches with hunks removed, graded by the harness). Reproduce:
 `miracle checker-eval build && miracle checker-eval grade && miracle checker-eval run --repeats 3 && miracle checker-eval report`.
 
+## S3 — causal, falsification-oriented diagnosis (implemented and frozen, not yet run on SWE-bench tasks)
+
+Goal: optimise for the **quality of the diagnosis** (falsifiable hypotheses, discriminating probes, auditable evidence, consistent belief updates), not for solve rate or cost; those are recorded but never optimised.
+Design, data model, state machine, context boundaries, reset strategy, judge separation, UI and artefact layout: [`docs/diagnosis_design.md`](docs/diagnosis_design.md).
+
+- **Controller** (graph owner: hypotheses with predictions and falsification criteria, probe planning, status changes with recorded causes, synthesis, commit) and **investigators** (one hypothesis branch each, own context,
+  repository tools, temporary instrumentation) are separate LLM calls. The typed graph is derived by replaying an append-only event log; the runtime generates IDs and builds evidence itself (code excerpts are read from the repo, quotes must be exact substrings of recorded tool output).
+- **Isolation:** verified-clean baseline before each branch, interventions tagged on evidence (`post_intervention`), reset + verification after each branch and before implementation (a failed verification is an infrastructure failure, never scored).
+- **Judges:** official harness result, a *blind* process judge (no gold, no official result) and an *oracle* judge whose independent reference account is persisted **before** the candidate is shown (Claude; backends: `anthropic` SDK with `claude-opus-5-5`, `claude -p`, file exchange, mock). Scores are 0-4 per dimension with validated ID citations; nothing is collapsed into one number.
+- **UI:** `miracle graph serve RUN` (stdlib, read-only, replay slider, evidence provenance, judge panels). Verified in a browser on a recorded real-model run.
+- **Run:** `miracle diagnosis freeze` (done: `src/miracle/diagnosis/FROZEN.json`) then `miracle diagnosis run NAME --tasks-file tasks.txt` (ordered, no skipping, resumable). Toy check: `miracle diagnosis toy`.
+
+**Verified:** 157 offline tests (graph validation and replay, status rules, branch contexts, reset behaviour, judge input separation incl. sentinel leakage tests, web API, reports); the isolation contract and the whole pipeline inside a real SWE-bench container (scripted model, official grading `resolved`);
+three runs with the real model on the toy repository (diagnosis committed, resolved, ~$0.016 and ~15 min each), which exposed the failure modes fixed before the freeze (`docs/diagnosis_design.md` section 13).
+**Not yet verified:** the judges against a live Claude backend (no Anthropic credentials in the development environment), and any SWE-bench task with the real model.
+**Needed to start:** the ordered task list (a file of instance ids), judge credentials (`ANTHROPIC_API_KEY` in `.env`, or a logged-in `claude` CLI, or the file-exchange backend), free Docker disk, and a commit of the S3 code (run manifests record the git commit and dirty flag).
+
 ## Repository layout
 
 | path | contents |

@@ -20,6 +20,8 @@ def build_runtime(spec: str, config: dict, instances: list[dict]) -> AgentRuntim
         return NoopEditRuntime()
     if spec == "broken":
         return BrokenPatchRuntime()
+    if spec == "s3":
+        spec = "miracle.diagnosis.runtime:S3Runtime"
     if spec == "s2":
         spec = "miracle.agents.s2:S2Runtime"
     if spec == "s1":

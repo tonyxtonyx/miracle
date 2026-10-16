@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miracle diagnosis graph</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Diagnosis graph</h1>
+  <label>Run <select id="run"></select></label>
+  <label>Task <select id="instance"></select></label>
+  <span id="phase" class="badge"></span>
+  <span id="budget" class="muted"></span>
+  <span id="official" class="badge"></span>
+  <span id="live" class="muted"></span>
+</header>
+<div id="error" class="error" hidden></div>
+<main>
+  <section id="left">
+    <div id="filters">
+      <label><input type="checkbox" id="f-refuted" checked> refuted / merged</label>
+      <label><input type="checkbox" id="f-evidence" checked> evidence</label>
+      <label><input type="checkbox" id="f-probes"> probes</label>
+      <span id="f-types"></span>
+    </div>
+    <div id="legend"></div>
+    <div id="graphwrap"><svg id="graph" role="img" aria-label="Reasoning graph"></svg></div>
+  </section>
+  <aside id="right">
+    <nav id="tabs">
+      <button data-tab="detail" class="active">Detail</button>
+      <button data-tab="diagnosis">Diagnosis</button>
+      <button data-tab="judges">Judges</button>
+      <button data-tab="controller">Controller</button>
+    </nav>
+    <div id="panel"></div>
+  </aside>
+</main>
+<footer>
+  <div id="replay">
+    <button id="play" title="Replay the investigation">▶</button>
+    <input type="range" id="slider" min="0" max="0" value="0">
+    <span id="stepinfo" class="muted"></span>
+    <button id="latest">latest</button>
+  </div>
+  <div id="timeline"></div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>

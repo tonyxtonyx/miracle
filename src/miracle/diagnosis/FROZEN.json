@@ -1,0 +1,45 @@
+{
+  "config": {
+    "branch_max_steps": 24,
+    "controller_max_tokens": 3000,
+    "duplicate_similarity": 0.88,
+    "hypothesize_max_steps": 12,
+    "implementation_max_steps": 50,
+    "investigator_max_tokens": 4096,
+    "max_depth": 3,
+    "max_excerpt_lines": 80,
+    "max_graph_size": 80,
+    "max_hypotheses": 12,
+    "max_initial_hypotheses": 5,
+    "max_iterations": 8,
+    "min_initial_hypotheses": 2,
+    "min_text_chars": 12,
+    "model": "Qwen/Qwen3.5-9B",
+    "reasoning_effort": "none",
+    "repeated_action_limit": 3,
+    "review_max_steps": 10,
+    "stall_iterations": 2,
+    "support_threshold": "low",
+    "synthesis_max_steps": 10,
+    "temperature": 0.0
+  },
+  "diagnosis_config_sha256": "b1ce0c075b86be22363f9b26867893c87329fc5d692bc250c2c87c114bee8649",
+  "diagnosis_prompts": {
+    "BRANCH_USER": "daf4b13d1ff65612d0910594c4b06499505ed2d8bbc503a318c6cd95c0b134a1",
+    "CONTROLLER_SYSTEM": "ce3a710356ef2f4d5ddc9127e5bace2f044c079fc5802a99df4ee908afe5734c",
+    "HINT_PLANNING": "8c5f21838aada5ddeef3c8014662fdffd39432d29a110c2ada7938242d1e24f4",
+    "HINT_REVIEW": "8a141c5a74d29d2c7a0cc77fc30a0b9eb58cdc4e8e00b0b973e1628c8c782e39",
+    "HINT_SYNTHESIS": "d6c52d11239370dff2b61740e5eff22b540154c533a5aa5ff16e8e9cea1fdca3",
+    "HYPOTHESIZE_USER": "2a775f5c83a695fcea1d10964febfba3a52ebeeebefb855a4ebb10855cc7ae46",
+    "IMPLEMENTATION_PREFIX": "75ea23a4c3a1a3daca7edb623ca88bc5a3cde5ab22565c17d55eb01f831ef916",
+    "INVESTIGATOR_SYSTEM": "bb0735ed6f8319f57dcd8bf63ca4c1be07396becce6f29239b60d093997944d7",
+    "REVIEW_USER": "95baa6e7ac4c3c793ec10c4cc52df4c5109eccb9b0417404d16f5765eed73645",
+    "SYNTHESIS_USER": "9a33d2be6fbeaf3311b2893706576885de1de1c604a61db180ac5f87ad46ce04"
+  },
+  "git_commit_at_freeze": "b36ba4dba5b4c8a558a3e324e085f804701c2083",
+  "judge_prompts": {
+    "BLIND_SYSTEM": "85dd7a4d96ae165f992f44c8b7480780332d3f3049e0c4149164254f4afc5341",
+    "ORACLE_SYSTEM": "97ba1a5d7777eb1053409ab57d9c32e220a195a286845dc98dd003d86bfe031f",
+    "REFERENCE_SYSTEM": "a2e2510e947345ff37a4d39c8bf9f658028419400171e0300ce76cf710aa9777"
+  }
+}

@@ -31,13 +31,9 @@ from . import __version__, evaluator, paths
 from .dataset import DatasetRef, read_jsonl, sha256_file, write_jsonl
 from .predictions import write_predictions
 from .docker_env import DockerEnvironment, DockerError
+from .errors import InfraError  # noqa: F401  (re-exported: tests and callers import it from here)
 from .runtime import AgentRuntime, Task
 from .workspace import REPO_URL, create_workspace
-
-
-class InfraError(RuntimeError):
-    """The environment broke (image pull, container start, disk). Never recorded as an agent result:
-    scoring infrastructure failures as agent failures would corrupt the baseline."""
 
 
 def _now() -> str:
@@ -142,7 +138,7 @@ class Run:
                 raise InfraError(f"container for {inst['instance_id']} failed to start: {e}") from e
             try:
                 setup = time.monotonic() - t0
-                return runtime.solve(Task.from_instance(inst, env=env)), setup
+                return runtime.solve(Task.from_instance(inst, env=env, artifact_dir=self.agent_dir(inst["instance_id"]))), setup
             finally:
                 env.close()
         ws = create_workspace(inst, ws_path, repo_url_template)

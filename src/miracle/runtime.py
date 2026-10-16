@@ -8,6 +8,7 @@ the test patch, or the FAIL_TO_PASS / PASS_TO_PASS lists.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from pathlib import Path
 from dataclasses import asdict, dataclass, field
 
 from .environment import Environment
@@ -22,13 +23,14 @@ class Task:
     problem_statement: str
     workspace: Workspace | None = None   # host source checkout (runtimes with environment="workspace")
     env: Environment | None = None       # executable environment (runtimes with environment="container")
+    artifact_dir: Path | None = None     # where a runtime may write its own artefacts (graphs, traces); never benchmark data
 
     @staticmethod
     def from_instance(instance: dict, workspace: Workspace | None = None,
-                      env: Environment | None = None) -> "Task":
+                      env: Environment | None = None, artifact_dir: Path | None = None) -> "Task":
         # Explicit whitelist: nothing else from the dataset record can leak to the agent.
         return Task(instance["instance_id"], instance["repo"], instance["base_commit"],
-                    instance["problem_statement"], workspace, env)
+                    instance["problem_statement"], workspace, env, artifact_dir)
 
 
 @dataclass

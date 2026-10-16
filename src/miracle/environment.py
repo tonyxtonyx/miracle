@@ -40,3 +40,11 @@ class Environment(ABC):
     @abstractmethod
     def changed_files(self) -> list[str]:
         """Repo-relative paths changed since the environment started."""
+
+    # -- optional: environments that support disposable investigation states implement these -----------------
+    def reset_to_baseline(self) -> None:
+        raise NotImplementedError(f"{type(self).__name__} does not support reset")
+
+    def dirty_state(self) -> dict:
+        """{"clean": bool, "changed_files": [...], "untracked": [...], "head_unchanged": bool, ...} relative to the baseline."""
+        raise NotImplementedError(f"{type(self).__name__} does not support dirty-state checks")

@@ -225,3 +225,11 @@ Measurement only; imports the live checker and changes nothing in it.
 - `evaluate.py`: runs `CompletionController._check` on every sample (asserting the rebuilt prompt equals the stored sample input), `confusion()` / `report()` (Positive = COMPLETE; INVALID/ERROR count as not-COMPLETE), subsets, repeat stability, cost.
 - `miracle checker-eval build|grade|run|report`; working files in `runs/checker-eval/`, exported with `miracle export checker-eval experiments/checker-eval`.
 
+## S3: causal diagnosis architecture (`src/miracle/diagnosis/`)
+
+Design, data model, state machine, context boundaries, reset strategy, judge separation, UI and artefact layout: **`docs/diagnosis_design.md`**.
+Commands: `miracle diagnosis freeze | verify-frozen | run NAME --tasks-file F | judge RUN | report RUN | toy`, `miracle graph serve RUN [--instance ID] [--port N]`.
+Modules: `graph.py` (typed graph, replay), `ops.py` (validated operations / integrity rules), `sandbox.py` + `gitstate.py` + `host_env.py` (branch isolation, reset, verification), `tools.py` (controller and investigator tools),
+`context.py` (what each role may see), `engine.py` (state machine), `synthesis.py` (triggers), `handoff.py` (diagnosis -> implementation boundary), `runtime.py` (`S3Runtime`), `judging/` (blind + reference + oracle),
+`reports.py`, `orchestrate.py` (ordered task list), `web/` (read-only UI), `freeze.py`, `toytask/`.
+

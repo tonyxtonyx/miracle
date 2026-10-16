@@ -34,7 +34,7 @@ def test_task_exposes_only_whitelisted_fields(upstream, home):
     tmpl, inst = upstream
     task = Task.from_instance(inst, create_workspace(inst, home / "w", tmpl))
     assert {f.name for f in dataclasses.fields(task)} == {
-        "instance_id", "repo", "base_commit", "problem_statement", "workspace", "env"}
+        "instance_id", "repo", "base_commit", "problem_statement", "workspace", "env", "artifact_dir"}
     assert "SECRET" not in repr(task)
 
 

@@ -10,33 +10,20 @@ import subprocess
 import time
 
 from .environment import Environment, ExecResult
+from .gitstate import _PATHSPEC, GitBaseline, stage_script  # noqa: F401  (stage_script re-exported)
 from .evaluator import platform_of
 
 CONDA_PRELUDE = (
     "source /opt/miniconda3/bin/activate >/dev/null 2>&1; conda activate testbed; "
     "export LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8; cd {root}"
 )
-# never part of a patch: bytecode / tool caches an agent's test runs create
-_EXCLUDES = ["':(exclude)**/__pycache__/**'", "':(exclude)*.pyc'", "':(exclude).pytest_cache/**'",
-             "':(exclude).hypothesis/**'", "':(exclude)**/*.egg-info/**'"]
-_PATHSPEC = " ".join(["."] + _EXCLUDES)
-
-
-def stage_script(root: str, base_tree: str) -> str:
-    """Stage everything, then un-stage binary files (a text patch can't carry them).
-    Shared by DockerEnvironment and the offline replay so both extract patches identically."""
-    # `git add` exits 1 (while still staging everything) when a gitignored path such as .pytest_cache exists;
-    # its status must not gate the binary filter below, so it is deliberately not chained with &&.
-    return (f"cd {root} && {{ git add -A -- {_PATHSPEC} >/dev/null 2>&1 || true; }}; "
-            f"git diff --cached --no-renames --numstat {base_tree} | "
-            "awk -F'\\t' '$1==\"-\" && $2==\"-\" {print $3}' | while IFS= read -r f; do git reset -q -- \"$f\"; done")
 
 
 class DockerError(RuntimeError):
     pass
 
 
-class DockerEnvironment(Environment):
+class DockerEnvironment(GitBaseline, Environment):
     def __init__(self, image: str, name: str, network: str = "none", prelude: str = CONDA_PRELUDE,
                  root: str = "/testbed"):
         self.image, self.name, self.network, self.root = image, name, network, root
@@ -44,6 +31,7 @@ class DockerEnvironment(Environment):
         self._base_tree: str | None = None
         self.base_head: str | None = None
         self._started = False
+        self._git_root = root
 
     # -- lifecycle -------------------------------------------------------------
     def __enter__(self) -> "DockerEnvironment":
@@ -76,6 +64,10 @@ class DockerEnvironment(Environment):
         if self._started:
             subprocess.run(["docker", "rm", "-f", self.name], capture_output=True)
             self._started = False
+
+    def _sh(self, script: str, timeout: int) -> tuple[int, str]:
+        r = self._raw(["bash", "-c", script], timeout=timeout, merge_stderr=False)
+        return r.returncode, r.stdout.decode("utf-8", "replace")
 
     # -- primitives --------------------------------------------------------------
     def _raw(self, argv: list[str], timeout: float, input: bytes | None = None,
