@@ -1,0 +1,262 @@
+{
+  "by_kind_label": {
+    "final/RESOLVED": 19,
+    "final/UNRESOLVED": 10,
+    "intermediate/PENDING": 4,
+    "intermediate/RESOLVED": 1
+  },
+  "online_eligible": 16,
+  "run_info": {
+    "s0-dev10:astropy__astropy-8707": {
+      "candidate_steps": [
+        37,
+        39,
+        40,
+        41
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s0-dev10:django__django-13821": {
+      "candidate_steps": [
+        24,
+        25,
+        26,
+        43,
+        44,
+        50
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s0-dev10:django__django-15561": {
+      "candidate_steps": [
+        34,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s0-dev10:django__django-16082": {
+      "candidate_steps": [
+        23,
+        30,
+        32,
+        33,
+        34,
+        35,
+        45,
+        46,
+        47
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s0-dev10:django__django-17029": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s0-dev10:matplotlib__matplotlib-22865": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s0-dev10:sphinx-doc__sphinx-11510": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": true
+    },
+    "s0-dev10:sympy__sympy-13372": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s0-dev10:sympy__sympy-16597": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s0-dev10:sympy__sympy-24066": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s1-dev10:astropy__astropy-8707": {
+      "candidate_steps": [
+        31,
+        33,
+        34,
+        49
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s1-dev10:django__django-13821": {
+      "candidate_steps": [
+        20,
+        22,
+        38,
+        39
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s1-dev10:django__django-15561": {
+      "candidate_steps": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s1-dev10:django__django-16082": {
+      "candidate_steps": [
+        28,
+        34,
+        36,
+        38,
+        39,
+        40,
+        41,
+        47,
+        48,
+        50
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s1-dev10:django__django-17029": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s1-dev10:matplotlib__matplotlib-22865": {
+      "candidate_steps": [
+        38
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s1-dev10:sphinx-doc__sphinx-11510": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s1-dev10:sympy__sympy-13372": {
+      "candidate_steps": [
+        11
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s1-dev10:sympy__sympy-16597": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s1-dev10:sympy__sympy-24066": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s2-dev10:astropy__astropy-8707": {
+      "candidate_steps": [
+        34
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s2-dev10:django__django-13821": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s2-dev10:django__django-15561": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s2-dev10:django__django-16082": {
+      "candidate_steps": [
+        23
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s2-dev10:django__django-17029": {
+      "candidate_steps": [
+        25
+      ],
+      "divergences": [],
+      "fidelity": true,
+      "final_empty": false
+    },
+    "s2-dev10:matplotlib__matplotlib-22865": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s2-dev10:sphinx-doc__sphinx-11510": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s2-dev10:sympy__sympy-13372": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s2-dev10:sympy__sympy-16597": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    },
+    "s2-dev10:sympy__sympy-24066": {
+      "candidate_steps": [],
+      "divergences": [],
+      "fidelity": null,
+      "final_empty": false
+    }
+  },
+  "runs_fidelity_false": [],
+  "runs_fidelity_true": 13,
+  "runs_with_candidates": 13,
+  "samples": 34
+}

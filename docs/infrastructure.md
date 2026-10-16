@@ -213,3 +213,15 @@ tool calls and before the next model call, can only return a stop reason, and ne
 .venv/bin/miracle efficiency s0-dev10 s1-dev10 s2-dev10
 ```
 
+## Offline checker evaluation (`src/miracle/checker_eval/`)
+
+Measurement only; imports the live checker and changes nothing in it.
+- `replay.py`: `ReplayEnv` (host-directory environment answering to `/testbed` paths) and `replay_trace`: replays a trace's successful `edit_file`/`write_file` calls on a pristine checkout and returns the diff after chosen steps plus the
+  final diff. Diffs come from `docker_env.stage_script` (the production extraction, shared), with git's abbreviated-hash length calibrated to the recorded patches so output is byte-identical. Replay-only limitation: changes made via `run_command` are invisible,
+  hence the fidelity gate (replayed final diff must equal the recorded patch).
+- `dataset.py`: builds `samples.jsonl` (final and intermediate samples with issue/diff/tests/prompt, trigger evidence, `online_eligible`, label + label source). Intermediate candidates whose diff equals the run's final patch are covered by the final sample; labels are
+  reused from a graded identical final patch, otherwise `PENDING`.
+- `grade.py`: grades `PENDING` diffs with the official harness (one call per distinct diff, images pulled once per instance and removed); any non-clean verdict becomes `UNKNOWN` and is excluded from the metrics.
+- `evaluate.py`: runs `CompletionController._check` on every sample (asserting the rebuilt prompt equals the stored sample input), `confusion()` / `report()` (Positive = COMPLETE; INVALID/ERROR count as not-COMPLETE), subsets, repeat stability, cost.
+- `miracle checker-eval build|grade|run|report`; working files in `runs/checker-eval/`, exported with `miracle export checker-eval experiments/checker-eval`.
+

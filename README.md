@@ -16,7 +16,8 @@ benchmark infrastructure (`AgentRuntime` interface), so architectures can be swa
 | **S0 baseline** | **Qwen3.5-9B + tools, no reasoning architecture, 10-task dev set** | **done (below)** |
 | S1 | S0 + continue (not stop) when a reply is cut off by the output-token cap | run on dev10: 7/10 vs S0's 6/10, **but the fix never triggered, so the difference is noise** (below) |
 | S2 | S1 + external termination controller (`COMPLETION_CHECK`) | run on dev10: **−21% / −17% cost vs S0 / S1 at equal resolution (6/10)**; fired in 3/10 runs, 3/3 correct (below) |
-| next | measure the checker's false-COMPLETE rate on labelled patches; widen trigger coverage; replicate runs | not started |
+| checker eval | offline measurement of the S2 checker on labelled patches (confusion matrix, precision/recall) | done: checker adds no discrimination beyond the trigger; false-COMPLETE rate on eligible states not estimable (1 negative) |
+| next | more labelled negatives with test evidence; widen trigger coverage; replicate runs | not started |
 
 ## Experiment S0 — Qwen3.5-9B + tools, no reasoning architecture
 
@@ -255,12 +256,53 @@ Controller activity:
   infrastructure failure, not an agent outcome (same principle as the full-disk incident), so provider failures now abort the instance and archive their evidence instead of being scored. The failed attempt
   and its grade are kept in `infra_failures/` and `eval/superseded/`; the instance was re-run (unresolved, 50 steps, no check, as in S0/S1). Only this one instance in any run was affected.
 
+## Offline evaluation of the S2 completion checker (measurement only)
+
+**Question:** when the checker says `COMPLETE`, how safe is it to terminate the agent? The checker, its prompt, the trigger and the agent loop are **unchanged** (the frozen S2 commit `cb88dbc`);
+`git diff cb88dbc -- src/miracle/agents src/miracle/llm` is empty. Evidence: `experiments/checker-eval/` (`samples.jsonl`, `decisions.jsonl`, `report.md/json`, `dataset_summary.json`, official grading logs).
+
+**Dataset (34 samples from the 30 recorded S0/S1/S2 runs).** *Final:* 29 non-empty final patches (19 resolved, 10 unresolved; label = the run's official grade). *Intermediate:* 5 diffs at steps where candidate
+evidence appeared (source edit + successful test) and that differ from the run's final patch (4 resolved, 1 unresolved), reconstructed by replaying the trajectory's `edit_file`/`write_file` calls on a pristine
+checkout through the production patch-extraction script. Reconstruction is trusted only if the replay reproduces the recorded final patch byte-for-byte: it did for **all 13** runs with candidates, and the prompts
+rebuilt for the 3 real S2 checks are **identical strings** to the ones sent online. Intermediate labels: 1 by identity with a graded final patch, 4 graded with the **official harness**; **0 UNKNOWN**.
+Only 5 intermediates exist because most candidate steps re-test the same code (distinct diffs are rare). Each sample gives the checker exactly its online inputs (issue, diff, test output since the last source edit)
+through `CompletionController._check` (the live code path), 3 repeats each. A sample is *online-eligible* if the live controller could have invoked the checker on it (candidate evidence and a source change);
+the rest (final patches with no passing test after the last edit, which includes **all 10 unresolved finals**) are a stress test on states the checker never sees online. Positive = `COMPLETE`; anything else continues the run.
+
+| subset | n | TP | FP | FN | TN | **COMPLETE precision** (95% CI) | COMPLETE recall | false-COMPLETE rate | base rate resolved |
+|---|---|---|---|---|---|---|---|---|---|
+| online_eligible (primary) | 16 | 15 | 1 | 0 | 0 | **94%** (72%–99%) | 100% | 100% | 94% |
+| all labelled | 34 | 23 | 7 | 0 | 4 | **77%** (59%–88%) | 100% | 64% | 68% |
+| final, all | 29 | 19 | 6 | 0 | 4 | **76%** (57%–88%) | 100% | 60% | 66% |
+| final, online-eligible | 11 | 11 | 0 | 0 | 0 | **100%** (74%–100%) | 100% | n/a | 100% |
+| final, not eligible (stress test) | 18 | 8 | 6 | 0 | 4 | **57%** (33%–79%) | 100% | 60% | 44% |
+| intermediate | 5 | 4 | 1 | 0 | 0 | **80%** (38%–96%) | 100% | 100% | 80% |
+
+Decisions were identical across the 3 repeats for 34/34 samples (temperature 0: a stable decision rule). Cost: 102 calls, $0.0183 total ($0.00018 per call, ~1.8K prompt tokens, 1.5 s each).
+
+**Findings.**
+1. **The checker adds essentially no discrimination beyond the trigger.** On the 16 online-eligible samples it said `COMPLETE` every time: precision 94% (95% CI 72–99%) equals the 94% base rate of resolved states there. The single wrong one
+   (s1 matplotlib-22865 @ step 38, graded unresolved) got `COMPLETE` in 3/3 repeats, so on the only eligible negative the false-COMPLETE rate is 1/1. The S2 run was safe because the trigger (a source edit followed by a passing
+   test) already selects mostly-correct states (15/16 resolved), not because the checker judged well.
+2. **On states without test evidence it rubber-stamps plausible patches.** Of the 9 unresolved diffs that actually change source code, the checker rejected only 2 (22%): sphinx-11510 (s1) and sympy-16597 (s2), both with a
+   semantically relevant reason. The other 2 rejections were diffs with no source change at all (scratch/test files only), which the live controller already excludes before calling the checker. Stress-test precision is 57% vs a 44% base rate.
+3. **Recall is 100% (FN = 0):** it never blocked a correct patch, so it never cost efficiency here. It behaves as a high-recall terminator that says `INCOMPLETE` only when the diff plainly lacks a source fix or contradicts the issue.
+4. **No recoverable run was observed being cut short:** among the 16 eligible states the one unresolved state (matplotlib) also ended unresolved. But the checker also would not have prevented that loss.
+
+**Caveats.** Small and correlated: the 16 eligible samples are 14 distinct diffs over 7 instances with exactly **one** unresolved diff; the whole set is 29 distinct diffs over 10 instances (11 unresolved). The precision interval on
+the eligible set is wide and the false-COMPLETE rate there is not estimable from one negative. Labels are patch-level (a resolved intermediate is one that the official tests accept, not a proof of semantic completeness); the harness is
+assumed deterministic. Negatives are concentrated in matplotlib/sympy/sphinx.
+
+**Implication (no change made).** The safety measured for S2 so far is the trigger's, and the checker's own false-COMPLETE rate on eligible states is unmeasured because the data holds one negative. Estimating it needs more labelled negatives that
+carry test evidence: more instances, graded intermediate edit-states, or synthetic partial fixes (e.g. gold patches with hunks removed, graded by the harness). Reproduce:
+`miracle checker-eval build && miracle checker-eval grade && miracle checker-eval run --repeats 3 && miracle checker-eval report`.
+
 ## Repository layout
 
 | path | contents |
 |---|---|
 | `src/miracle/` | package: dataset, selection, workspace, runtime interface, evaluator wrapper, runner, stats, export, LLM client (`llm/`), S0 agent (`agents/`) |
 | `subsets/` | fixed, versioned instance subsets (`dev10` is the development set) |
-| `experiments/s0-dev10/`, `experiments/s1-dev10/`, `experiments/s2-dev10/` | committed evidence of the S0 / S1 / S2 runs: manifest, results, patches, full traces, official harness reports/logs |
+| `experiments/s0-dev10/`, `experiments/s1-dev10/`, `experiments/s2-dev10/`, `experiments/checker-eval/` | committed evidence of the S0 / S1 / S2 runs and the checker evaluation: manifest, results, patches, full traces, official harness reports/logs |
 | `tests/` | offline unit tests (`pytest`); real-harness integration tests (`pytest -m docker`) |
 | `docs/infrastructure.md` | design and usage of the infrastructure, LLM client, tool-use probe and the S0 agent |

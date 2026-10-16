@@ -175,6 +175,8 @@ def main(argv=None):
 
     from .llm.cli import add_parser, guarded
     add_parser(sub)
+    from .checker_eval.cli import add_parser as add_ce_parser
+    add_ce_parser(sub)
     a = p.parse_args(argv)
     sys.stdout.reconfigure(line_buffering=True)    # progress must be visible when redirected to a log
     guarded(a.fn, a)

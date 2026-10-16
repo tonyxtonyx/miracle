@@ -22,6 +22,16 @@ _EXCLUDES = ["':(exclude)**/__pycache__/**'", "':(exclude)*.pyc'", "':(exclude).
 _PATHSPEC = " ".join(["."] + _EXCLUDES)
 
 
+def stage_script(root: str, base_tree: str) -> str:
+    """Stage everything, then un-stage binary files (a text patch can't carry them).
+    Shared by DockerEnvironment and the offline replay so both extract patches identically."""
+    # `git add` exits 1 (while still staging everything) when a gitignored path such as .pytest_cache exists;
+    # its status must not gate the binary filter below, so it is deliberately not chained with &&.
+    return (f"cd {root} && {{ git add -A -- {_PATHSPEC} >/dev/null 2>&1 || true; }}; "
+            f"git diff --cached --no-renames --numstat {base_tree} | "
+            "awk -F'\\t' '$1==\"-\" && $2==\"-\" {print $3}' | while IFS= read -r f; do git reset -q -- \"$f\"; done")
+
+
 class DockerError(RuntimeError):
     pass
 
@@ -104,12 +114,7 @@ class DockerEnvironment(Environment):
 
     # -- patch extraction ---------------------------------------------------------
     def _stage(self) -> str:
-        """Stage everything, then un-stage binary files (a text patch can't carry them)."""
-        # `git add` exits 1 (while still staging everything) when a gitignored path such as .pytest_cache exists;
-        # its status must not gate the binary filter below, so it is deliberately not chained with &&.
-        return (f"cd {self.root} && {{ git add -A -- {_PATHSPEC} >/dev/null 2>&1 || true; }}; "
-                f"git diff --cached --no-renames --numstat {self._base_tree} | "
-                "awk -F'\\t' '$1==\"-\" && $2==\"-\" {print $3}' | while IFS= read -r f; do git reset -q -- \"$f\"; done")
+        return stage_script(self.root, self._base_tree)
 
     def diff(self) -> str:
         # stdout only: git writes warnings (e.g. "paths are ignored") to stderr and they must not enter the patch
